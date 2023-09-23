@@ -16,7 +16,7 @@ interface IMenuItem {
 
 const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
   const navigate = useNavigate();
-  const PATH_PRIVATE = PATH._PRIVATE;
+  const PATH_PRIVATE = PATH;
 
   const getItem = (label: IMenuItem['label'], key: IMenuItem['key'], icon?: IMenuItem['icon'], children?: IMenuItem[]) => {
     return {
@@ -38,14 +38,15 @@ const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
   };
 
   const items: IMenuItem[] = [
-    getItem('Option 2', '2', <DesktopOutlined />),
-    getItem('User', 'sub1', <UserOutlined />, [
-      getItem('Tom', '3'),
-      getItem('Bill', '4'),
-      getItem('Alex', '5'),
-    ]),
+    // getItem('Option 2', '2', <DesktopOutlined />),
+    // getItem('User', 'sub1', <UserOutlined />, [
+    //   getItem('Tom', '3'),
+    //   getItem('Bill', '4'),
+    //   getItem('Alex', '5'),
+    // ]),
     getItem('Học sinh','student' ,<StudentIcon/> ,[
-      getSubItem('Nhập điểm', 'nhap_diem', PATH_PRIVATE._STUDENT._SCOREBOARD)
+      getSubItem('Nhập điểm', 'nhap_diem', PATH_PRIVATE._STUDENT._SCOREBOARD),
+      getSubItem('Danh sách', 'danh_sach', PATH_PRIVATE._STUDENT._INDEX),
     ])
   ];
   

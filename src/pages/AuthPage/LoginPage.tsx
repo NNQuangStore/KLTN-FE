@@ -3,8 +3,14 @@ import { styled } from 'styled-components';
 import FormLayout from '../../component/organism/FormLayout';
 import ButtonPrimary from '../../component/atom/Button/ButtonPrimary';
 import { useSetLoadingPage } from '../../services/UI/LoadingPage';
-import apisAuth from './service/apis';
 import InputTextPassword from '../../component/atom/Input/InputPassword';
+import { useDispatch } from 'react-redux';
+import authActions from './service/actions';
+import { useAppDispatch } from '../../store/hooks';
+import { useNavigate } from 'react-router-dom';
+import uiSelector from '../../services/UI/selectors';
+import storage from '../../utils/sessionStorage';
+import { useEffect } from 'react';
 
 interface AuthForm {
   phone: string,
@@ -13,20 +19,41 @@ interface AuthForm {
 
 const LoginPage = () => {
 
-  const setLoading = useSetLoadingPage();
+  const dispatch = useAppDispatch();
+  const loadingPage = uiSelector.getLoadingPage();
 
+  // setLoading(true);
+  const navigate = useNavigate();
+  // console.log(loadingPage);
+  useEffect(() => {
+    storage.set('token', '');
+  }, []);
+
+  const token = storage.get('token');
+
+  useEffect(() => {
+    if(!loadingPage && token !== '') {
+      navigate('/student');
+    }
+  },[token]);
+  
   const onSubmit = async (values: AuthForm) => {
-    console.log(values);
+    // 0333007630
+    // ksvchainamtest
     
-    setLoading(true);
     try {
-      const res = await apisAuth.login(values);
-      console.log(res);
+      const res = await dispatch(authActions.login.fetch({
+        phone: values.phone ?? '0333007630',
+        password: values.password ?? 'ksvchainamtest'
+      }));
+      
+      
+    
+      
       
     } catch(err) {
 
     } finally {
-      setLoading(false);
     }
   };
 
@@ -37,8 +64,9 @@ const LoginPage = () => {
         onSubmit={onSubmit}
         renderButton={<ButtonLoginStyled htmlType='submit' label='Login'/>}>
 
-        <InputText label={'Số điện thoại'}/>
-        <InputTextPassword label={'Mật Khẩu'} />
+        <InputText defaultValue='0333007630' value='0333007630' name='phone' label={'Số điện thoại'}/>
+        <InputTextPassword defaultValue='ksvchainamtest' value='ksvchainamtest' name='password' label={'Mật Khẩu'} />
+
         </FormLayout>
     </LoginPageStyled>
   );

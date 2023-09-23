@@ -2,7 +2,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import DataTable from '../../../../component/molecule/DataTable';
 import ActionTable from '../../../../component/molecule/DataTable/ActionTables';
 import { COLOR_RED, COLOR_YELLOW_DARK } from '../../../../utils/variables/colors';
-import ContentEditable from 'react-contenteditable';
 import { useState } from 'react';
 
 const CustomerDataTable = () => {
@@ -21,31 +20,13 @@ const CustomerDataTable = () => {
       title: 'Customer Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text: string) => {
-        return (
-          <ContentEditable
-              html={value === undefined ? text : value}
-              onChange={(e) => setValue(e?.target?.value ?? '')}
-              tagName='article'
-            />
-        );
-      }
+     
     },
     {
       title: 'Phone Number',
       dataIndex: 'phone_number',
       editable: true,
       key: 'phone_number',
-      render: (text: string) => {
-
-        return (
-          <ContentEditable
-              html={value === undefined ? text : value}
-              onChange={(e) => setValue(e?.target?.value ?? '')}
-              tagName='article'
-            />
-        );
-      }
     },
     {
       title: 'Service Name',

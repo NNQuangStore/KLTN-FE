@@ -8,7 +8,7 @@ import { useShowModal } from '../ModalButton/hooks/useShowModal';
 
 interface Props<T> extends FormProps {
   children?: React.ReactNode,
-  onSubmit: (value: any) => void,
+  onSubmit: (value: T | any) => void,
   renderButton?: React.ReactElement
 }
 

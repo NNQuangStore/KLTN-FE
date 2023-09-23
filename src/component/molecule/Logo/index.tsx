@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import RowCenter from '../../atom/Row/RowCenter';
 import { useCollapseSidebar } from '../../../services/hooks/useCollapseSidebar';
+import { COLOR_PRIMARY } from '../../../utils/variables/colors';
 
 const Logo = () => {
 
@@ -24,6 +25,6 @@ const LogoStyled = styled(RowCenter)`
   position: sticky;
   top: 0;
   left: 0;
-  color: blue;
+  color: ${COLOR_PRIMARY};
 `;
 

@@ -53,6 +53,7 @@ const AppLayout = () => {
           token: {
             fontFamily: '"Raleway", sans-serif',
             colorPrimary: COLOR_PRIMARY
+            
           },
         }}
       >

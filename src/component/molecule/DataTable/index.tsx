@@ -1,26 +1,49 @@
 import { Table, TableProps } from 'antd';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
 import { styled } from 'styled-components';
-import ActionTable from './ActionTables';
-import { UserAddOutlined } from '@ant-design/icons';
+
 
 interface Props<T> extends TableProps<T> {
-
+  ref?: any
 }
 
 const DataTable = <T extends {}>({
+  // ref,
   ...props
 } : Props<T>) => {
 
+  const tableRef = useRef<any>(null);
+  const [exportTableRef, setExportTableRef] = useState();
 
+  
+  useEffect(() => {
+    setExportTableRef(tableRef.current.children[0].children[0].children[0].children[0].children[0].children[0]);
+  },[tableRef]);
+  
+  
+  
   return (
     <DataTableStyled>
-      <TableStyled
+      {/* <DownloadTableExcel
+        filename="users table"
+        sheet="users"
+        currentTableRef={exportTableRef}
+    >
+
+        <button> Export excel </button>
+
+    </DownloadTableExcel> */}
+      <TableStyled        
+        ref={tableRef}
         rowKey={(item) => item.id}
         size='small'
+        bordered
         {...props}
         scroll={{
           x: 100
         }}
+        // pagination={true}
         // pagination={{
         //   defaultCurrent: Number(page?.page ?? 1),
         //   total: data?.pagination?.total_record,

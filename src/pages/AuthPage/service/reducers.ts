@@ -16,7 +16,7 @@ export const Slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(actions.login.success, (state, { payload }) => {
-      const data: IApiLoginResData = payload;
+      const data: IApiLoginResData = payload as IApiLoginResData;      
       state.access_token = data?.token ?? null;
       state.user_data = data;
     });

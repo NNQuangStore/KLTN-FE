@@ -19,7 +19,7 @@ const OBreadcrumb = () => {
         break;
       fullPath += generatePath(path);
     }
-    return `/private${fullPath}/${value}`;
+    return `${fullPath}/${value}`;
   };
 
   return (

@@ -16,7 +16,6 @@ const DashboardPage = () => {
   // const table = useReactTable({data, columns}); 
 
   const onSubmit = (values: any) => {
-    console.log(values);
     
   };
 

@@ -10,7 +10,7 @@ const InputSelect = ({
   return (
     <>
       <Select
-        style={{width: '100%'}}
+        // style={{width: '100%'}}
         size='large'
         {...props}
       />

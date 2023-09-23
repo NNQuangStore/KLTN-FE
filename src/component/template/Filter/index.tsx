@@ -9,8 +9,9 @@ interface Props {
 
 const Filter = ({children}: Props) => {
   return (
-    <FilterStyled justify={'space-between'} style={{marginBottom: '24px'}}>
+    <FilterStyled justify={'space-between'}>
         <OBreadcrumb/>
+        {/* <div></div> */}
         <div className='options'>
           {children}
         </div>
@@ -22,6 +23,7 @@ export default Filter;
 
 const FilterStyled = styled(RowH)`
   .options {
+    /* width: 80%; */
     display: flex;
     & > * {
       margin-left: 8px;

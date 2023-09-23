@@ -2,8 +2,11 @@ import { styled } from 'styled-components';
 import RowCenter from '../../atom/Row/RowCenter';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Col } from 'antd';
+import storage from '../../../utils/sessionStorage';
 
-const AvatarSidebar = ({collapsed} : {collapsed: boolean}) => {
+const AvatarSidebar = ({collapsed, name} : {collapsed: boolean, name?: string}) => {
+
+  
 
   return collapsed ? 
     (<AvatarCollapsedStyled>
@@ -18,8 +21,8 @@ const AvatarSidebar = ({collapsed} : {collapsed: boolean}) => {
           size={100}
           icon={<UserOutlined />}
         />
-        <h3>Nguyễn Nhật Quang</h3>
-        <p>admin</p>
+        <h3>{name ?? storage.get('user_name')}</h3>
+        {/* <p>admin</p> */}
       </Col>
     </AvatarStyled>);
 };

@@ -34,13 +34,15 @@ const fetch = async ({
     { ...params },
     { arrayFormat: 'bracket' }
   );
-  let urlWithParams = url + '?' + paramsPasser;
+  // let urlWithParams = url + '?' + paramsPasser;
+  const urlWithParams = url + '?' + paramsPasser;
 
-  const merchant_code: string = storage.merchantCode.get();
+  // const merchant_code: string = storage.merchantCode.get();
 
-  if (merchant_code) {
-    urlWithParams = urlWithParams.replaceAll(':merchant_code', merchant_code);
-  }
+  // if (merchant_code) {
+    // urlWithParams = urlWithParams.replaceAll(':merchant_code', merchant_code);
+  //   urlWithParams = urlWithParams;
+  // }
   const token = storage.token.get();
   if (token) {
     set(configs, 'headers.Authorization', 'Bearer ' + token);

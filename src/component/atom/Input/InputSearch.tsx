@@ -22,7 +22,7 @@ const InputSearchText = ({ value = '', onSearchText = () => undefined }: Props) 
   }, [text]);
 
   return (
-    <div className='common-input-search'>
+    <div style={{width: '200px'}} className='common-input-search'>
       <Input
         size='large'
         placeholder={'Search'}

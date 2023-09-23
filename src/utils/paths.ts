@@ -1,7 +1,13 @@
 export const PATH = {
-  _PRIVATE: {
-    _STUDENT: {
-      _SCOREBOARD: '/private/student/scoreboard'
-    }
-  }
+  _PARENT: {
+    _HOME_PAGE: '/homepage'
+  },
+  _STUDENT: {
+    _INDEX: '/student',
+    _SCOREBOARD: '/student/scoreboard'
+  },
+  _PROFILE: '/profile',
+  _REPORT_CARD: '/report-card',
+  _LEAVE_OF_ABSENCE: '/leave-of-absence',
+
 };

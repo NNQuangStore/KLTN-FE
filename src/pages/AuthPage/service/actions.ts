@@ -4,7 +4,6 @@ import { createAsyncAction } from '../../../services/actionConfigs';
 
 const login = createAsyncAction<IApiLoginBody>(PREFIX_ACTIONS + 'LOGIN');
 
-
 const authActions = {
   login,
 };

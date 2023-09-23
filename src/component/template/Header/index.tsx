@@ -1,12 +1,13 @@
 import { styled } from 'styled-components';
 import RowH from '../../atom/Row/RowH';
 import { useCollapseSidebar } from '../../../services/hooks/useCollapseSidebar';
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
 import { HEIGHT_HEADER } from '../../../utils/variables/unit';
-import { Avatar } from 'antd';
+import { Avatar, Badge, Popover } from 'antd';
 import Logo from '../../molecule/Logo';
 import { COLOR_WHITE } from '../../../utils/variables/colors';
 import { getBreakpointSidebar } from '../Sidebar';
+import Notification from './Notification';
 
 
 const iconStyled: React.CSSProperties = {
@@ -14,9 +15,13 @@ const iconStyled: React.CSSProperties = {
   cursor: 'pointer'
 };
 
-const Header = () => {
+
+
+const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
 
   const [collapsed, setCollapsed] = useCollapseSidebar(false);
+
+  // console.log(useMediaQuery(theme.breakpoints.up('sm')));
 
   const toggleCollapsed = () => {
     setCollapsed( !collapsed );
@@ -25,14 +30,15 @@ const Header = () => {
   return (
     <> 
       <RowStyled justify={'space-between'}>
-        <div className='hamburger'>
+        {showHamburger ? <div className='hamburger'>
           <div className='icon' onClick={toggleCollapsed}>
               {collapsed ? <MenuUnfoldOutlined style={{...iconStyled}} /> : <MenuFoldOutlined style={{...iconStyled}} />}
           </div>
-        </div>
+        </div> : <div></div>}
         {! getBreakpointSidebar() ? <Logo/> : <></>}
 
-        <div>
+        <div className='tool'>
+          <Notification/>
           <Avatar
             icon={<UserOutlined />}
 
@@ -55,4 +61,14 @@ const RowStyled = styled(RowH)`
   padding: 0px 20px;
   box-shadow: 5px 5px 5px lightgray;
   z-index: 500;
+
+  .tool {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    & > * {
+  
+      cursor: pointer;
+    }
+  }
 `;

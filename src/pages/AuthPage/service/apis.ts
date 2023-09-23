@@ -1,7 +1,7 @@
 import fetch from '../../../services/request';
 import { IApiLoginBody } from './types/auth';
 
-export const login = (body: IApiLoginBody) => {
+export const login = (body: IApiLoginBody) => {  
   return fetch({
     method: 'post',
     url: '/login',

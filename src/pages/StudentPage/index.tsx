@@ -72,7 +72,7 @@ const StudentPage = () => {
       },
     },
     {
-      title: 'Actions',
+      title: ' ',
       render: (item) => {
         console.log(item);
         
@@ -102,17 +102,14 @@ const StudentPage = () => {
 
   return (
     <StudentPageStyled>
-
       <Filter>
-        <InputSelect value={classId} options={[{
+        {/* <InputSelect value={classId} options={[{
           value: classId,
           label: className,
-        }]} />
+        }]} /> */}
         <InputSearchText />
       </Filter>
-      <div style={{margin: '12px'}}>
-
-      </div>
+      <div style={{margin: '12px'}}></div>
       <DataTable bordered={false} columns={columns} dataSource={data}/>
     </StudentPageStyled>
   );

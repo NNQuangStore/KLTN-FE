@@ -4,6 +4,8 @@ import actions from './actions';
 import { default as apis, default as apisStudent } from './apis';
 import { PATH_LOADING } from './constants';
 import { setLoading } from '../../../services/UI/sagas';
+import { ISagaFunc } from '../../../services/actionConfigs';
+import uiActions from '../../../services/UI/actions';
 
 const data = [
   {
@@ -33,6 +35,8 @@ const data = [
 ];
 
 const getListStudents = function* () {
+  yield put(uiActions.setLoadingPage(true));
+
   try {
     yield setLoading(PATH_LOADING.getListStudents, true);
     const res: AxiosResponse<{ data: any[] }> = yield call(apis.getListStudent);
@@ -47,31 +51,36 @@ const getListStudents = function* () {
   } catch (error) {
     yield put(actions.getListStudent.fail({}));
   } finally {
-    yield setLoading(PATH_LOADING.getListStudents, false);
+  yield put(uiActions.setLoadingPage(false));
+
   }
 };
 
-// const getStudentDetail: ISagaFunc<string> = function* ({ payload }) {
-//   const param = payload;
-//   try {
-//     yield setLoading(PATH_LOADING.getStudentDetail, true);
-//     const res: AxiosResponse<{ data: IStudentDetailResData }> = yield call(apisStudent.getStudentDetail, param);
-//     if (res?.data?.data) {
-//       const StudentDetail = res.data.data;
-//       yield put(actions.getStudentDetail.success(StudentDetail));
-//     } else {
-//       throw 'fail';
-//     }
-//   } catch (error) {
-//     yield put(actions.getStudentDetail.fail({}));
-//   } finally {
-//     yield setLoading(PATH_LOADING.getStudentDetail, false);
-//   }
-// };
+const getDetailStudent: ISagaFunc<string> = function* ({ payload }) {
+  yield put(uiActions.setLoadingPage(true));
+
+  const param = payload;
+  try {
+    const res: AxiosResponse<any> = yield call(apisStudent.getDetailStudent, param);
+    if (res?.data?.data) {
+      const StudentDetail = res.data.data[0];
+      console.log(StudentDetail);
+      
+      yield put(actions.getDetailStudent.success(StudentDetail));
+    } else {
+      throw 'fail';
+    }
+  } catch (error) {
+    yield put(actions.getDetailStudent.fail({}));
+  } finally {
+  yield put(uiActions.setLoadingPage(false));
+
+  }
+};
 
 export default function* studentServiceSaga() {
 
   yield takeLatest(actions.getListStudent.fetch, getListStudents);
-  // yield takeLatest(actions.getStudentDetail.fetch, getStudentDetail);
+  yield takeLatest(actions.getDetailStudent.fetch, getDetailStudent);
   // yield takeLatest(actions.setStudentListParams, setStudentListParams);
 }

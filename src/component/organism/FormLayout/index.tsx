@@ -9,7 +9,7 @@ import { useShowModal } from '../ModalButton/hooks/useShowModal';
 interface Props<T> extends FormProps {
   children?: React.ReactNode,
   onSubmit: (value: T | any) => void,
-  renderButton?: React.ReactElement
+  renderButton?: any
 }
 
 const FormLayout = <T extends {}> ({
@@ -52,7 +52,7 @@ const FormStyled = styled(Form)`
   }
 `;
 
-const ActionFormStyled = styled(RowH)`
+export const ActionFormStyled = styled(RowH)`
   & > button:first-child {
     margin-right: 12px;
   }

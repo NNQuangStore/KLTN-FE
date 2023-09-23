@@ -50,8 +50,8 @@ const StudentPage = () => {
   const columns : ColumnsType<any> = [
     {
       title: 'Mã HS',
-      dataIndex: 'MaHocSinh__c',
-      key: 'MaHocSinh__c',
+      dataIndex: 'Ma_Hoc_Sinh__c',
+      key: 'Ma_Hoc_Sinh__c',
     },
     {
       title: 'Tên HS',
@@ -60,8 +60,8 @@ const StudentPage = () => {
     },
     {
       title: 'Ngày sinh',
-      dataIndex: 'birth__c',
-      key: 'birth__c',
+      dataIndex: 'NgaySinh__c',
+      key: 'NgaySinh__c',
     },
     {
       title: 'Giới tính',
@@ -73,13 +73,13 @@ const StudentPage = () => {
     },
     {
       title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      render: () => {
+      render: (item) => {
+        console.log(item);
+        
         return (
           <ActionTable actions={[
             {
-              handle: () => undefined,
+              handle: () => navigate(item.Id),
               icon: <EyeOutlined />,
               label: 'Xem chi tiết',
               color: '#1890ff'

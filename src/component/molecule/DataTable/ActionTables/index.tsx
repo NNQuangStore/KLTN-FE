@@ -15,7 +15,7 @@ const ActionTable = ({actions} : ActionTableProps) => {
   return (
     <ActionTableStyled>
       {actions.map((o, index) => (
-        <ActionTableItemStyled color={o.color ?? 'black'} key={index}>
+        <ActionTableItemStyled onClick={o.handle} color={o.color ?? 'black'} key={index}>
           {o.icon}
           {o.label}
         </ActionTableItemStyled>

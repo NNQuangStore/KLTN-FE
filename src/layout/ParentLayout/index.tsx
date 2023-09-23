@@ -76,6 +76,7 @@ const MainLayoutMobileStyled = styled(Layout)`
 `;
 
 const MainStyled = styled.div`
+  overflow-y: scroll;
   width: 100%;
   height: 100vh !important;
   padding: 24px 64px;

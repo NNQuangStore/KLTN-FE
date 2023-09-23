@@ -20,6 +20,7 @@ import StudentPage from './pages/StudentPage';
 import ParentLayout from './layout/ParentLayout';
 import ParentHomePage from './pages/ParentHomePage';
 import ParentReportSessionPage from './pages/ParentReportLession';
+import ReportLesionPage from './pages/ReportLesionPage';
 
 function AppUI() {
   const { shield } = useToken();
@@ -33,13 +34,15 @@ function AppUI() {
           <Route path='time-table' element={<TimeTablePage />} />
           <Route path={PATH._STUDENT._SCOREBOARD} element={<ScoreboardPage />} />
           <Route path={PATH._STUDENT._INDEX} element={<StudentPage />} />
-          <Route path={`${PATH._PROFILE}/:id`} element={<ProfilePage/>} />
+          <Route path={`${PATH._STUDENT._INDEX}/:id`} element={<ProfilePage/>} />
           <Route path={PATH._REPORT_CARD} element={<ReportCardPage/>} />
           <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} />
+          <Route path='report-lesion' element={<ReportLesionPage />} />
+
         </Route>
         <Route path='/app' element={shield(ParentLayout)}>
           <Route index path='home' element={<ParentHomePage />} />
-          <Route index path='report-session' element={<ParentReportSessionPage />} />
+          <Route path='report-session' element={<ParentReportSessionPage />} />
         </Route>
 
         <Route path='/auth' element={<AuthLayout/>}>

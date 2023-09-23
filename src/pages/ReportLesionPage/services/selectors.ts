@@ -6,20 +6,20 @@ import { useAppSelector } from '../../../store/hooks';
 
 
 
-type MyState = RootState['student'];
+type MyState = RootState['lesion'];
 
-const getCurrentState = (state: RootState): MyState => state.student;
+const getCurrentState = (state: RootState): MyState => state.lesion;
 
 const selector = <KEY = keyof MyState>(key: KEY, defaultValue?: any) => useAppSelector(state => get(getCurrentState(state), key as any, defaultValue));
 
-const getStudentList = () => selector('studentList');
+const getLesionList = () => selector('lesionList');
 
 
 
 
 
 
-const getStudentDetail = () => selector('studentDetail');
+// const getStudentDetail = () => selector('studentDetail');
 
 
 
@@ -27,9 +27,9 @@ const getStudentDetail = () => selector('studentDetail');
 
 // const getParams = () => selector('params') as IStudentParam;
 
-const StudentSelectors = {
-  getStudentList,
-  getStudentDetail,
+const lesionSelectors = {
+  getLesionList,
+  // getlesionDetail,
 };
 
-export default StudentSelectors;
+export default lesionSelectors;

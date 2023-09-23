@@ -3,10 +3,10 @@ import actions from './actions';
 import { NAME_REDUCER } from './constants';
 
 const initialState = {
-  studentList: [],
-  studentListPaginate: {},
-  studentDetail: null,
-  params: {},
+  lesionList: [],
+  // studentListPaginate: {},
+  // studentDetail: null,
+  // params: {},
 };
 
 export const Slice = createSlice({
@@ -36,16 +36,16 @@ export const Slice = createSlice({
 
       //   state.params = params;
       // })
-      .addCase(actions.getListStudent.success, (state, { payload }) => {
+      .addCase(actions.getListLesion.success, (state, { payload }) => {
         const data = payload;
-        state.studentList = data;
-      })
-      .addCase(actions.getDetailStudent.success, (state, { payload }) => {
-        const data = payload;
-        state.studentDetail = data;
+        state.lesionList = data;
       });
+      // .addCase(actions.getDetailStudent.success, (state, { payload }) => {
+      //   const data = payload;
+      //   state.studentDetail = data;
+      // });
 
   },
 });
-const studentServiceReducer = Slice.reducer;
-export default studentServiceReducer;
+const lesionServiceReducer = Slice.reducer;
+export default lesionServiceReducer;

@@ -32,7 +32,10 @@ const LoginPage = () => {
   const token = storage.get('token');
 
   useEffect(() => {
-    if(!loadingPage && token !== '') {
+    console.log('pppp');
+    
+    if(token !== '') {console.log('ssss');
+    
       navigate('/student');
     }
   },[token]);
@@ -46,10 +49,6 @@ const LoginPage = () => {
         phone: values.phone ?? '0333007630',
         password: values.password ?? 'ksvchainamtest'
       }));
-      
-      
-    
-      
       
     } catch(err) {
 

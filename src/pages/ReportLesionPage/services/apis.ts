@@ -1,24 +1,32 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
 
-const getListStudent = () => {
+const getListLesion = () => {
 
   const class_id = storage.get('class_id');
 
   return fetch({
     method: 'get',
-    url: `class/${class_id}`
+    url: `lesson/${class_id}`
     // params: { ...params, per_page: 100 },
   });
 };
 
-const getDetailStudent = (id: string) => {
+const saveLesion = (body: any) => {
   return fetch({
-    method: 'get',
-    url: `student/${id}`
-    // params: { ...params, per_page: 100 },
+    method: 'post',
+    url: 'lesson/save',
+    body
   });
 };
+
+// const getDetailStudent = (id: string) => {
+//   return fetch({
+//     method: 'get',
+//     url: `student/${id}`
+//     // params: { ...params, per_page: 100 },
+//   });
+// };
 
 // const getListCustomersPaginate = (params?: any) => {
 //   return fetch({
@@ -29,9 +37,9 @@ const getDetailStudent = (id: string) => {
 // };
 
 
-const apisStudent = {
-  getListStudent,
-  getDetailStudent,
+const apisLesion = {
+  getListLesion,
+  saveLesion
 };
 
-export default apisStudent;
+export default apisLesion;

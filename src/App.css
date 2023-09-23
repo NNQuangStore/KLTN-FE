@@ -40,3 +40,8 @@
 h3 {
   color: #1B9AAA;
 }
+
+:where(.css-dev-only-do-not-override-19lgj7x).ant-input-disabled, 
+:where(.css-dev-only-do-not-override-19lgj7x).ant-input[disabled] {
+  color: black;
+}

@@ -22,7 +22,7 @@ const AvatarSidebar = ({collapsed, name} : {collapsed: boolean, name?: string}) 
           icon={<UserOutlined />}
         />
         <h3>{name ?? storage.get('user_name')}</h3>
-        {/* <p>admin</p> */}
+        <p>Học sinh</p>
       </Col>
     </AvatarStyled>);
 };

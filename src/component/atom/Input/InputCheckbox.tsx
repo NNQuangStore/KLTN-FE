@@ -10,7 +10,7 @@ const InputCheckbox = ({
 }: Props) => {
   return (
     <Form.Item {...props} valuePropName='checked'>
-      <Checkbox>{labelCheckbox}</Checkbox>
+      <Checkbox style={{fontWeight: 600}}>{labelCheckbox}</Checkbox>
     </Form.Item>
   );
 };

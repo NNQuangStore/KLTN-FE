@@ -1,5 +1,8 @@
 import { Card, Empty, List } from 'antd';
+import { useEffect } from 'react';
 import { styled } from 'styled-components';
+import { useAppDispatch } from '../../store/hooks';
+
 
 const ParentReportSessionPage = () => {
   const reportData = [
@@ -28,6 +31,16 @@ const ParentReportSessionPage = () => {
       note: 'Làm bài tập 1 sgk trang 54'
     },
   ];
+
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   dispatch(lesionActions.getListLesion.fetch());
+  // },[]);
+  // const reportData = lesionSelectors.getLesionList();
+
+  console.log(reportData);
+  
 
   return (
     reportData.length > 0 ? <ParentReportSessionPageStyled>

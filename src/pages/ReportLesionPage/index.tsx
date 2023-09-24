@@ -162,7 +162,7 @@ const ReportLesionPage = () => {
               </Form.Item>
               <Form.Item rules={[
                 {required: true}
-              ]} label='Date sent' name='time'>
+              ]} label='Time sent' name='time'>
                 <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} />
               </Form.Item>
               <Form.Item rules={[

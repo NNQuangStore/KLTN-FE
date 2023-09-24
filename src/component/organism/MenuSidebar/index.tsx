@@ -49,6 +49,7 @@ const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
       getSubItem('Nhập điểm', 'nhap_diem', PATH_PRIVATE._STUDENT._SCOREBOARD),
       getSubItem('Danh sách', 'danh_sach', PATH_PRIVATE._STUDENT._INDEX),
       getSubItem('Báo bài', 'báo_bai', '/report-lesion'),
+      getSubItem('Thời khoá biểu', 'tkb', '/time-table'),
     ]),
     getItem('Báo cáo', '2', <FundProjectionScreenOutlined />),
   ];

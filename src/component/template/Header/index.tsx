@@ -8,6 +8,7 @@ import Logo from '../../molecule/Logo';
 import { COLOR_WHITE } from '../../../utils/variables/colors';
 import { getBreakpointSidebar } from '../Sidebar';
 import Notification from './Notification';
+import storage from '../../../utils/sessionStorage';
 
 
 const iconStyled: React.CSSProperties = {
@@ -20,6 +21,7 @@ const iconStyled: React.CSSProperties = {
 const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
 
   const [collapsed, setCollapsed] = useCollapseSidebar(false);
+  const className = storage.get('class_name');
 
   // console.log(useMediaQuery(theme.breakpoints.up('sm')));
 
@@ -38,6 +40,7 @@ const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
         {! getBreakpointSidebar() ? <Logo/> : <></>}
 
         <div className='tool'>
+          <span>Lớp {className}</span>
           <Notification/>
           <Avatar
             icon={<UserOutlined />}

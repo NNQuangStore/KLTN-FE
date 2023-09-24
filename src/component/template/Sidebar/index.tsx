@@ -30,7 +30,7 @@ const Sidebar = () => {
   return (
     <SidebarStyled collapsed={collapsed} breakpoint={getBreakpointSidebar()}>
       {getBreakpointSidebar() ? <Logo/> : <></>}
-      <AvatarSidebar collapsed={collapsed} />
+      {/* <AvatarSidebar collapsed={collapsed} /> */}
       <MenuSidebar collapsed={collapsed} />
     </SidebarStyled>
   );
@@ -46,7 +46,7 @@ const SidebarStyled = styled.div<{collapsed: boolean, breakpoint: boolean}>`
   position: fixed;
   transition: width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
   box-shadow: 5px 0px 10px lightgrey !important;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 100vh !important;
   background-color: ${COLOR_WHITE};
   left: 0;

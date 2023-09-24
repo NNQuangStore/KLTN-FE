@@ -1,4 +1,4 @@
-import { DesktopOutlined, UserOutlined } from '@ant-design/icons';
+import { DesktopOutlined, UserOutlined, ReadOutlined, FundProjectionScreenOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { styled } from 'styled-components';
 import StudentIcon from '../../../asset/svg/StudentIcon';
@@ -44,10 +44,12 @@ const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
     //   getItem('Bill', '4'),
     //   getItem('Alex', '5'),
     // ]),
-    getItem('Học sinh','student' ,<StudentIcon/> ,[
+    getItem('Báo bài', '2', <ReadOutlined />),
+    getItem('Quản lý học sinh','student' ,<StudentIcon/> ,[
       getSubItem('Nhập điểm', 'nhap_diem', PATH_PRIVATE._STUDENT._SCOREBOARD),
       getSubItem('Danh sách', 'danh_sach', PATH_PRIVATE._STUDENT._INDEX),
-    ])
+    ]),
+    getItem('Báo cáo', '2', <FundProjectionScreenOutlined />),
   ];
   
   return (

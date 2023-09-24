@@ -25,7 +25,7 @@ const InputSearchText = ({ value = '', onSearchText = () => undefined }: Props) 
     <div style={{width: '200px'}} className='common-input-search'>
       <Input
         size='large'
-        placeholder={'Search'}
+        placeholder={'Tìm kiếm'}
         suffix={<SearchOutlined />}
         type='text'
         value={text}

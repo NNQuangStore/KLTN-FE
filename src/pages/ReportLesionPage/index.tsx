@@ -49,8 +49,8 @@ const ReportLesionPage = () => {
     },
     {
       title: 'Hành động',
-      render: (item) => (
-        <ActionTable actions={[
+      render: (item) => 
+        item.Status__c !== 'Accepted' && (<ActionTable actions={[
           {
             handle: () => {setFormData(item); setOpen(true);},
             icon: <EditOutlined />,
@@ -59,17 +59,15 @@ const ReportLesionPage = () => {
           },
           {
             handle: async () => {
-              const res = await apisLesion.deleteLesion({id: item.Id});
-              console.log(res);
-              
+              const res = await apisLesion.deleteLesion({id: item.Id});              
               dispatch(lesionActions.getListLesion.fetch());
             },
             icon: <DeleteOutlined />,
             label: 'Xoá',
             color: '#f5222d'
           }
-        ]}/>
-      )
+        ]}/>)
+      
     }
     
   ];
@@ -83,12 +81,11 @@ const ReportLesionPage = () => {
   const data = lesionSelectors.getLesionList();
   const [isDraff, setIsDraff] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const [timeActive, setTimeActive] = useState<boolean>(false);
   const [form] = useForm();
 
   const handleClose = () => {
     setOpen(false);
-    console.log(formData);
-    
     setFormData(undefined);
   };
 
@@ -96,12 +93,8 @@ const ReportLesionPage = () => {
 
   useEffect(() => {
     if(!formData) return;
-
-
-    console.log(formData.SendTime__c ? formData.SendTime__c + ':' + formData.SendMinute__c : '16:00', 'HH:mm');
     
     form.setFieldsValue({
-      
       title: formData.Title__c,
       sentDay: dayjs(formData.SentDay),
       time: dayjs().set('hour', formData.SendTime__c ?? 16).set('minute', formData.SendMinute__c),
@@ -109,7 +102,6 @@ const ReportLesionPage = () => {
       lessionID: formData.Id,
       status: formData.status,
       content: formData.Content__c
-      
     });
   },[formData]);
 
@@ -144,13 +136,16 @@ const ReportLesionPage = () => {
       
   };
 
+  console.log(timeActive);
+  
+
   return (
     <ReportLesionPageStyled>
       <Filter>
       <ButtonPrimary onClick={() => setOpen(true)} label='Thêm bài học'/>
         <Modal footer={null}
           onCancel={handleClose}
-          forceRender open={open} title={'Lesion'}>
+          forceRender open={open} title={'Báo bài'}>
           <FormLayout form={form} renderButton={() => <></>} onSubmit={submit}>
               <InputText rules={[
                 {required: true}
@@ -160,23 +155,23 @@ const ReportLesionPage = () => {
               ]} label='Ngày gửi' name='sentDay'>
                 <DatePicker size='large' style={{width: '100%'}} />
               </Form.Item>
-              <Form.Item rules={[
+              <InputCheckbox onChange={(e: any) => setTimeActive(e.target.checked)} name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
+              { timeActive ? <Form.Item rules={[
                 {required: true}
               ]} label='Thời gian gửi' name='time'>
                 <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} />
-              </Form.Item>
+              </Form.Item> : <></>}
               <Form.Item rules={[
                 {required: true}
               ]} label='Nội dung' name='content'>
                 <TextArea rows={4}></TextArea>
               </Form.Item>
               {/* <FormRow valuePropName='checked' name={'isAutoSent'}> */}
-                <InputCheckbox name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
               {/* </FormRow> */}
 
               <ActionFormStyled justify={'center'} >
                 <ButtonOutline onClick={() => {setIsDraff(true); form.submit();}} label='Lưu Nháp'/>
-                <ButtonPrimary htmlType='submit' label='Lưu'/>
+                <ButtonPrimary htmlType='submit' label={timeActive ? 'Lưu' : 'Gửi'}/>
               </ActionFormStyled>
           </FormLayout>
         </Modal>

@@ -154,24 +154,24 @@ const ReportLesionPage = () => {
           <FormLayout form={form} renderButton={() => <></>} onSubmit={submit}>
               <InputText rules={[
                 {required: true}
-              ]} label={'Title'} name={'title'} />
+              ]} label={'Tiêu đề'} name={'title'} />
               <Form.Item rules={[
                 {required: true}
-              ]} label='Date sent' name='sentDay'>
+              ]} label='Ngày gửi' name='sentDay'>
                 <DatePicker size='large' style={{width: '100%'}} />
               </Form.Item>
               <Form.Item rules={[
                 {required: true}
-              ]} label='Date sent' name='time'>
+              ]} label='Thời gian gửi' name='time'>
                 <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} />
               </Form.Item>
               <Form.Item rules={[
                 {required: true}
-              ]} label='Content' name='content'>
+              ]} label='Nội dung' name='content'>
                 <TextArea rows={4}></TextArea>
               </Form.Item>
               {/* <FormRow valuePropName='checked' name={'isAutoSent'}> */}
-                <InputCheckbox name={'isAutoSent'} labelCheckbox='Auto sent'/>
+                <InputCheckbox name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
               {/* </FormRow> */}
 
               <ActionFormStyled justify={'center'} >

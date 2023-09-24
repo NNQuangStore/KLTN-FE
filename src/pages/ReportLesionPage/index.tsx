@@ -48,13 +48,13 @@ const ReportLesionPage = () => {
       key: 'Status__c',
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       render: (item) => (
         <ActionTable actions={[
           {
             handle: () => {setFormData(item); setOpen(true);},
             icon: <EditOutlined />,
-            label: 'Edit',
+            label: 'Chỉnh sửa',
             color: '#faad14'
           },
           {
@@ -65,7 +65,7 @@ const ReportLesionPage = () => {
               dispatch(lesionActions.getListLesion.fetch());
             },
             icon: <DeleteOutlined />,
-            label: 'Delete',
+            label: 'Xoá',
             color: '#f5222d'
           }
         ]}/>
@@ -147,7 +147,7 @@ const ReportLesionPage = () => {
   return (
     <ReportLesionPageStyled>
       <Filter>
-      <ButtonPrimary onClick={() => setOpen(true)} label='Add Lesion'/>
+      <ButtonPrimary onClick={() => setOpen(true)} label='Thêm bài học'/>
         <Modal footer={null}
           onCancel={handleClose}
           forceRender open={open} title={'Lesion'}>
@@ -181,6 +181,7 @@ const ReportLesionPage = () => {
           </FormLayout>
         </Modal>
       </Filter>
+      <div style={{height: '12px'}}></div>
       <DataTable bordered={false} columns={columns} dataSource={data}/>
     </ReportLesionPageStyled>
   );

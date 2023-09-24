@@ -46,6 +46,7 @@ const ReportLesionPage = () => {
       title: 'Trạng thái',
       dataIndex: 'Status__c',
       key: 'Status__c',
+      render: (value) => (value === 'Accepted' ? 'Đã gửi' : (value === 'Pending' ? 'Chờ gửi' : (value === 'Draft' ? 'Lưu nháp' : ' ' )))
     },
     {
       title: 'Hành động',
@@ -153,13 +154,13 @@ const ReportLesionPage = () => {
               <Form.Item rules={[
                 {required: true}
               ]} label='Ngày gửi' name='sentDay'>
-                <DatePicker size='large' style={{width: '100%'}} />
+                <DatePicker size='large' style={{width: '100%'}} placeholder='Chọn ngày gửi'/>
               </Form.Item>
               <InputCheckbox onChange={(e: any) => setTimeActive(e.target.checked)} name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
               { timeActive ? <Form.Item rules={[
                 {required: true}
               ]} label='Thời gian gửi' name='time'>
-                <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} />
+                <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} placeholder='Chọn thời gian' defaultValue={dayjs().set('hour', 16).set('minute', 0)}/>
               </Form.Item> : <></>}
               <Form.Item rules={[
                 {required: true}

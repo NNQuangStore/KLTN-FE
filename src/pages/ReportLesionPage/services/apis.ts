@@ -20,6 +20,14 @@ const saveLesion = (body: any) => {
   });
 };
 
+const deleteLesion = (body: any) => {
+  return fetch({
+    method: 'post',
+    url: 'lesson/delete',
+    body
+  });
+};
+
 // const getDetailStudent = (id: string) => {
 //   return fetch({
 //     method: 'get',
@@ -39,6 +47,7 @@ const saveLesion = (body: any) => {
 
 const apisLesion = {
   getListLesion,
+  deleteLesion,
   saveLesion
 };
 

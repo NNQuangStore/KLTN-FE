@@ -23,6 +23,8 @@ import lesionActions from './services/actions';
 import { AxiosResponse } from 'axios';
 import apisLesion from './services/apis';
 import storage from '../../utils/sessionStorage';
+import uiActions from '../../services/UI/actions';
+import { time } from 'console';
 
 const ReportLesionPage = () => {
 
@@ -50,13 +52,18 @@ const ReportLesionPage = () => {
       render: (item) => (
         <ActionTable actions={[
           {
-            handle: () => setFormData(item),
+            handle: () => {setFormData(item); setOpen(true);},
             icon: <EditOutlined />,
             label: 'Edit',
             color: '#faad14'
           },
           {
-            handle: () => undefined,
+            handle: async () => {
+              const res = await apisLesion.deleteLesion({id: item.Id});
+              console.log(res);
+              
+              dispatch(lesionActions.getListLesion.fetch());
+            },
             icon: <DeleteOutlined />,
             label: 'Delete',
             color: '#f5222d'
@@ -78,47 +85,59 @@ const ReportLesionPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [form] = useForm();
 
-  console.log(data);
-  
-
   const handleClose = () => {
     setOpen(false);
+    console.log(formData);
+    
     setFormData(undefined);
   };
 
   const classId = storage.get('class_id');
 
   useEffect(() => {
+    if(!formData) return;
+
+
+    console.log(formData.SendTime__c ? formData.SendTime__c + ':' + formData.SendMinute__c : '16:00', 'HH:mm');
+    
     form.setFieldsValue({
-      title: formData
+      
+      title: formData.Title__c,
+      sentDay: dayjs(formData.SentDay),
+      time: dayjs().set('hour', formData.SendTime__c ?? 16).set('minute', formData.SendMinute__c),
+      isAutoSent: formData.isAutoSent,
+      lessionID: formData.Id,
+      status: formData.status,
+      content: formData.Content__c
+      
     });
   },[formData]);
 
   const submit = async (values: any) => {
-    console.log(values);
-    
     try {
       const rest: AxiosResponse = await apisLesion.saveLesion({
         ...values,
-        lessionID: formData ? formData.Id : undefined,
+        lessonID: formData ? formData.Id : undefined,
         sentDay: dayjs(values.setDay).format('YYYY-MM-DD'),
         sendTime: dayjs(values.time).get('hour'),
         sendMinute: dayjs(values.time).get('minute'),
         isAutoSent: !!values.isAutoSent,
         classID: classId,
-        status: isDraff ? 'Draft' : undefined
+        status: isDraff ? 'Draft' : undefined,
+        time: undefined
       });
-      console.log(rest);
       
       const data = rest.data.data;
       if(data) {
         setOpen(false);
-        message.success('Thêm báo nài thành công');
+        dispatch(lesionActions.getListLesion.fetch());
+        message.success('Lưu bài thành công');
       }
       
     } catch (error: any) {
       message.error('An error occurred. Please try again');
     } finally {
+      form.resetFields();
       handleClose();
       setIsDraff(false);
     }
@@ -130,6 +149,7 @@ const ReportLesionPage = () => {
       <Filter>
       <ButtonPrimary onClick={() => setOpen(true)} label='Add Lesion'/>
         <Modal footer={null}
+          onCancel={handleClose}
           forceRender open={open} title={'Lesion'}>
           <FormLayout form={form} renderButton={() => <></>} onSubmit={submit}>
               <InputText rules={[

@@ -28,7 +28,7 @@ function AppUI() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={shield(AppLayout)}>
+        <Route path='/' element={<AppLayout/>}>
           <Route index path='dashboards' element={<DashboardPage />} />
           <Route path='customers' element={<CustomerPage />} />
           <Route path='time-table' element={<TimeTablePage />} />

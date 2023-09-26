@@ -21,10 +21,10 @@ import ParentLayout from './layout/ParentLayout';
 import ParentHomePage from './pages/ParentHomePage';
 import ParentReportSessionPage from './pages/ParentReportLession';
 import ReportLesionPage from './pages/ReportLesionPage';
+import { io } from 'socket.io-client';
 
 function AppUI() {
   const { shield } = useToken();
-
   return (
     <BrowserRouter>
       <Routes>
@@ -63,7 +63,11 @@ function AppUI() {
 }
 
 function App() {
-
+  const socket = io('http://localhost:8080');
+  socket.emit('Client-sent-data', 'Hello world');
+  socket.on('Server-sent-data', (data) => {
+    console.log('Server send data', data);
+  });
   return (
     <Provider store={store}>
       <AppUI />

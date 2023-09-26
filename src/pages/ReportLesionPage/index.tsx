@@ -45,7 +45,18 @@ const ReportLesionPage = () => {
       title: 'Trạng thái',
       dataIndex: 'Status__c',
       key: 'Status__c',
-      render: (value) => (value === 'Accepted' ? 'Đã gửi' : (value === 'Pending' ? 'Chờ gửi' : (value === 'Draft' ? 'Lưu nháp' : ' ' )))
+      render: (value) => {
+        switch(value) {
+          case 'Accepted':
+            return 'Đã gửi';
+          case 'Draft':
+            return 'Lưu nháp';
+          case 'Pending':
+            return 'Đang gửi';
+          default:
+            return 'Đang gửi';
+        }
+      }
     },
     {
       title: 'Hành động',

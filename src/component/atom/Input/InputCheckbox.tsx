@@ -8,11 +8,16 @@ interface Props extends FormItemProps {
 const InputCheckbox = ({
   labelCheckbox,
   onChange,
+  name,
   ...props
 }: Props) => {
+  const form = Form.useFormInstance();
+  console.log(form.getFieldValue(name ?? ''));
+  
+
   return (
     <Form.Item {...props} valuePropName='checked'>
-      <Checkbox onChange={onChange} style={{fontWeight: 600}}>{labelCheckbox}</Checkbox>
+      <Checkbox checked={!!form.getFieldValue(name ?? '')} onChange={onChange} style={{fontWeight: 600}}>{labelCheckbox}</Checkbox>
     </Form.Item>
   );
 };

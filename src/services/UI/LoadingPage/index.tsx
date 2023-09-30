@@ -17,6 +17,7 @@ function LoadingPage() {
     <LoadingPageStyled>
       <div className="box">
         <LoadingIcon />
+        <p>Loading...</p>
       </div>
     </LoadingPageStyled>
   );

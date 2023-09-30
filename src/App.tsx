@@ -22,13 +22,14 @@ import ParentHomePage from './pages/ParentHomePage';
 import ParentReportSessionPage from './pages/ParentReportLession';
 import ReportLesionPage from './pages/ReportLesionPage';
 import { io } from 'socket.io-client';
+import AttendanceCheckPage from './pages/AttendanceCheckPage';
 
 function AppUI() {
   const { shield } = useToken();
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<AppLayout/>}>
+        <Route path='/' element={shield(AppLayout)}>
           <Route index path='dashboards' element={<DashboardPage />} />
           <Route path='customers' element={<CustomerPage />} />
           <Route path='time-table' element={<TimeTablePage />} />
@@ -37,7 +38,8 @@ function AppUI() {
           <Route path={`${PATH._STUDENT._INDEX}/:id`} element={<ProfilePage/>} />
           <Route path={PATH._REPORT_CARD} element={<ReportCardPage/>} />
           <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} />
-          <Route path='report-lesion' element={<ReportLesionPage />} />
+          <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
+          <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />} />
 
         </Route>
         <Route path='/app' element={shield(ParentLayout)}>

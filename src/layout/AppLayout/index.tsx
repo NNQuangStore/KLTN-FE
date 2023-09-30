@@ -8,9 +8,33 @@ import useDetachScreen, { EScreen } from '../../services/hooks/useScreenDetect';
 // import { useState } from 'react';
 import { useCollapseSidebar } from '../../services/hooks/useCollapseSidebar';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
+import { io } from 'socket.io-client';
+import { useEffect } from 'react';
+import storage from '../../utils/sessionStorage';
 
 
 const AppLayout = () => {
+  const token = storage.get('token');
+  // const socket = io('https://slldt-server-867d33706c66.herokuapp.com');
+  const socket = io('http://localhost:8080');
+  useEffect(() => {
+    // socket.connect();
+    if(token && token !== ''){
+      socket.emit('addTeacher', {senderId: token});
+    }
+    // return () => {
+    //   socket.disconnect();
+    // };
+  },[]);
+
+  //---- hàm nhận tin nhắn từ socket gửi đến ----//
+  useEffect(() => {
+    socket.on('notify-new-lesson', (data) => {
+      console.log('||||||||||||||||||||||||||||||||||||||||||||');
+      console.log(data);
+      console.log('||||||||||||||||||||||||||||||||||||||||||||');
+    });
+  }, [socket]);
 
   const screen = useDetachScreen();
 
@@ -23,7 +47,7 @@ const AppLayout = () => {
             <MainLayout>
               <Header />
               <MainStyled>
-                <Outlet/>
+                <Outlet />
               </MainStyled>
             </MainLayout>
           </LayoutAppStyled>

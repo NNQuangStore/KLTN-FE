@@ -24,6 +24,7 @@ import { AxiosResponse } from 'axios';
 import apisLesion from './services/apis';
 import storage from '../../utils/sessionStorage';
 import uiActions from '../../services/UI/actions';
+import { io } from 'socket.io-client';
 import { time } from 'console';
 import { ReportLesion } from './services/types/reportLession';
 import { format } from 'path';
@@ -47,7 +48,6 @@ dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
-
 
 
 const ReportLesionPage = () => {
@@ -103,13 +103,22 @@ const ReportLesionPage = () => {
         ]}/>)
     }
   ];
+  const classId = storage.get('class_id');
+  const token = storage.get('token');
 
 
 
   const dispatch = useAppDispatch();
-
+  const socket = io('http://localhost:8080');
   useEffect(() => {
+    // socket.connect();
     dispatch(lesionActions.getListLesion.fetch());
+    if(token && token !== ''){
+      socket.emit('addTeacher', {senderId: token});
+    }
+    // return () => {
+    //   socket.disconnect();
+    // };
   },[]);
 
   const getWeekDate = (date: Moment) => {
@@ -135,8 +144,6 @@ const ReportLesionPage = () => {
     setFormData(undefined);
   };
 
-  const classId = storage.get('class_id');
-
   useEffect(() => {
     if(!formData) return;
     
@@ -160,7 +167,7 @@ const ReportLesionPage = () => {
     console.log(values);
     
     try {
-      const rest: AxiosResponse = await apisLesion.saveLesion({
+      const rest: AxiosResponse = await apisLesion.saveLesion([{
         ...values,
         lessonID: formData ? formData.Id : undefined,
         sentDay: dayjs(values.setDay).format('YYYY-MM-DD'),
@@ -170,10 +177,13 @@ const ReportLesionPage = () => {
         classID: classId,
         status: isDraff ? 'Draft' : undefined,
         time: undefined
-      });
+      }]);
       
       const data = rest.data.data;
       if(data) {
+        if(data[0].Status__c === 'Accepted'){
+          socket.emit('add-lesson-complete', {classId, lessonId: data[0].Id});
+        }
         setOpen(false);
         dispatch(lesionActions.getListLesion.fetch());
         message.success('Lưu bài thành công');

@@ -16,7 +16,7 @@ const login: ISagaFunc<IApiLoginBody> = function* ({ payload }) {
     
     const res = yield call(apis.login, body);    
     const resData = res?.data as (IApiLoginResData | null);
-    if (!resData) throw 'fail';    
+    if (!resData) throw 'fail';        
 
     storage.set('token', resData.token);
     storage.set('user_name', resData.UserName__c);

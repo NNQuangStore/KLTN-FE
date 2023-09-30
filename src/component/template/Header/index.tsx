@@ -1,14 +1,16 @@
 import { styled } from 'styled-components';
 import RowH from '../../atom/Row/RowH';
 import { useCollapseSidebar } from '../../../services/hooks/useCollapseSidebar';
-import { BellOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
 import { HEIGHT_HEADER } from '../../../utils/variables/unit';
-import { Avatar, Badge, Popover } from 'antd';
+import { Avatar, Badge, Button, List, Popover } from 'antd';
 import Logo from '../../molecule/Logo';
 import { COLOR_WHITE } from '../../../utils/variables/colors';
 import { getBreakpointSidebar } from '../Sidebar';
 import Notification from './Notification';
 import storage from '../../../utils/sessionStorage';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const iconStyled: React.CSSProperties = {
@@ -22,12 +24,21 @@ const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
 
   const [collapsed, setCollapsed] = useCollapseSidebar(false);
   const className = storage.get('class_name');
+  const [open, setOpen] = useState<boolean>(false);
 
   // console.log(useMediaQuery(theme.breakpoints.up('sm')));
 
   const toggleCollapsed = () => {
     setCollapsed( !collapsed );
   };
+
+  const userActions = [
+    {
+      title: 'logout'
+    }
+  ];
+
+  const navigate = useNavigate();
 
   return (
     <> 
@@ -42,17 +53,54 @@ const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
         <div className='tool'>
           <span>Lớp {className}</span>
           <Notification/>
-          <Avatar
-            icon={<UserOutlined />}
-
-          />
-        </div>
+          <Popover
+      content={
+        <List
+          itemLayout="horizontal"
+          dataSource={userActions}
+          renderItem={(item, index) => (
+      
+      <ListItemStyled onClick={() => {sessionStorage.clear(); window.location.reload(); navigate('auth/sign-in');
+            }}>
+              <LogoutOutlined />
+              {item.title}
+            </ListItemStyled>
+          )}
+        />
+      }
+      placement='bottom'
+      trigger="click"
+      
+      open={open}
+      arrow={false}
+      onOpenChange={(newValue) => setOpen(newValue)}
+    ></Popover>
+        <Avatar
+          onClick={() => setOpen(true)}
+          icon={<UserOutlined />}
+        />
+      </div>
       </RowStyled>
     </>
   );
 };
 
 export default Header;
+
+const ListItemStyled = styled(List.Item)`
+  cursor: pointer;
+  width: 100px;
+  padding: 4px 8px !important;
+
+  & > * {
+    margin-right: 8px;
+
+  }
+
+  &:hover {
+    background-color: #cccccc40;
+  }
+`;
 
 const RowStyled = styled(RowH)`
   position: sticky;

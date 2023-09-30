@@ -3,6 +3,7 @@ import { RootState } from '../../../store';
 import uiSelector from '../../../services/UI/selectors';
 import { PATH_LOADING } from './constants';
 import { useAppSelector } from '../../../store/hooks';
+import { ReportLesion } from './types/reportLession';
 
 
 
@@ -12,7 +13,7 @@ const getCurrentState = (state: RootState): MyState => state.lesion;
 
 const selector = <KEY = keyof MyState>(key: KEY, defaultValue?: any) => useAppSelector(state => get(getCurrentState(state), key as any, defaultValue));
 
-const getLesionList = () => selector('lesionList');
+const getLesionList = () => selector('lesionList') as ReportLesion[];
 
 
 

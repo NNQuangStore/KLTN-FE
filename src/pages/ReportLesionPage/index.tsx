@@ -9,8 +9,8 @@ import { useAppDispatch } from '../../store/hooks';
 import { ColumnsType } from 'antd/es/table';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
-import { DatePicker, Form, Modal, TimePicker, message } from 'antd';
+import dayjs, { Dayjs } from 'dayjs';
+import { Button, DatePicker, Form, Modal, TimePicker, message } from 'antd';
 import InputText from '../../component/atom/Input/InputText';
 import TextArea from 'antd/es/input/TextArea';
 import InputSwitcher from '../../component/atom/Input/InputSwitcher';
@@ -24,12 +24,35 @@ import { AxiosResponse } from 'axios';
 import apisLesion from './services/apis';
 import storage from '../../utils/sessionStorage';
 import uiActions from '../../services/UI/actions';
+import { time } from 'console';
+import { ReportLesion } from './services/types/reportLession';
+import { format } from 'path';
+import moment, { Moment } from 'moment';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import localeData from 'dayjs/plugin/localeData';
+import weekday from 'dayjs/plugin/weekday';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import weekYear from 'dayjs/plugin/weekYear';
+
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import ButtonImport from '../../component/atom/Button/ButtonImport';
+
+
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+
 
 const ReportLesionPage = () => {
-  
-  const [formData, setFormData] = useState<any>();
 
-  const columns: ColumnsType<any>= [
+  const columns: ColumnsType<ReportLesion>= [
     {
       title: 'Title',
       dataIndex: 'Title__c',
@@ -78,10 +101,10 @@ const ReportLesionPage = () => {
             color: '#f5222d'
           }
         ]}/>)
-      
     }
-    
   ];
+
+
 
   const dispatch = useAppDispatch();
 
@@ -89,11 +112,23 @@ const ReportLesionPage = () => {
     dispatch(lesionActions.getListLesion.fetch());
   },[]);
 
-  const data = lesionSelectors.getLesionList();
+  const getWeekDate = (date: Moment) => {
+    return [date.clone().startOf('isoWeek'), date.clone().endOf('isoWeek')];
+  };
+  const dataReportLesion = lesionSelectors.getLesionList();
+  const [data, setData] = useState<ReportLesion[]>([]);
   const [isDraff, setIsDraff] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [timeActive, setTimeActive] = useState<boolean>(false);
   const [form] = useForm();
+  const [formData, setFormData] = useState<any>();
+  const [date, setDate] = useState<Moment[]>(getWeekDate(moment()));
+  const [editorState, setEditorState] = useState('');
+
+
+  useEffect(() => {
+    setData(dataReportLesion.filter(o => moment(o.SentDay__c).isSameOrAfter(date[0]) && moment(o.SentDay__c).isSameOrBefore(date[1])));
+  },[dataReportLesion]);
 
   const handleClose = () => {
     setOpen(false);
@@ -116,7 +151,14 @@ const ReportLesionPage = () => {
     });
   },[formData]);
 
+  useEffect(() => {    
+    const dataSource = dataReportLesion.filter(o => moment(o.SentDay__c).isSameOrAfter(date[0]) && moment(o.SentDay__c).isSameOrBefore(date[1]));
+    setData(dataSource);
+  },[date]);
+
   const submit = async (values: any) => {
+    console.log(values);
+    
     try {
       const rest: AxiosResponse = await apisLesion.saveLesion({
         ...values,
@@ -138,7 +180,7 @@ const ReportLesionPage = () => {
       }
       
     } catch (error: any) {
-      message.error('An error occurred. Please try again');
+      message.error('Đã có lỗi xảy ra, vui lòng thử lại');
     } finally {
       form.resetFields();
       handleClose();
@@ -147,52 +189,67 @@ const ReportLesionPage = () => {
       
   };
 
-  console.log(timeActive);
-  
+  const datePickerChange = (value: any) => {
+    setDate(getWeekDate(moment(value?.format())));
+  };
 
   return (
     <ReportLesionPageStyled>
       <Filter>
-      <ButtonPrimary onClick={() => setOpen(true)} label='Thêm bài học'/>
-        <Modal footer={null}
-          onCancel={handleClose}
-          forceRender open={open} title={'Báo bài'}>
-          <FormLayout form={form} renderButton={() => <></>} onSubmit={submit}>
-              <InputText rules={[
-                {required: true}
-              ]} label={'Tiêu đề'} name={'title'} />
-              <Form.Item rules={[
-                {required: true}
-              ]} label='Ngày gửi' name='sentDay'>
-                <DatePicker size='large' style={{width: '100%'}} placeholder='Chọn ngày gửi'/>
-              </Form.Item>
-              <InputCheckbox onChange={(e: any) => setTimeActive(e.target.checked)} name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
-              { timeActive ? <Form.Item rules={[
-                {required: true}
-              ]} label='Thời gian gửi' name='time'>
-                <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} placeholder='Chọn thời gian' defaultValue={dayjs().set('hour', 16).set('minute', 0)}/>
-              </Form.Item> : <></>}
-              <Form.Item rules={[
-                {required: true}
-              ]} label='Nội dung' name='content'>
-                <TextArea rows={4}></TextArea>
-              </Form.Item>
-              {/* <FormRow valuePropName='checked' name={'isAutoSent'}> */}
-              {/* </FormRow> */}
-
-              <ActionFormStyled justify={'center'} >
-                <ButtonOutline onClick={() => {setIsDraff(true); form.submit();}} label='Lưu Nháp'/>
-                <ButtonPrimary htmlType='submit' label={timeActive ? 'Lưu' : 'Gửi'}/>
-              </ActionFormStyled>
-          </FormLayout>
-        </Modal>
+        <ButtonImport />
+        <DatePicker onChange={datePickerChange} value={dayjs(date[0].format())} format='DD-MM-YYYY' defaultValue={dayjs()} picker='week' style={{backgroundColor: 'white'}} />
+        <Button size='large' type='primary' onClick={() => setDate(getWeekDate(date[0].subtract(7, 'day')))}>Trước</Button>
+        <Button onClick={() => setDate(getWeekDate(moment()))} size='large' type='primary'>Hiện tại</Button>
+        <Button size='large' type='primary' onClick={() => setDate(getWeekDate(date[1].add(7, 'day')))}>Sau</Button>
+        <ButtonPrimary onClick={() => setOpen(true)} label='Thêm bài học'/>
+        
       </Filter>
       <div style={{height: '12px'}}></div>
       <DataTable bordered={false} columns={columns} dataSource={data}/>
+
+
+      <Modal footer={null}
+        onCancel={handleClose}
+        forceRender open={open} title={'Báo bài'}>
+        <FormLayout form={form} renderButton={() => <></>} onSubmit={submit}>
+            <InputText rules={[
+              {required: true}
+            ]} label={'Tiêu đề'} name={'title'} />
+            <Form.Item rules={[
+              {required: true}
+            ]} label='Ngày gửi' name='sentDay'>
+              <DatePicker size='large' style={{width: '100%'}} placeholder='Chọn ngày gửi'/>
+            </Form.Item>
+            <InputCheckbox onChange={(e: any) => setTimeActive(e.target.checked)} name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
+            { timeActive ? <Form.Item rules={[
+              {required: true}
+            ]} label='Thời gian gửi' name='time'>
+              <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} placeholder='Chọn thời gian' defaultValue={dayjs().set('hour', 16).set('minute', 0)}/>
+            </Form.Item> : <></>}
+            {/* <Form.Item rules={[
+              {required: true}
+            ]} label='Nội dung' name='content'> */}
+            <Form.Item style={{border: '1px solid #d9d9d9', borderRadius: '2px'}}>
+              <Editor
+                // onEditorStateChange={this.onEditorStateChange}
+              />
+            </Form.Item>
+
+            {/* </Form.Item> */}
+            {/* <FormRow valuePropName='checked' name={'isAutoSent'}> */}
+            {/* </FormRow> */}
+
+            <ActionFormStyled justify={'center'} >
+              <ButtonOutline onClick={() => {setIsDraff(true); form.submit();}} label='Lưu Nháp'/>
+              <ButtonPrimary htmlType='submit' label={timeActive ? 'Lưu' : 'Gửi'}/>
+            </ActionFormStyled>
+        </FormLayout>
+      </Modal>
     </ReportLesionPageStyled>
   );
 };
 export default ReportLesionPage;
 
 const ReportLesionPageStyled = styled.div`
+
 `;

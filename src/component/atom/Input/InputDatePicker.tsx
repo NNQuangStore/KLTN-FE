@@ -22,7 +22,7 @@ export type DatePickerProps = Omit<AntDatePickerProps, 'format' | 'picker' | 'on
   showToday?: boolean;
 }
 
-const DatePicker = (props: DatePickerProps) => (
+const InputDatePicker = (props: DatePickerProps) => (
   <AntdDatePicker
     size='large'
     format={DATE_FORMAT}
@@ -44,4 +44,4 @@ const DatePicker = (props: DatePickerProps) => (
   />
 );
 
-export default DatePicker;
+export default InputDatePicker;

@@ -24,10 +24,9 @@ import { AxiosResponse } from 'axios';
 import apisLesion from './services/apis';
 import storage from '../../utils/sessionStorage';
 import uiActions from '../../services/UI/actions';
-import { time } from 'console';
 
 const ReportLesionPage = () => {
-
+  
   const [formData, setFormData] = useState<any>();
 
   const columns: ColumnsType<any>= [

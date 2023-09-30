@@ -63,7 +63,7 @@ function AppUI() {
 }
 
 function App() {
-  const socket = io('http://localhost:8080');
+  const socket = io('https://slldt-server-867d33706c66.herokuapp.com');
   socket.emit('Client-sent-data', 'Hello world');
   socket.on('Server-sent-data', (data) => {
     console.log('Server send data', data);

@@ -52,10 +52,10 @@ const LoginPage = () => {
       //   phone: values.phone ?? '0333007630',
       //   password: values.password ?? 'ksvchainamtest'
       // }));
-      navigate('/student');
+      // navigate('/student');
 
         const res = await apisAuth.login({
-          phone: values.phone ?? '0333007630',
+          phone: values.phone ?? '0375767857',
           password: values.password ?? 'ksvchainamtest'
         });
 
@@ -69,20 +69,21 @@ const LoginPage = () => {
         storage.set('user_name', resData.UserName__c);
         storage.set('class_id', resData.Class.Id);
         storage.set('class_name', resData.Class.Name);   
-        
+        storage.set('role', resData.Role.Title__c);   
         console.log(resData);
-        
-
         dispatch(authActions.login.success(resData));
-        
-
     } catch(err) {
 
-    } finally {
+    } 
+    finally {
+      // dispatch(uiActions.setLoadingPage(false));
+      // navigate('/student');
       dispatch(uiActions.setLoadingPage(false));
-      navigate('/student');
-
-
+        // if(resData?.Role && resData.Role.Title__c === 'TEACHER'){
+        //   navigate('/student');
+        // } else if(resData?.Role && resData.Role.Title__c === 'PARENT'){
+          navigate('/app/home');
+        // }
     }
   };
 
@@ -93,7 +94,7 @@ const LoginPage = () => {
         onSubmit={onSubmit}
         renderButton={<ButtonLoginStyled htmlType='submit' label='Login'/>}>
 
-        <InputText defaultValue='0333007630' value='0333007630' name='phone' label={'Số điện thoại'}/>
+        <InputText defaultValue='0375767857' value='0375767857' name='phone' label={'Số điện thoại'}/>
         <InputTextPassword defaultValue='ksvchainamtest' value='ksvchainamtest' name='password' label={'Mật Khẩu'} />
 
         </FormLayout>

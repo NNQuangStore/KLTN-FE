@@ -29,7 +29,7 @@ function AppUI() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={shield(AppLayout)}>
+        {/* <Route path='/' element={shield(AppLayout)}>
           <Route index path='dashboards' element={<DashboardPage />} />
           <Route path='customers' element={<CustomerPage />} />
           <Route path='time-table' element={<TimeTablePage />} />
@@ -40,8 +40,7 @@ function AppUI() {
           <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} />
           <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />} />
-
-        </Route>
+        </Route> */}
         <Route path='/app' element={shield(ParentLayout)}>
           <Route index path='home' element={<ParentHomePage />} />
           <Route path='report-session' element={<ParentReportSessionPage />} />
@@ -65,11 +64,6 @@ function AppUI() {
 }
 
 function App() {
-  const socket = io('https://slldt-server-867d33706c66.herokuapp.com');
-  socket.emit('Client-sent-data', 'Hello world');
-  socket.on('Server-sent-data', (data) => {
-    console.log('Server send data', data);
-  });
   return (
     <Provider store={store}>
       <AppUI />

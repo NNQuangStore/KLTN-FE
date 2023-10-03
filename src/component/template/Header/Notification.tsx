@@ -34,7 +34,7 @@ const Notification = () => {
     socket.on('notify-new-lesson', (data) => {
       console.log(data);
       const newNotification = {
-        Name: 'GVCN đã gửi báo bài ' + data.dataLesson ? 'ngày ' + dayjs(data.dataLesson.SentDay__c ).format('DD/MM/YYYY') : 'mới',
+        Name: 'GVCN đã gửi báo bài ' + (data.dataLesson ? 'ngày ' + dayjs(data.dataLesson.SentDay__c ).format('DD/MM/YYYY') : 'mới'),
         Message__c: '',
         ExternalID__c: 'LESSON-' + data.classId + '-' +  data.lessonId + '-' + userID,
         IsSeen__c: false,

@@ -8,33 +8,25 @@ import useDetachScreen, { EScreen } from '../../services/hooks/useScreenDetect';
 // import { useState } from 'react';
 import { useCollapseSidebar } from '../../services/hooks/useCollapseSidebar';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { useEffect } from 'react';
 import storage from '../../utils/sessionStorage';
+import { socket } from '../../utils/socket';
 
 
 const AppLayout = () => {
   const token = storage.get('token');
-  // const socket = io('https://slldt-server-867d33706c66.herokuapp.com');
-  const socket = io('https://slldt-server-867d33706c66.herokuapp.com');
   useEffect(() => {
-    // socket.connect();
     if(token && token !== ''){
       socket.emit('addTeacher', {senderId: token});
     }
-    // return () => {
-    //   socket.disconnect();
-    // };
   },[]);
 
-  //---- hàm nhận tin nhắn từ socket gửi đến ----//
   useEffect(() => {
-    socket.on('notify-new-lesson', (data) => {
-      console.log('||||||||||||||||||||||||||||||||||||||||||||');
+    socket.on('success-connect', (data) => {
       console.log(data);
-      console.log('||||||||||||||||||||||||||||||||||||||||||||');
     });
-  }, [socket]);
+  },[socket]);
 
   const screen = useDetachScreen();
 

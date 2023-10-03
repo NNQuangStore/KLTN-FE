@@ -4,8 +4,8 @@ import queryString from 'query-string';
 import storage from '../utils/sessionStorage';
 import lodash from '../utils/lodash';
 
-const DOMAIN = 'https://slldt-server-867d33706c66.herokuapp.com/';
-// const DOMAIN = 'http://localhost:8080/';  
+// const DOMAIN = 'https://slldt-server-867d33706c66.herokuapp.com/';
+const DOMAIN = 'http://localhost:8080/';
 
 const axiosInstance = axios.create({
   baseURL: DOMAIN,

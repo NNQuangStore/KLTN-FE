@@ -23,13 +23,14 @@ import ParentReportSessionPage from './pages/ParentReportLession';
 import ReportLesionPage from './pages/ReportLesionPage';
 import { io } from 'socket.io-client';
 import AttendanceCheckPage from './pages/AttendanceCheckPage';
+import EvaluationSheetPage from './pages/EvaluationSheetPage';
 
 function AppUI() {
-  const { shield } = useToken();
+  const { shield, token} = useToken();
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path='/' element={shield(AppLayout)}>
+        <Route path='/' element={shield(AppLayout)}>
           <Route index path='dashboards' element={<DashboardPage />} />
           <Route path='customers' element={<CustomerPage />} />
           <Route path='time-table' element={<TimeTablePage />} />
@@ -40,13 +41,15 @@ function AppUI() {
           <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} />
           <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />} />
-        </Route> */}
-        <Route path='/app' element={shield(ParentLayout)}>
-          <Route index path='home' element={<ParentHomePage />} />
-          <Route path='report-session' element={<ParentReportSessionPage />} />
+        </Route>
+        <Route path='app' element={shield(ParentLayout)}>
+          <Route index path='home' element={<ParentHomePage />}/>
+          <Route index path='evaluation-sheet' element={<EvaluationSheetPage />}/>
+          <Route path='report-session' element={<ParentReportSessionPage />}/>
+          {/* <Route path="/" element={<Navigate to="/home" />} /> */}
         </Route>
 
-        <Route path='/auth' element={<AuthLayout/>}>
+        <Route path='auth' element={<AuthLayout/>}>
           <Route path='sign-in' element={<LoginPage/>}/>
         </Route>
         <Route
@@ -57,7 +60,6 @@ function AppUI() {
               </div>
             }
           />
-        <Route path="/" element={<Navigate to="/dashboards" />} />
       </Routes>
     </BrowserRouter>
   );

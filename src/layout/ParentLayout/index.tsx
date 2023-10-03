@@ -1,4 +1,4 @@
-import { ConfigProvider, Layout } from 'antd';
+import { ConfigProvider, Layout, message } from 'antd';
 import { Outlet } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Header from '../../component/template/Header';
@@ -8,9 +8,26 @@ import useDetachScreen, { EScreen } from '../../services/hooks/useScreenDetect';
 // import { useState } from 'react';
 import { useCollapseSidebar } from '../../services/hooks/useCollapseSidebar';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
+import { useEffect } from 'react';
+import { socket } from '../../utils/socket';
+import storage from '../../utils/sessionStorage';
 
 const ParentLayout = () => {
   const screen = useDetachScreen();
+  const classId = storage.get('class_id');
+  useEffect(() => {
+    if(classId && classId !== ''){
+      socket.emit('addParent', {classId: classId});
+    }
+  },[]);
+
+  useEffect(() => {
+    socket.on('success-connect', (data) => {
+      console.log(data);
+    });
+  },[socket]);
+
+
 
   const LayoutScreen = () => {
     return (

@@ -39,6 +39,7 @@ import weekYear from 'dayjs/plugin/weekYear';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import ButtonImport from '../../component/atom/Button/ButtonImport';
+import { socket } from '../../utils/socket';
 
 
 
@@ -109,17 +110,12 @@ const ReportLesionPage = () => {
 
 
   const dispatch = useAppDispatch();
-  const socket = io('https://slldt-server-867d33706c66.herokuapp.com');
-  useEffect(() => {
-    // socket.connect();
-    dispatch(lesionActions.getListLesion.fetch());
-    if(token && token !== ''){
-      socket.emit('addTeacher', {senderId: token});
-    }
-    // return () => {
-    //   socket.disconnect();
-    // };
-  },[]);
+  // useEffect(() => {
+  //   dispatch(lesionActions.getListLesion.fetch());
+  //   if(token && token !== ''){
+  //     socket.emit('addTeacher', {senderId: token});
+  //   }
+  // },[]);
 
   const getWeekDate = (date: Moment) => {
     return [date.clone().startOf('isoWeek'), date.clone().endOf('isoWeek')];
@@ -169,6 +165,7 @@ const ReportLesionPage = () => {
     try {
       const rest: AxiosResponse = await apisLesion.saveLesion([{
         ...values,
+        content: 'ádafas',
         lessonID: formData ? formData.Id : undefined,
         sentDay: dayjs(values.setDay).format('YYYY-MM-DD'),
         sendTime: dayjs(values.time).get('hour'),

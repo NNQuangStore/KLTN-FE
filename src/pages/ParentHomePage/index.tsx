@@ -2,19 +2,17 @@ import { Card } from 'antd';
 import { styled } from 'styled-components';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
 import { useNavigate } from 'react-router-dom';
-import { io } from 'socket.io-client';
 import { useEffect } from 'react';
 import storage from '../../utils/sessionStorage';
+import { socket } from '../../utils/socket';
 
 const ParentHomePage = () => {
   const classId = storage.get('class_id');
-  const socket = io('https://slldt-server-867d33706c66.herokuapp.com');
-  useEffect(() => {
-    console.log('jhgjdags: ' + classId);
-    if(classId && classId !== ''){
-      socket.emit('addParent', {classId: classId});
-    }
-  },[]);
+  // useEffect(() => {
+  //   if(classId && classId !== ''){
+  //     socket.emit('addParent', {classId: classId});
+  //   }
+  // },[]);
 
   useEffect(() => {
     socket.on('notify-new-lesson', (data) => {
@@ -31,7 +29,7 @@ const ParentHomePage = () => {
       link: '/'
      },{
       label: 'Bảng điểm',
-      link: '/'
+      link: '/app/evaluation-sheet'
      }];
   const navBottom = [{
     label: 'Xin nghỉ phép',

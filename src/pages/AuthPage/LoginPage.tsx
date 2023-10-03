@@ -42,48 +42,39 @@ const LoginPage = () => {
   // },[token]);
   
   const onSubmit = async (values: AuthForm) => {
-    // 0333007630
-    // ksvchainamtest
-    
     try {
-      dispatch(uiActions.setLoadingPage(true));
-      
+      await dispatch(uiActions.setLoadingPage(true));
       // const res = await dispatch(authActions.login.fetch({
       //   phone: values.phone ?? '0333007630',
       //   password: values.password ?? 'ksvchainamtest'
       // }));
       // navigate('/student');
-
-        const res = await apisAuth.login({
-          phone: values.phone ?? '0375767857',
-          password: values.password ?? 'ksvchainamtest'
-        });
-
-        console.log(res);
-        
-
+      const res = await apisAuth.login({
+        phone: values.phone ?? '0375767857',
+        password: values.password ?? 'ksvchainamtest'
+      });
+      console.log(res);
+      if(res.status === 200){
         const resData = res?.data as (IApiLoginResData | null);
-        if (!resData) throw 'fail';        
-
+        if (!resData) throw 'fail';
         storage.set('token', resData.token);
         storage.set('user_name', resData.UserName__c);
         storage.set('class_id', resData.Class.Id);
         storage.set('class_name', resData.Class.Name);   
-        storage.set('role', resData.Role.Title__c);   
-        console.log(resData);
-        dispatch(authActions.login.success(resData));
-    } catch(err) {
-
-    } 
-    finally {
-      // dispatch(uiActions.setLoadingPage(false));
-      // navigate('/student');
-      dispatch(uiActions.setLoadingPage(false));
-        // if(resData?.Role && resData.Role.Title__c === 'TEACHER'){
-        //   navigate('/student');
-        // } else if(resData?.Role && resData.Role.Title__c === 'PARENT'){
+        storage.set('role', resData.Role.Title__c);
+        if(resData.Role.Title__c === 'PARENT'){
           navigate('/app/home');
-        // }
+        }else{
+          navigate('/student');
+        }
+        dispatch(authActions.login.success(resData));
+      } else {
+        console.log('Fail login:  ' + res);
+      }
+      dispatch(uiActions.setLoadingPage(false));
+    } catch(err) {
+      dispatch(uiActions.setLoadingPage(false));
+      console.log('Fail login:  ' + err);
     }
   };
 

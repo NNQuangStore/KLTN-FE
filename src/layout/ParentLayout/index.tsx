@@ -9,9 +9,7 @@ import useDetachScreen, { EScreen } from '../../services/hooks/useScreenDetect';
 import { useCollapseSidebar } from '../../services/hooks/useCollapseSidebar';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
 
-
 const ParentLayout = () => {
-
   const screen = useDetachScreen();
 
   const LayoutScreen = () => {

@@ -5,9 +5,13 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { Calendar } from '@fullcalendar/core';
+import { preventSelection } from '@fullcalendar/core/internal';
 
 function renderEventContent(eventInfo:any) {
+  
+  
   return (
     <>
       <b>{eventInfo.timeText}</b>
@@ -17,12 +21,14 @@ function renderEventContent(eventInfo:any) {
 }
 
 
+
+
 const ParentReportSessionPage = () => {
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
   const [reportData, setReportData] =useState( [
     {
-      start: '2023-10-04',
+      start: '2023-10-04T12:00:00',
       title: 'Làm bài tập 1 sgk trang 50'
     },
     {
@@ -76,31 +82,27 @@ const ParentReportSessionPage = () => {
   // },[]);
   // const reportData = lesionSelectors.getLesionList();
 
-  console.log(reportData);
+ 
   
- 
-
- 
-
   
   return (
     reportData.length > 0 ? <ParentReportSessionPageStyled
     
      >
-      <Card className='report-present' title={'Lịch'} >
+      <Card className='report-present' title={'Báo bài'} >
        
         <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView={'dayGridMonth'}
+        initialView={'timeGridWeek'}
         headerToolbar={{
-          start: 'today prev,next', // will normally be on the left. if RTL, will be on the right
+          start: 'today prev,next', // Replace "today" with "customToday", // will normally be on the left. if RTL, will be on the right
           center: 'title',
-          end: 'dayGridMonth,timeGridWeek,timeGridDay', // will normally be on the right. if RTL, will be on the left
+          end: '', // will normally be on the right. if RTL, will be on the left
         }}
         height={'90vh'}
         weekends={false}
         events={reportData}
-        editable={true}
+        editable={false}
         selectable={true}
         eventContent={renderEventContent}
         eventClick={showModalDetail}
@@ -108,6 +110,7 @@ const ParentReportSessionPage = () => {
           showModal();
           
         }}
+        locale={'vi'}
       />
       </Card>
       {/* <List grid={{ gutter: 16, column: 4 }} 

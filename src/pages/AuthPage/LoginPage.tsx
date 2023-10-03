@@ -62,6 +62,7 @@ const LoginPage = () => {
         storage.set('class_id', resData.Class.Id);
         storage.set('class_name', resData.Class.Name);   
         storage.set('role', resData.Role.Title__c);
+        storage.set('user_id', resData.Id);
         if(resData.Role.Title__c === 'PARENT'){
           navigate('/app/home');
         }else{

@@ -179,7 +179,7 @@ const ReportLesionPage = () => {
       const data = rest.data.data;
       if(data) {
         if(data[0].Status__c === 'Accepted'){
-          socket.emit('add-lesson-complete', {classId, lessonId: data[0].Id});
+          socket.emit('add-lesson-complete', {classId, lessonId: data[0].Id, dataLesson: data[0]});
         }
         setOpen(false);
         dispatch(lesionActions.getListLesion.fetch());

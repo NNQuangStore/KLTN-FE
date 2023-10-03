@@ -4,21 +4,10 @@ import { COLOR_PRIMARY } from '../../utils/variables/colors';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import storage from '../../utils/sessionStorage';
-import { socket } from '../../utils/socket';
 
 const ParentHomePage = () => {
   const classId = storage.get('class_id');
-  // useEffect(() => {
-  //   if(classId && classId !== ''){
-  //     socket.emit('addParent', {classId: classId});
-  //   }
-  // },[]);
 
-  useEffect(() => {
-    socket.on('notify-new-lesson', (data) => {
-      console.log(data);
-    });
-  },[socket]);
 
   const navTop = [
     {

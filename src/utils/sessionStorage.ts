@@ -1,5 +1,5 @@
 
-type IKeyStore = 'token' | 'user_name' | 'role' | 'user_code' | 'class_id' | 'class_name';
+type IKeyStore = 'token' | 'user_name' | 'role' | 'user_code' | 'class_id' | 'class_name' | 'user_id';
 
 const session = {
   set: (keyValue: IKeyStore, value: string) => {
@@ -40,6 +40,7 @@ const storage = {
   userCode: genGetSetKeyLocal('user_code'),
   classId: genGetSetKeyLocal('class_id'),
   className: genGetSetKeyLocal('class_name'),
+  userId: genGetSetKeyLocal('user_id'),
 };
 
 export default storage;

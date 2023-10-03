@@ -54,27 +54,27 @@ const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
           <span>Lớp {className}</span>
           <Notification/>
           <Popover
-      content={
-        <List
-          itemLayout="horizontal"
-          dataSource={userActions}
-          renderItem={(item, index) => (
-      
-      <ListItemStyled onClick={() => {sessionStorage.clear(); window.location.reload(); navigate('auth/sign-in');
-            }}>
-              <LogoutOutlined />
-              {item.title}
-            </ListItemStyled>
-          )}
-        />
-      }
-      placement='bottom'
-      trigger="click"
-      
-      open={open}
-      arrow={false}
-      onOpenChange={(newValue) => setOpen(newValue)}
-    ></Popover>
+            content={
+              <List
+                itemLayout="horizontal"
+                dataSource={userActions}
+                renderItem={(item, index) => (
+            
+            <ListItemStyled onClick={() => {sessionStorage.clear(); window.location.reload(); navigate('auth/sign-in');
+                  }}>
+                    <LogoutOutlined />
+                    {item.title}
+                  </ListItemStyled>
+                )}
+              />
+            }
+            placement='bottom'
+            trigger="click"
+            
+            open={open}
+            arrow={false}
+            onOpenChange={(newValue) => setOpen(newValue)}
+          ></Popover>
         <Avatar
           onClick={() => setOpen(true)}
           icon={<UserOutlined />}

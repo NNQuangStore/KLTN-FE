@@ -22,7 +22,7 @@ const ParentHomePage = () => {
      }];
   const navBottom = [{
     label: 'Xin nghỉ phép',
-    link: '/'
+    link: '/app/parent-attendance'
    },{
     label: 'Giáo viên chủ nhiệm',
     link: '/'
@@ -41,7 +41,7 @@ const ParentHomePage = () => {
       </div>
       <div className='cards'>
         {navBottom.map((s, index) => (
-          <Card className='card-item' key={index}>
+          <Card className='card-item' key={index} onClick={() => navigate(s.link)}>
             <p>{s.label}</p>
           </Card>
         ))}

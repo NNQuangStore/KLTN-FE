@@ -7,19 +7,12 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useRef, useState } from 'react';
 import { preventSelection } from '@fullcalendar/core/internal';
+import { Calendar } from '@fullcalendar/core';
 
-function renderEventContent(eventInfo:any) {
-  return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
-  );
-}
 const ParentReportSessionPage = () => {
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
-  const [reportData, setReportData] =useState( [
+  const [reportData, setReportData] =useState([
     {
       start: '2023-10-04',
       title: 'Làm bài tập 1 sgk trang 50'
@@ -100,9 +93,68 @@ const ParentReportSessionPage = () => {
   };
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(lesionActions.getListLesion.fetch());
-  // },[]);
+  function renderEventContent (eventInfo: any){
+    return (
+      <>
+        <p>{eventInfo.event.title}</p>
+      </>
+    );
+  }
+
+  const calendarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+      if (calendarRef.current) {
+          const calendarEl = calendarRef.current;
+          const calendar = new Calendar(calendarEl, {
+              plugins: [dayGridPlugin],
+              initialView: 'dayGridWeek',
+              headerToolbar: {
+                start: 'customButton prevButton,nextButton',
+                center: 'title',
+                end: '',
+              },
+              height: '70vh',
+              weekends: false,
+              events: reportData,
+              editable: false,
+              selectable: true,
+              eventContent: renderEventContent,
+              eventClick: showModalDetail,
+              select: () => {
+                showModal();
+              },
+              locale:'vi',
+              customButtons: {
+                customButton: {
+                    text: 'Hôm nay',
+                    click: () => {
+                        const today = new Date();
+                        calendar.gotoDate(today);
+                    },
+                },
+                prevButton: {
+                    text: '<<',
+                    click: () => {
+                        calendar.prev();
+                    },
+                },
+                nextButton: {
+                  text: '>>',
+                  click: () => {
+                      calendar.next();
+                  },
+              },
+            },
+            });
+
+          calendar.render();
+          return () => {
+              calendar.destroy();
+          };
+      }
+  }, []);
+
   // const reportData = lesionSelectors.getLesionList();
 
   return (
@@ -110,27 +162,7 @@ const ParentReportSessionPage = () => {
     
      >
       <Card className='report-present' title={'Báo bài'} >
-       
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          initialView={'dayGridWeek'}
-          headerToolbar={{
-            start: 'today prev,next',
-            center: 'title',
-            end: '',
-          }}
-          height={'70vh'}
-          weekends={false}
-          events={reportData}
-          editable={false}
-          selectable={true}
-          eventContent={renderEventContent}
-          eventClick={showModalDetail}
-          select={()=>{
-            showModal();
-          }}
-          locale={'vi'}
-      />
+        <div ref={calendarRef}></div>
       </Card>
       {/* <List grid={{ gutter: 16, column: 4 }} 
       dataSource={reportData.filter((o,index) => index !== 0 )}

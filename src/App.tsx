@@ -24,6 +24,7 @@ import ReportLesionPage from './pages/ReportLesionPage';
 import { io } from 'socket.io-client';
 import AttendanceCheckPage from './pages/AttendanceCheckPage';
 import EvaluationSheetPage from './pages/EvaluationSheetPage';
+import AttendancePage from './pages/Attendance';
 
 function AppUI() {
   const { shield, token} = useToken();
@@ -46,6 +47,7 @@ function AppUI() {
           <Route index path='home' element={<ParentHomePage />}/>
           <Route index path='evaluation-sheet' element={<EvaluationSheetPage />}/>
           <Route path='report-session' element={<ParentReportSessionPage />}/>
+          <Route path='parent-attendance' element={<AttendancePage />}/>
           {/* <Route path="/" element={<Navigate to="/home" />} /> */}
         </Route>
 

@@ -326,91 +326,84 @@ const EvaluationSheetPage = () => {
     
   return (
     <EvaluationSheetPageStyled>
-      <Row gutter={1}>
-    <Col >
-      <Card title="1. Các môn học và hoạt động giáo dục" bordered={false}>
-      <br />
-   <Form
-      {...formItemLayout}
-      layout={formLayout}
-      form={form}
-      initialValues={{ layout: formLayout }}
-      onValuesChange={onFormLayoutChange}
-      style={{ maxWidth: formLayout === 'inline' ? 'none' : 600 }}
-      onFinish={onFinish}
-    >
-      <Form.Item label="Tra cứu điểm" name="layout">
-      </Form.Item>
-      <Form.Item label="Chọn năm">
-      <Select
-    showSearch
-    placeholder="Năm học"
-    optionFilterProp="children"
-    onChange={onChange}
-    onSearch={onSearch}
-    filterOption={filterOption}
-    options={[
-      {
-        value: '2023',
-        label: '2023-2024',
-      },
-      {
-        value: '2024',
-        label: '2024-2025',
-      },
-      {
-        value: '2025',
-        label: '2025-2026',
-      },
-    ]}
-  />
-      </Form.Item>
-      <Form.Item label="Chọn học kỳ">
-      <Select
-    showSearch
-    placeholder="Học kỳ"
-    optionFilterProp="children"
-    onChange={onChange2}
-    onSearch={onSearch}
-    filterOption={filterOption}
-    options={[
-      {
-        value: 'hk1',
-        label: 'HK1',
-      },
-      {
-        value: 'hk2',
-        label: 'HK2',
-      },
-      {
-        value: 'hk3',
-        label: 'HK3',
-      },
-      {
-        value: 'hk4',
-        label: 'HK4',
-      },
-    ]}
-  />
-      </Form.Item>
-      <Form.Item {...buttonItemLayout}>
-        <Button type="primary" htmlType="submit">Lọc</Button>
-      </Form.Item>
-    </Form>
-    <br />
-      <Table columns={columns} dataSource={data} bordered pagination={false}/>
-      </Card>
-    </Col>
-    <Col >
-    <Card title="2. Các năng lực phẩm chất" bordered={false}>
-      <br /><br /><br />
-      <Table style={{paddingTop:'10px'}} columns={columns2} dataSource={data3} bordered pagination={false}/>
-     <br /> <br /> <br />
-      <Table columns={columns3} dataSource={data2} bordered pagination={false}/>
-      </Card>
-    </Col>
-   
-  </Row>
+      <Row gutter={1} className='content'>
+        <Col className='filter-card' >
+          <Card bordered={false}>
+              <Form
+                  {...formItemLayout}
+                  layout={formLayout}
+                  form={form}
+                  initialValues={{ layout: formLayout }}
+                  onValuesChange={onFormLayoutChange}
+                  style={{ maxWidth: formLayout === 'inline' ? 'none' : 600 }}
+                >
+                <Form.Item label="Lớp">
+                <Select
+                  showSearch
+                  placeholder="Lớp"
+                  optionFilterProp="children"
+                  onChange={onChange}
+                  onSearch={onSearch}
+                  filterOption={filterOption}
+                  options={[
+                      {
+                        value: '2023',
+                        label: '2023-2024',
+                      },
+                      {
+                        value: '2024',
+                        label: '2024-2025',
+                      },
+                      {
+                        value: '2025',
+                        label: '2025-2026',
+                      },
+                    ]}
+                  />
+                  </Form.Item>
+                  <Form.Item label="Bảng điểm">
+                  <Select
+                    showSearch
+                    placeholder="Bảng điểm"
+                    optionFilterProp="children"
+                    onChange={onChange2}
+                    onSearch={onSearch}
+                    filterOption={filterOption}
+                    options={[
+                      {
+                        value: 'hk1',
+                        label: 'HK1',
+                      },
+                      {
+                        value: 'hk2',
+                        label: 'HK2',
+                      },
+                      {
+                        value: 'hk3',
+                        label: 'HK3',
+                      },
+                      {
+                        value: 'hk4',
+                        label: 'HK4',
+                      },
+                    ]}
+                  />
+                </Form.Item>
+              </Form>
+          </Card>
+        </Col>
+        <Col >
+          <Card title="1. Các môn học và hoạt động giáo dục" bordered={false}>
+          <Table columns={columns} dataSource={data} bordered pagination={false}/>
+          </Card>
+        </Col>
+        <Col >
+          <Card className='col-2' title="2. Các năng lực phẩm chất" bordered={false}>
+            <Table columns={columns2} dataSource={data3} bordered pagination={false}/>
+            <Table style={{paddingTop:'24px'}} columns={columns3} dataSource={data2} bordered pagination={false}/>
+          </Card>
+        </Col>
+      </Row>
     </EvaluationSheetPageStyled>
   );
 };
@@ -424,6 +417,7 @@ const EvaluationSheetPageStyled = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding-top: 100px;
   .cards {
     display: flex;
     justify-content: center;
@@ -444,6 +438,17 @@ const EvaluationSheetPageStyled = styled.div`
         color: white;
         text-align: center;
       }
+    }
+  }
+  .col-2{
+    height: 100%;
+  }
+  .content {
+    position: relative;
+    .filter-card {
+      position: absolute;
+      top: -100px;
+      width: 100%;
     }
   }
 `;

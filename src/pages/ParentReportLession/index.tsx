@@ -5,13 +5,10 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { useRef, useState } from 'react';
-import { Calendar } from '@fullcalendar/core';
+import { useEffect, useRef, useState } from 'react';
 import { preventSelection } from '@fullcalendar/core/internal';
 
 function renderEventContent(eventInfo:any) {
-  
-  
   return (
     <>
       <b>{eventInfo.timeText}</b>
@@ -19,10 +16,6 @@ function renderEventContent(eventInfo:any) {
     </>
   );
 }
-
-
-
-
 const ParentReportSessionPage = () => {
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
@@ -87,8 +80,6 @@ const ParentReportSessionPage = () => {
   const [dataClick, setDataClick] = useState([]);
   const showModal = () => {
     setOpen(true);
-    
-   
   };
   const handleOk = () => {
     setOpen(false);
@@ -114,8 +105,6 @@ const ParentReportSessionPage = () => {
   // },[]);
   // const reportData = lesionSelectors.getLesionList();
 
-  
-  
   return (
     reportData.length > 0 ? <ParentReportSessionPageStyled
     
@@ -123,26 +112,24 @@ const ParentReportSessionPage = () => {
       <Card className='report-present' title={'Báo bài'} >
        
         <FullCalendar
-        plugins={[dayGridPlugin]}
-        initialView={'dayGridWeek'}
-        headerToolbar={{
-          start: 'today prev,next', // Replace "today" with "customToday", // will normally be on the left. if RTL, will be on the right
-          center: 'title',
-          end: '', // will normally be on the right. if RTL, will be on the left
-        }}
-        height={'90vh'}
-        weekends={false}
-        events={reportData}
-        editable={false}
-        selectable={true}
-        eventContent={renderEventContent}
-        eventClick={showModalDetail}
-        select={()=>{
-          showModal();
-          
-        }}
-        locale={'vi'}
-        
+          plugins={[dayGridPlugin]}
+          initialView={'dayGridWeek'}
+          headerToolbar={{
+            start: 'today prev,next',
+            center: 'title',
+            end: '',
+          }}
+          height={'70vh'}
+          weekends={false}
+          events={reportData}
+          editable={false}
+          selectable={true}
+          eventContent={renderEventContent}
+          eventClick={showModalDetail}
+          select={()=>{
+            showModal();
+          }}
+          locale={'vi'}
       />
       </Card>
       {/* <List grid={{ gutter: 16, column: 4 }} 

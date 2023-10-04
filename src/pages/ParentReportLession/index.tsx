@@ -28,7 +28,39 @@ const ParentReportSessionPage = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const [reportData, setReportData] =useState( [
     {
-      start: '2023-10-04T12:00:00',
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
+      title: 'Làm bài tập 1 sgk trang 50'
+    },
+    {
+      start: '2023-10-04',
       title: 'Làm bài tập 1 sgk trang 50'
     },
     {
@@ -82,7 +114,6 @@ const ParentReportSessionPage = () => {
   // },[]);
   // const reportData = lesionSelectors.getLesionList();
 
- 
   
   
   return (
@@ -92,8 +123,8 @@ const ParentReportSessionPage = () => {
       <Card className='report-present' title={'Báo bài'} >
        
         <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView={'timeGridWeek'}
+        plugins={[dayGridPlugin]}
+        initialView={'dayGridWeek'}
         headerToolbar={{
           start: 'today prev,next', // Replace "today" with "customToday", // will normally be on the left. if RTL, will be on the right
           center: 'title',
@@ -111,6 +142,7 @@ const ParentReportSessionPage = () => {
           
         }}
         locale={'vi'}
+        
       />
       </Card>
       {/* <List grid={{ gutter: 16, column: 4 }} 

@@ -65,7 +65,7 @@ const LoginPage = () => {
         if(resData.Role.Title__c === 'PARENT'){
           navigate('/app/home');
         }else{
-          navigate('/student');
+          navigate('/attendance');
         }
         dispatch(authActions.login.success(resData));
       } else {
@@ -85,7 +85,7 @@ const LoginPage = () => {
         onSubmit={onSubmit}
         renderButton={<ButtonLoginStyled htmlType='submit' label='Login'/>}>
 
-        <InputText defaultValue='0375767857' value='0375767857' name='phone' label={'Số điện thoại'}/>
+        <InputText defaultValue='0375767857(Phụ huynh) - 0333007630(Giáo Viên)' value='0375767857' name='phone' label={'Số điện thoại'}/>
         <InputTextPassword defaultValue='ksvchainamtest' value='ksvchainamtest' name='password' label={'Mật Khẩu'} />
 
         </FormLayout>

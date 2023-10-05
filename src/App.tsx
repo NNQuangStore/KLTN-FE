@@ -29,6 +29,7 @@ import ParentReportSessionNewPage from './pages/ParentReportLessionNew';
 import storage from './utils/sessionStorage';
 import { useAppDispatch } from './store/hooks';
 import authActions from './pages/AuthPage/service/actions';
+import AttendanceTodayPage from './pages/AttendanceToday';
 
 function AppUI() {
 
@@ -60,14 +61,15 @@ const dispatch = useAppDispatch();
           <Route path={PATH._REPORT_CARD} element={<ReportCardPage/>} />
           <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} />
           <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
-          <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />} />
+          <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
+          <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
         </Route>
         <Route path='app' element={shield(ParentLayout)}>
           <Route index path='home' element={<ParentHomePage />}/>
           <Route index path='evaluation-sheet' element={<EvaluationSheetPage />}/>
           <Route path='report-session' element={<ParentReportSessionPage />}/>
           <Route path='parent-attendance' element={<AttendancePage />}/>
-          {/* <Route path="/" element={<Navigate to="/home" />} /> */}
+          <Route path='time-table' element={<TimeTablePage />}/>
         </Route>
 
         <Route path='auth' element={<AuthLayout/>}>

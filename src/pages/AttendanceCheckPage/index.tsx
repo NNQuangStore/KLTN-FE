@@ -3,9 +3,11 @@ import DataTable from '../../component/molecule/DataTable';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import Filter from '../../component/template/Filter';
 import { styled } from 'styled-components';
+import { Button } from 'antd';
+import { useNavigate } from 'react-router';
 
 const AttendanceCheckPage = () => {
-
+  const navigate = useNavigate();
   const dataSource = [
     {
       date: '2023-12-19',
@@ -72,7 +74,8 @@ const AttendanceCheckPage = () => {
 
   return (
     <AttendanceCheckPageStyled>
-      <Filter></Filter>
+      {/* <Filter></Filter> */}
+      <Button onClick={() => navigate('/attendance/create-today')}>Điểm danh hôm nay</Button>
       <DataTable columns={columns} dataSource={dataSource} />
     </AttendanceCheckPageStyled>
   );

@@ -15,7 +15,7 @@ const ParentHomePage = () => {
      link: '/app/report-session'
     },{
       label: 'Lịch Học',
-      link: '/'
+      link: '/app/time-table'
      },{
       label: 'Bảng điểm',
       link: '/app/evaluation-sheet'

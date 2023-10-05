@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import apisLessonParent from './service/apis';
+import { COLOR_PRIMARY } from '../../utils/variables/colors';
 
 const ParentReportSessionNewPage = () => {
   const day = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
@@ -95,7 +96,7 @@ justify-content: center;
     border: 2px solid #9bcbd18f !important;
   }
   .active-card{
-    background-color: #9bcbd1 !important;
+    background-color: ${COLOR_PRIMARY} !important;
     font-weight: 600 !important;
     border: 2px solid #d5b55a !important;
   }

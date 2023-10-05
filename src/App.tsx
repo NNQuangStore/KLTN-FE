@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import './App.css';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
@@ -25,9 +25,27 @@ import { io } from 'socket.io-client';
 import AttendanceCheckPage from './pages/AttendanceCheckPage';
 import EvaluationSheetPage from './pages/EvaluationSheetPage';
 import AttendancePage from './pages/Attendance';
+import storage from './utils/sessionStorage';
+import { useAppDispatch } from './store/hooks';
+import authActions from './pages/AuthPage/service/actions';
 
 function AppUI() {
-  const { shield, token} = useToken();
+
+
+  const token = storage.get('token');
+const dispatch = useAppDispatch();
+
+  useEffect(() => { 
+    if(token)
+      dispatch(authActions.setToken(token ?? ''));
+    // const href = window.location.href;
+    // const fileNamePart = location?.pathname !== '/' ? href.slice(href.search(location?.pathname)) : '';
+  }, [token]);
+
+  const { shield} = useToken();
+
+
+
   return (
     <BrowserRouter>
       <Routes>
@@ -67,7 +85,8 @@ function AppUI() {
   );
 }
 
-function App() {
+function App() { 
+  
   return (
     <Provider store={store}>
       <AppUI />

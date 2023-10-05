@@ -12,7 +12,6 @@ const selector = <T = MyState>(key: keyof T, defaultValue?: any) => useAppSelect
 
 const getToken = () => selector('access_token') as string;
 
-
 const authSelectors = {
   getToken
 };

@@ -1,15 +1,53 @@
 import { Modal, Upload } from 'antd';
 import ButtonOutline from './ButtonOutline';
 import DataTable from '../../molecule/DataTable';
-import { useState } from 'react';
-import { BoxPlotOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import { BoxPlotOutlined, DropboxOutlined } from '@ant-design/icons';
 import { DraggerProps, RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 import { read, utils } from 'xlsx';
+import dayjs from 'dayjs';
+import storage from '../../../utils/sessionStorage';
 
 const ButtonImport = () => {
 
   const [open, setOpen] = useState<boolean>(false);
+  const [data, setData] = useState<any>(false);
   const { Dragger } = Upload;
+  const classId = storage.get('class_id');
+
+
+  enum EColExcel {
+    title = 'Tiêu đề',
+    date = 'Ngày gửi',
+    status = 'Trạng thái',
+    content = 'Nội dung',
+    isAutoSend = 'Tự động gửi'
+  }
+
+  useEffect(() => {
+    if(data) {
+      console.log(data);
+      const rest = data.map((o: any) => {
+        const date = dayjs(o[EColExcel.date], 'DD/MM/YYYY HH:mm');
+        const autoSend = (o[EColExcel.isAutoSend] as string).toLowerCase() === 'Có'.toLowerCase();
+        const status = (o[EColExcel.status] as string).toLowerCase() === 'Lưu nháp'.toLowerCase() ? 'Draft' : undefined;
+
+        return {
+          sentDay: date.format('YYYY-MM-DD'),
+          sendTime: date.get('hour'),
+          sendMinute: date.get('minute'),
+          isAutoSent: autoSend,
+          classID: classId,
+          status: status,
+          content: o[EColExcel.content]
+        };});
+        console.log(rest);
+        
+      setOpen(false);
+      
+    }
+  }, [data]);
+  
 
   const template = [
     {
@@ -57,6 +95,7 @@ const ButtonImport = () => {
       accept: '.xlsx',
       name: 'file',
       multiple: false,
+      showUploadList: false,
       // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       beforeUpload: (file: RcFile) => {
         
@@ -68,7 +107,7 @@ const ButtonImport = () => {
           const worksheet = workbook.Sheets[sheetName];
           const json = utils.sheet_to_json(worksheet);
           console.log(json);
-
+          setData(json);
           // const keys = Object.keys(json[0]);
 
           // template.forEach(o => {
@@ -77,7 +116,6 @@ const ButtonImport = () => {
             // }
           // });
         };
-        
         reader.readAsArrayBuffer(file);
       },
     };
@@ -86,14 +124,16 @@ const ButtonImport = () => {
     <>
       <ButtonOutline onClick={() => setOpen(true)}>Import</ButtonOutline>
       <Modal 
+        onCancel={() => setOpen(false)}
         open={open}         
         footer={null}
-        forceRender>
+        forceRender
+        >
         <h3>Hãy import theo luồng data sao</h3>
         <DataTable pagination={false} bordered={false} columns={columns} dataSource={dataSource}/>
         <Dragger {...props}>
           <p className="ant-upload-drag-icon">
-            <BoxPlotOutlined type="inbox" />
+            <DropboxOutlined />
           </p>
           <p className="ant-upload-text">Click or drag file to this area to upload</p>
           <p className="ant-upload-hint">

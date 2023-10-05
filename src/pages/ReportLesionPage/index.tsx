@@ -1,33 +1,23 @@
 import { styled } from 'styled-components';
 import Filter from '../../component/template/Filter';
 import DataTable from '../../component/molecule/DataTable';
-import ModalButton from '../../component/organism/ModalButton';
 import ButtonPrimary from '../../component/atom/Button/ButtonPrimary';
 import FormLayout, { ActionFormStyled } from '../../component/organism/FormLayout';
 import { useEffect, useState } from 'react';
-import { useAppDispatch } from '../../store/hooks';
 import { ColumnsType } from 'antd/es/table';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { Button, DatePicker, Form, Modal, TimePicker, message } from 'antd';
 import InputText from '../../component/atom/Input/InputText';
-import TextArea from 'antd/es/input/TextArea';
-import InputSwitcher from '../../component/atom/Input/InputSwitcher';
-import FormRow from '../../component/organism/FormLayout/FormRow';
 import InputCheckbox from '../../component/atom/Input/InputCheckbox';
 import ButtonOutline from '../../component/atom/Button/ButtonOutline';
 import { useForm } from 'antd/es/form/Form';
 import lesionSelectors from './services/selectors';
-import lesionActions from './services/actions';
 import { AxiosResponse } from 'axios';
 import apisLesion from './services/apis';
 import storage from '../../utils/sessionStorage';
-import uiActions from '../../services/UI/actions';
-import { io } from 'socket.io-client';
-import { time } from 'console';
 import { ReportLesion } from './services/types/reportLession';
-import { format } from 'path';
 import moment, { Moment } from 'moment';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -36,10 +26,13 @@ import weekday from 'dayjs/plugin/weekday';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import ButtonImport from '../../component/atom/Button/ButtonImport';
 import { socket } from '../../utils/socket';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import InputTextEditor from '../../component/atom/Input/InputTextEditor';
+import { useAppDispatch } from '../../store/hooks';
+import lesionActions from './services/actions';
 
 
 
@@ -52,6 +45,7 @@ dayjs.extend(weekYear);
 
 
 const ReportLesionPage = () => {
+
 
   const columns: ColumnsType<ReportLesion>= [
     {
@@ -95,7 +89,7 @@ const ReportLesionPage = () => {
           {
             handle: async () => {
               const res = await apisLesion.deleteLesion({id: item.Id});              
-              dispatch(lesionActions.getListLesion.fetch());
+              // dispatch(lesionActions.getListLesion.fetch());
             },
             icon: <DeleteOutlined />,
             label: 'Xoá',
@@ -104,8 +98,11 @@ const ReportLesionPage = () => {
         ]}/>)
     }
   ];
+
+
   const classId = storage.get('class_id');
-  const token = storage.get('token');
+  const token = storage.token.get();
+  const [content, setContent] = useState<any>();
 
 
 
@@ -128,7 +125,6 @@ const ReportLesionPage = () => {
   const [form] = useForm();
   const [formData, setFormData] = useState<any>();
   const [date, setDate] = useState<Moment[]>(getWeekDate(moment()));
-  const [editorState, setEditorState] = useState('');
 
 
   useEffect(() => {
@@ -160,12 +156,11 @@ const ReportLesionPage = () => {
   },[date]);
 
   const submit = async (values: any) => {
-    console.log(values);
+    // console.log(values);
     
     try {
       const rest: AxiosResponse = await apisLesion.saveLesion([{
         ...values,
-        content: 'ádafas',
         lessonID: formData ? formData.Id : undefined,
         sentDay: dayjs(values.setDay).format('YYYY-MM-DD'),
         sendTime: dayjs(values.time).get('hour'),
@@ -173,8 +168,11 @@ const ReportLesionPage = () => {
         isAutoSent: !!values.isAutoSent,
         classID: classId,
         status: isDraff ? 'Draft' : undefined,
-        time: undefined
+        time: undefined,
+        content: content
       }]);
+      console.log('???');
+      
       
       const data = rest.data.data;
       if(data) {
@@ -215,7 +213,7 @@ const ReportLesionPage = () => {
       <DataTable bordered={false} columns={columns} dataSource={data}/>
 
 
-      <Modal footer={null}
+      <ModalStyled footer={null}
         onCancel={handleClose}
         forceRender open={open} title={'Báo bài'}>
         <FormLayout form={form} renderButton={() => <></>} onSubmit={submit}>
@@ -228,30 +226,25 @@ const ReportLesionPage = () => {
               <DatePicker size='large' style={{width: '100%'}} placeholder='Chọn ngày gửi'/>
             </Form.Item>
             <InputCheckbox onChange={(e: any) => setTimeActive(e.target.checked)} name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
+            
             { timeActive ? <Form.Item rules={[
               {required: true}
             ]} label='Thời gian gửi' name='time'>
               <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} placeholder='Chọn thời gian' defaultValue={dayjs().set('hour', 16).set('minute', 0)}/>
             </Form.Item> : <></>}
-            {/* <Form.Item rules={[
-              {required: true}
-            ]} label='Nội dung' name='content'> */}
-            <Form.Item style={{border: '1px solid #d9d9d9', borderRadius: '2px'}}>
-              <Editor
-                // onEditorStateChange={this.onEditorStateChange}
-              />
-            </Form.Item>
 
-            {/* </Form.Item> */}
-            {/* <FormRow valuePropName='checked' name={'isAutoSent'}> */}
-            {/* </FormRow> */}
+            <Form.Item>
+             <InputTextEditor 
+              value={content} 
+              onChange={setContent} />
+            </Form.Item>
 
             <ActionFormStyled justify={'center'} >
               <ButtonOutline onClick={() => {setIsDraff(true); form.submit();}} label='Lưu Nháp'/>
               <ButtonPrimary htmlType='submit' label={timeActive ? 'Lưu' : 'Gửi'}/>
             </ActionFormStyled>
         </FormLayout>
-      </Modal>
+      </ModalStyled>
     </ReportLesionPageStyled>
   );
 };
@@ -259,4 +252,14 @@ export default ReportLesionPage;
 
 const ReportLesionPageStyled = styled.div`
 
+`;
+
+const ModalStyled =styled(Modal)`
+  .editorEditor {
+    border: 1px solid #F1F1F1;
+    border-radius: '2px';
+    margin-top: 12px;
+    max-height: 160px;
+  }
+  
 `;

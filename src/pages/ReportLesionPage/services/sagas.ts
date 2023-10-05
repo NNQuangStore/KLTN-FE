@@ -6,7 +6,7 @@ import uiActions from '../../../services/UI/actions';
 
 const getListLesion = function* () {
   yield put(uiActions.setLoadingPage(true));
-
+  
   try {
     const res: AxiosResponse<{ data: any[] }> = yield call(apis.getListLesion);
     console.log(res?.data?.data[0].Student);

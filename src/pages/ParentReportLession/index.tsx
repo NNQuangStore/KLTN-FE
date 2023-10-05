@@ -1,12 +1,8 @@
 import { Button, Card, Empty, List, Modal } from 'antd';
 import { styled } from 'styled-components';
 import { useAppDispatch } from '../../store/hooks';
-import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useRef, useState } from 'react';
-import { preventSelection } from '@fullcalendar/core/internal';
 import { Calendar } from '@fullcalendar/core';
 import apisLessonParent from './service/apis';
 
@@ -94,13 +90,7 @@ const ParentReportSessionPage = () => {
   };
   const dispatch = useAppDispatch();
 
-  function renderEventContent (eventInfo: any){
-    return (
-      <>
-        <p>{eventInfo.event.title}</p>
-      </>
-    );
-  }
+  
 
   const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -110,34 +100,59 @@ const ParentReportSessionPage = () => {
   };
 
   useEffect(() => {
-    getLesson();
-  },[]);
-
-  useEffect(() => {
-    if (calendarRef.current) {
-        const calendarEl = calendarRef.current;
-        const calendar = new Calendar(calendarEl, {
-            plugins: [dayGridPlugin],
-            initialView: 'dayGridWeek',
-            headerToolbar: {
-              start: 'customButton prevButton,nextButton',
-              center: 'title',
-              end: '',
-            },
-            height: '70vh',
-            weekends: false,
-            events: reportData,
-            editable: false,
-            selectable: true,
-            eventContent: renderEventContent,
-            eventClick: showModalDetail,
-            select: () => {
-              showModal();
-            },
-            locale:'vi',
-            customButtons: {
-              customButton: {
-                  text: 'Hôm nay',
+      if (calendarRef.current) {
+          const calendarEl = calendarRef.current;
+          const calendar = new Calendar(calendarEl, {
+              plugins: [dayGridPlugin],
+              initialView: 'dayGridWeek',
+              headerToolbar: {
+                start: 'customButton prevButton,nextButton',
+                center: 'title',
+                end: '',
+              },
+              height: '70vh',
+              weekends: false,
+              events: reportData,
+              editable: false,
+              selectable: true,
+              
+              eventClick: showModalDetail,
+              select: () => {
+                showModal();
+              },
+              locale:'vi',
+              customButtons: {
+                customButton: {
+                    text: 'Hôm nay',
+                    click: () => {
+                        const today = new Date();
+                        calendar.gotoDate(today);
+                    },
+                },
+                prevButton: {
+                    text: '<<',
+                    click: () => {
+                      calendar.prev();
+                      const startDate = calendar.getCurrentData().dateProfile.activeRange?.start;
+                      const endDate = calendar.getCurrentData().dateProfile.activeRange?.end;
+                      if (startDate !== undefined&& endDate !== undefined ) {
+                        const originalDate = new Date(startDate);
+                        const originalDateEnd = new Date(endDate);
+                        const formattedDate = (originalDate.getMonth() + 1).toString().padStart(2, '0') + '/' + originalDate.getDate().toString().padStart(2, '0') + '/' + originalDate.getFullYear();
+                        const formattedDateEnd = (originalDateEnd.getMonth() + 1).toString().padStart(2, '0') + '/' + (originalDateEnd.getDate() - 1).toString().padStart(2, '0') + '/' + originalDateEnd.getFullYear();
+                        console.log(formattedDate);
+                        console.log('Lay ngay ket thuc: ',formattedDateEnd);
+                        console.log('Lay ngay bat dau: ',formattedDate);
+                      } else {
+                       
+                      }
+                    
+                       
+                       
+                    },
+                },
+                nextButton: {
+                  text: '>>',
                   click: () => {
                       const today = new Date();
                       calendar.gotoDate(today);
@@ -158,15 +173,15 @@ const ParentReportSessionPage = () => {
           },
           });
 
-        calendar.render();
-        return () => {
-            calendar.destroy();
-        };
-    }
-  }, []);
+          calendar.render();
+          return () => {
+              calendar.destroy();
+          };
+      }
+  }, [reportData]);
 
-  // const reportData = 
-
+  // const reportData = lesionSelectors.getLesionList();
+  
   return (
     reportData.length > 0 ? <ParentReportSessionPageStyled
     

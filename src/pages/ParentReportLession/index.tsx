@@ -8,6 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useRef, useState } from 'react';
 import { preventSelection } from '@fullcalendar/core/internal';
 import { Calendar } from '@fullcalendar/core';
+import apisLessonParent from './service/apis';
 
 const ParentReportSessionPage = () => {
   const [open, setOpen] = useState(false);
@@ -103,59 +104,68 @@ const ParentReportSessionPage = () => {
 
   const calendarRef = useRef<HTMLDivElement>(null);
 
+  const getLesson = async () => {
+    const res = await apisLessonParent.getListLessonParent();
+    console.log(res);
+  };
+
   useEffect(() => {
-      if (calendarRef.current) {
-          const calendarEl = calendarRef.current;
-          const calendar = new Calendar(calendarEl, {
-              plugins: [dayGridPlugin],
-              initialView: 'dayGridWeek',
-              headerToolbar: {
-                start: 'customButton prevButton,nextButton',
-                center: 'title',
-                end: '',
-              },
-              height: '70vh',
-              weekends: false,
-              events: reportData,
-              editable: false,
-              selectable: true,
-              eventContent: renderEventContent,
-              eventClick: showModalDetail,
-              select: () => {
-                showModal();
-              },
-              locale:'vi',
-              customButtons: {
-                customButton: {
-                    text: 'Hôm nay',
-                    click: () => {
-                        const today = new Date();
-                        calendar.gotoDate(today);
-                    },
-                },
-                prevButton: {
-                    text: '<<',
-                    click: () => {
-                        calendar.prev();
-                    },
-                },
-                nextButton: {
-                  text: '>>',
+    getLesson();
+  },[]);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+        const calendarEl = calendarRef.current;
+        const calendar = new Calendar(calendarEl, {
+            plugins: [dayGridPlugin],
+            initialView: 'dayGridWeek',
+            headerToolbar: {
+              start: 'customButton prevButton,nextButton',
+              center: 'title',
+              end: '',
+            },
+            height: '70vh',
+            weekends: false,
+            events: reportData,
+            editable: false,
+            selectable: true,
+            eventContent: renderEventContent,
+            eventClick: showModalDetail,
+            select: () => {
+              showModal();
+            },
+            locale:'vi',
+            customButtons: {
+              customButton: {
+                  text: 'Hôm nay',
                   click: () => {
-                      calendar.next();
+                      const today = new Date();
+                      calendar.gotoDate(today);
                   },
               },
+              prevButton: {
+                  text: '<<',
+                  click: () => {
+                      calendar.prev();
+                  },
+              },
+              nextButton: {
+                text: '>>',
+                click: () => {
+                    calendar.next();
+                },
             },
-            });
+          },
+          });
 
-          calendar.render();
-          return () => {
-              calendar.destroy();
-          };
-      }
+        calendar.render();
+        return () => {
+            calendar.destroy();
+        };
+    }
   }, []);
 
-  // const reportData = lesionSelectors.getLesionList();
+  // const reportData = 
 
   return (
     reportData.length > 0 ? <ParentReportSessionPageStyled

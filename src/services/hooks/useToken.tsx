@@ -7,15 +7,12 @@ type ShieldComponent = ((props: any) => JSX.Element) | React.LazyExoticComponent
 
 export const useToken = () => {
   let token = storage.get('token');
+  console.log(token);
   useEffect(() => { 
-    // const href = window.location.href;
-    // const fileNamePart = location?.pathname !== '/' ? href.slice(href.search(location?.pathname)) : '';
-    
-    
-  }, []);
+    token = storage.get('token');
+  }, [storage]);
 
   const shield = (Component: ShieldComponent) => {
-    token = storage.get('token');
     if (!token) return <Navigate to={'/auth/sign-in'} replace />;
     return <Component  />;
   };

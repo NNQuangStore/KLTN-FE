@@ -60,7 +60,7 @@ const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
           dataSource={userActions}
           renderItem={(item, index) => (
       
-      <ListItemStyled onClick={() => {storage.token.set(''); window.location.reload(); navigate('auth/sign-in');
+        <ListItemStyled onClick={() => {storage.set('token', ''); navigate('/auth/sign-in');
             }}>
               <LogoutOutlined />
               {item.title}

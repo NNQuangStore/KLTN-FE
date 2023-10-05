@@ -21,6 +21,8 @@ export const Slice = createSlice({
       
       state.access_token = data?.token ?? null;
       state.user_data = data;
+    }).addCase(actions.setToken, (state, { payload }) => {      
+      state.access_token = payload;
     });
   },
 });

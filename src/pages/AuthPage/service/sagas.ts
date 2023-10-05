@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import actions from './actions';
 import apis from './apis';
 import { ISagaFunc } from '../../../services/actionConfigs';
@@ -6,7 +6,8 @@ import { IApiLoginBody, IApiLoginResData } from './types/auth';
 // import { setLoading } from '../../../services/UI/sagas';
 import uiActions from '../../../services/UI/actions';
 import storage from '../../../utils/sessionStorage';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
+import { setLoading } from '../../../services/UI/sagas';
 
 const login: ISagaFunc<IApiLoginBody> = function* ({ payload }) {
   yield put(uiActions.setLoadingPage(true));
@@ -33,7 +34,30 @@ const login: ISagaFunc<IApiLoginBody> = function* ({ payload }) {
   }
 };
 
+const refreshToken: ISagaFunc<{ pathname: string }> = function* ({ payload }) {
+  const { pathname } = payload;
+  const token: string = yield storage.get('token');
+  yield put(uiActions.setLoadingPage(true));
+
+  yield delay(500);
+  try {
+    yield put(actions.setToken(token));
+    
+    redirect(pathname);
+    console.log('???');
+    
+
+  } catch (error) {
+    yield put(actions.setToken(''));
+    redirect('/sign-in');
+  } finally {
+    yield put(uiActions.setLoadingPage(false));
+  }
+};
+
 
 export default function* authServiceSaga() {
   yield takeLatest(actions.login.fetch, login);
+  yield takeLatest(actions.refreshToken, refreshToken);
+
 }

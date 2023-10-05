@@ -154,22 +154,9 @@ const ParentReportSessionPage = () => {
                 nextButton: {
                   text: '>>',
                   click: () => {
-                      const today = new Date();
-                      calendar.gotoDate(today);
+                      calendar.next();
                   },
               },
-              prevButton: {
-                  text: '<<',
-                  click: () => {
-                      calendar.prev();
-                  },
-              },
-              nextButton: {
-                text: '>>',
-                click: () => {
-                    calendar.next();
-                },
-            },
           },
           });
 

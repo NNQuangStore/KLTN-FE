@@ -7,7 +7,7 @@ import InputTextPassword from '../../component/atom/Input/InputPassword';
 import { useDispatch } from 'react-redux';
 import authActions from './service/actions';
 import { useAppDispatch } from '../../store/hooks';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import uiSelector from '../../services/UI/selectors';
 import storage from '../../utils/sessionStorage';
 import { useEffect } from 'react';
@@ -29,19 +29,7 @@ const LoginPage = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // console.log(loadingPage);
 
-
-  const token = storage.get('token');
-
-
-  // useEffect(() => {  
-  //   console.log(token);
-      
-  //   if(token) {
-  //     navigate('/student');
-  //   }
-  // },[token]);
   
   const onSubmit = async (values: AuthForm) => {
 
@@ -68,20 +56,22 @@ const LoginPage = () => {
       if(res.status === 200){
         const resData = res?.data as (IApiLoginResData | null);
         if (!resData) throw 'fail';
-        await setDataToStogare(resData);
-        setTimeout(() => {
-          if(resData.Role.Title__c === 'PARENT'){
-            navigate('/app/home');
-          }else{
-            navigate('/student');
-          }
-          dispatch(authActions.login.success(resData));
-          dispatch(uiActions.setLoadingPage(false));
-        }, 500);
+        storage.set('token', resData.token);
+        storage.set('user_name', resData.UserName__c);
+        storage.set('class_id', resData.Class.Id);
+        storage.set('class_name', resData.Class.Name);   
+        storage.set('role', resData.Role.Title__c);
+        storage.set('user_id', resData.Id);
+        if(resData.Role.Title__c === 'PARENT'){
+          navigate('/app/home');
+        }else{
+          navigate('/student');
+        }
+        dispatch(authActions.login.success(resData));
       } else {
         console.log('Fail login:  ' + res);
-        dispatch(uiActions.setLoadingPage(false));
       }
+      dispatch(uiActions.setLoadingPage(false));
     } catch(err) {
       dispatch(uiActions.setLoadingPage(false));
       console.log('Fail login:  ' + err);

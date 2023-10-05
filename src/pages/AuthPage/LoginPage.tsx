@@ -20,28 +20,27 @@ interface AuthForm {
   password: string
 }
 
+enum ERole {
+  TEACHER = 'TEACHER',
+  PARENT = 'PARENT'
+}
+
 const LoginPage = () => {
 
   const dispatch = useAppDispatch();
-  const loadingPage = uiSelector.getLoadingPage();
-
-  // setLoading(true);
   const navigate = useNavigate();
-  // console.log(loadingPage);
 
-
-  const token = storage.get('token');
-
-
-  // useEffect(() => {  
-  //   console.log(token);
-      
-  //   if(token) {
-  //     navigate('/student');
-  //   }
-  // },[token]);
   
   const onSubmit = async (values: AuthForm) => {
+
+    // parent
+    // 0375767857
+    // ksvchainamtest
+
+    // teacher
+    // 0333007630
+    // ksvchainamtest
+    
     try {
       await dispatch(uiActions.setLoadingPage(true));
       // const res = await dispatch(authActions.login.fetch({

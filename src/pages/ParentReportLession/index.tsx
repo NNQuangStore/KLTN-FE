@@ -1,12 +1,8 @@
 import { Button, Card, Empty, List, Modal } from 'antd';
 import { styled } from 'styled-components';
 import { useAppDispatch } from '../../store/hooks';
-import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useRef, useState } from 'react';
-import { preventSelection } from '@fullcalendar/core/internal';
 import { Calendar } from '@fullcalendar/core';
 
 const ParentReportSessionPage = () => {
@@ -93,13 +89,7 @@ const ParentReportSessionPage = () => {
   };
   const dispatch = useAppDispatch();
 
-  function renderEventContent (eventInfo: any){
-    return (
-      <>
-        <p>{eventInfo.event.title}</p>
-      </>
-    );
-  }
+  
 
   const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -119,7 +109,7 @@ const ParentReportSessionPage = () => {
               events: reportData,
               editable: false,
               selectable: true,
-              eventContent: renderEventContent,
+              
               eventClick: showModalDetail,
               select: () => {
                 showModal();
@@ -136,7 +126,23 @@ const ParentReportSessionPage = () => {
                 prevButton: {
                     text: '<<',
                     click: () => {
-                        calendar.prev();
+                      calendar.prev();
+                      const startDate = calendar.getCurrentData().dateProfile.activeRange?.start;
+                      const endDate = calendar.getCurrentData().dateProfile.activeRange?.end;
+                      if (startDate !== undefined&& endDate !== undefined ) {
+                        const originalDate = new Date(startDate);
+                        const originalDateEnd = new Date(endDate);
+                        const formattedDate = (originalDate.getMonth() + 1).toString().padStart(2, '0') + '/' + originalDate.getDate().toString().padStart(2, '0') + '/' + originalDate.getFullYear();
+                        const formattedDateEnd = (originalDateEnd.getMonth() + 1).toString().padStart(2, '0') + '/' + (originalDateEnd.getDate() - 1).toString().padStart(2, '0') + '/' + originalDateEnd.getFullYear();
+                        console.log(formattedDate);
+                        console.log('Lay ngay ket thuc: ',formattedDateEnd);
+                        console.log('Lay ngay bat dau: ',formattedDate);
+                      } else {
+                       
+                      }
+                    
+                       
+                       
                     },
                 },
                 nextButton: {
@@ -153,10 +159,10 @@ const ParentReportSessionPage = () => {
               calendar.destroy();
           };
       }
-  }, []);
+  }, [reportData]);
 
   // const reportData = lesionSelectors.getLesionList();
-
+  
   return (
     reportData.length > 0 ? <ParentReportSessionPageStyled
     

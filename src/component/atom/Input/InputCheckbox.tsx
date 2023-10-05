@@ -2,7 +2,7 @@ import { Checkbox, Form, FormItemProps } from 'antd';
 
 interface Props extends FormItemProps {
   labelCheckbox: string,
-  onChange?: any
+  onChange?: any,
 }
 
 const InputCheckbox = ({
@@ -17,7 +17,7 @@ const InputCheckbox = ({
 
   return (
     <Form.Item {...props} valuePropName='checked'>
-      <Checkbox checked={!!form.getFieldValue(name ?? '')} onChange={onChange} style={{fontWeight: 600}}>{labelCheckbox}</Checkbox>
+      <Checkbox onChange={onChange} style={{fontWeight: 600}}>{labelCheckbox}</Checkbox>
     </Form.Item>
   );
 };

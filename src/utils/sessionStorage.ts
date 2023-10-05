@@ -1,5 +1,5 @@
 
-type IKeyStore = 'token' | 'user_name' | 'role' | 'user_code' | 'class_id' | 'class_name' | 'user_id';
+type IKeyStore = 'token' | 'user_name' | 'role' | 'user_code' | 'class_id' | 'class_name' | 'user_id' | 'path_name';
 
 const session = {
   set: (keyValue: IKeyStore, value: string) => {

@@ -20,12 +20,14 @@ interface AuthForm {
   password: string
 }
 
+enum ERole {
+  TEACHER = 'TEACHER',
+  PARENT = 'PARENT'
+}
+
 const LoginPage = () => {
 
   const dispatch = useAppDispatch();
-  const loadingPage = uiSelector.getLoadingPage();
-
-  // setLoading(true);
   const navigate = useNavigate();
   // console.log(loadingPage);
 
@@ -40,17 +42,17 @@ const LoginPage = () => {
   //     navigate('/student');
   //   }
   // },[token]);
-
-  const setDataToStogare = async (resData : IApiLoginResData) => {
-    await storage.set('role', resData?.Role.Title__c);
-    await storage.set('token', resData.token);
-    await storage.set('user_name', resData.UserName__c);
-    await storage.set('class_id', resData.Class.Id);
-    await storage.set('class_name', resData.Class.Name);   
-    await storage.set('user_id', resData.Id);
-  };
   
   const onSubmit = async (values: AuthForm) => {
+
+    // parent
+    // 0375767857
+    // ksvchainamtest
+
+    // teacher
+    // 0333007630
+    // ksvchainamtest
+    
     try {
       await dispatch(uiActions.setLoadingPage(true));
       // const res = await dispatch(authActions.login.fetch({

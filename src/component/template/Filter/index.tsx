@@ -22,6 +22,9 @@ const Filter = ({children}: Props) => {
 export default Filter;
 
 const FilterStyled = styled(RowH)`
+  background-color: white;
+  border-radius: 12px;
+  padding: 8px;
   .options {
     /* width: 80%; */
     display: flex;

@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 
 export const DATE_FORMAT = 'DD/MM/YYYY';
@@ -55,4 +55,8 @@ export const hexToRGB = (hex: string, alpha?: number) => {
   const b = parseInt(hex.slice(5, 7), 16);
 
   return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha ?? 1 + ')';
+};
+
+export const getTimeToString = (hour: number, minute: number) => {
+  return `${hour} giờ ${minute > 0 ? minute + 'phút' : ''}`;
 };

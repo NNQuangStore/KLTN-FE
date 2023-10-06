@@ -163,16 +163,14 @@ const ReportLesionPage = () => {
     setData(dataSource);
   },[date]);
 
-  const submit = async (values: any) => {    
-    console.log(values);
-    
+  const submit = async (values: any) => {        
     try {
       const rest: AxiosResponse = await apisLesion.saveLesion([{
         ...values,
         lessonID: formData ? formData.Id : undefined,
         sentDay: values.sentDay.format('YYYY-MM-DD'),
-        sendTime:  values.isAutoSent ? dayjs(values.time).get('hour') : 16,
-        sendMinute:  values.isAutoSent ? dayjs(values.time).get('minute') : 0,
+        sendTime: dayjs(values.time).get('hour'),
+        sendMinute: dayjs(values.time).get('minute'),
         isAutoSent: !!values.isAutoSent,
         classID: classId,
         status: isDraff ? 'Draft' : undefined,
@@ -238,7 +236,7 @@ const ReportLesionPage = () => {
           </Tooltip>
         </RowH>
 
-        <DataTable bordered={false} columns={columns} dataSource={data}/>
+        <DataTable size='large' bordered={false} columns={columns} dataSource={data}/>
 
       </div>
 
@@ -261,19 +259,20 @@ const ReportLesionPage = () => {
             <Form.Item valuePropName='checked' name={'isAutoSent'}>
               <Checkbox onChange={(e: any) => setTimeActive(e.target.checked)} style={{fontWeight: 600}}>{'Tự động gửi'}</Checkbox>
             </Form.Item>
-              <p style={{ color: 'gray', fontSize: '14px', marginTop: '-16px' }}>Điều chỉnh thời gia tự động gửi. Nếu không mặc định là 16:00</p>
+              <p style={{ color: 'gray', fontSize: '14px', marginTop: '-28px' }}>Điều chỉnh thời gian tự động gửi</p>
 
             { timeActive ? <Form.Item rules={[
               {required: true}
             ]} label='Thời gian gửi' name='time'>
-                <TimePickerAutoChange 
-                  format={'HH:mm'} size='large' 
-                  style={{width: '100%'}} 
-                  placeholder='Chọn thời gian'
-                />
+              <TimePickerAutoChange 
+                format={'HH:mm'} size='large' 
+                style={{width: '100%'}} 
+                placeholder='Chọn thời gian'
+                defaultValue={dayjs().set('minute',0).set('hour', 16)}
+              />
             </Form.Item> : <></> }
 
-            <Form.Item>
+            <Form.Item label='Nội dung'>
              <InputTextEditor 
                 value={content} 
                 onChange={setContent} />
@@ -322,7 +321,10 @@ const ModalStyled =styled(Modal)`
     margin-top: 12px;
     max-height: 160px;
   }
-  
-  
 
+  .ant-modal-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  
 `;

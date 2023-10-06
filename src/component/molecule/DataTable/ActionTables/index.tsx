@@ -23,7 +23,7 @@ const ActionTable = ({actions} : ActionTableProps) => {
         //   {o.label}
         // </ActionTableItemStyled>
         <Tooltip key={index} placement='topLeft' title={o.label}>
-          <Button shape='default' icon={React.cloneElement(o.icon, {style:{color: o.color}})} size={'middle'} onClick={o.handle} style={{backgroundColor: hexToRGB(o.color ?? '', 0.1), border: 'none'}} />
+          <Button shape='default' icon={React.cloneElement(o.icon, {style:{color: o.color}})} size={'small'} onClick={o.handle} style={{backgroundColor: hexToRGB(o.color ?? '', 0.1), border: 'none'}} />
         </Tooltip>
       ))}
     </ActionTableStyled>

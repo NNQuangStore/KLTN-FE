@@ -36,6 +36,11 @@ const ActionTableStyled = styled.ul`
   list-style: none;
   display: flex;
   padding: 0px;
+  margin: 0px;
+  display: flex;
+  gap: 8px;
+  justify-content: end;
+
 `;
 
 const ActionTableItemStyled = styled.li<{color: string}>`

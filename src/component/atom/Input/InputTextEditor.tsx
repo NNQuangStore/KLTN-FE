@@ -20,7 +20,6 @@ const InputTextEditor = ({value, onChange }: {value: string, onChange: any}) => 
           ['clean']
         ],
         clipboard: {
-          // toggle to add extra line breaks when pasting HTML:
           matchVisual: false,
         }}}
       formats={[
@@ -41,7 +40,10 @@ const ReactQuillStyled = styled(ReactQuill)`
 
   .ql-toolbar  {
     border-radius: 12px 12px 0 0;
-    background-color: #1b9aaa38;
+    background-color: lightgray;
+  }
+  .ql-editor {
+    min-height: 140px;
   }
 
   .ql-container  {

@@ -6,9 +6,9 @@ import FormLayout, { ActionFormStyled } from '../../component/organism/FormLayou
 import { useEffect, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { CalendarOutlined, DeleteOutlined, EditOutlined, LeftCircleOutlined, LeftOutlined, RightCircleOutlined, RightOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { Button, DatePicker, Form, Modal, TimePicker, message } from 'antd';
+import { Button, Checkbox, DatePicker, Form, Modal, Space, TimePicker, Tooltip, message } from 'antd';
 import InputText from '../../component/atom/Input/InputText';
 import InputCheckbox from '../../component/atom/Input/InputCheckbox';
 import ButtonOutline from '../../component/atom/Button/ButtonOutline';
@@ -26,13 +26,18 @@ import weekday from 'dayjs/plugin/weekday';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 
-import ButtonImport from '../../component/atom/Button/ButtonImport';
+import ButtonImport from './widgets/ButtonImport';
 import { socket } from '../../utils/socket';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import InputTextEditor from '../../component/atom/Input/InputTextEditor';
 import { useAppDispatch } from '../../store/hooks';
 import lesionActions from './services/actions';
+import RowH from '../../component/atom/Row/RowH';
+import { time } from 'console';
+import { getTimeToString } from '../../utils/unit';
+import ButtonExport from './widgets/ButtonExport';
+import TimePickerAutoChange from '../../component/atom/Input/TimePickerAutoChange';
 
 
 
@@ -49,7 +54,7 @@ const ReportLesionPage = () => {
 
   const columns: ColumnsType<ReportLesion>= [
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'Title__c',
       key: 'Title__c',
     },
@@ -58,6 +63,9 @@ const ReportLesionPage = () => {
       dataIndex: 'SentDay__c',
       key: 'SentDay__c',
       render: (value) => (dayjs(value).format('DD/MM/YYYY'))
+    },{
+      title: 'Thời gian gửi',
+      render: (item: ReportLesion) => getTimeToString(item.SendTime__c, item.SendMinute__c)
     },
     {
       title: 'Trạng thái',
@@ -78,6 +86,7 @@ const ReportLesionPage = () => {
     },
     {
       title: 'Hành động',
+      align: 'right',
       render: (item) => 
         item.Status__c !== 'Accepted' && (<ActionTable actions={[
           {
@@ -101,22 +110,7 @@ const ReportLesionPage = () => {
 
 
   const classId = storage.get('class_id');
-  const token = storage.token.get();
   const [content, setContent] = useState<any>();
-
-
-
-  const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(lesionActions.getListLesion.fetch());
-  //   if(token && token !== ''){
-  //     socket.emit('addTeacher', {senderId: token});
-  //   }
-  // },[]);
-
-  const getWeekDate = (date: Moment) => {
-    return [date.clone().startOf('isoWeek'), date.clone().endOf('isoWeek')];
-  };
   const dataReportLesion = lesionSelectors.getLesionList();
   const [data, setData] = useState<ReportLesion[]>([]);
   const [isDraff, setIsDraff] = useState<boolean>(false);
@@ -124,7 +118,16 @@ const ReportLesionPage = () => {
   const [timeActive, setTimeActive] = useState<boolean>(false);
   const [form] = useForm();
   const [formData, setFormData] = useState<any>();
+  const dispatch = useAppDispatch();
+
+  const getWeekDate = (date: Moment) => {
+    return [date.clone().startOf('isoWeek'), date.clone().endOf('isoWeek')];
+  };
   const [date, setDate] = useState<Moment[]>(getWeekDate(moment()));
+
+  useEffect(() => {
+    dispatch(lesionActions.getListLesion.fetch());
+  }, []);
 
 
   useEffect(() => {
@@ -139,15 +142,20 @@ const ReportLesionPage = () => {
   useEffect(() => {
     if(!formData) return;
     
+    console.log(formData);
+    
+
     form.setFieldsValue({
       title: formData.Title__c,
-      sentDay: dayjs(formData.SentDay),
+      sentDay: dayjs(formData.SentDay__c),
       time: dayjs().set('hour', formData.SendTime__c ?? 16).set('minute', formData.SendMinute__c),
-      isAutoSent: formData.isAutoSent,
+      isAutoSent: formData.IsAutoSent__c,
       lessionID: formData.Id,
-      status: formData.status,
+      status: formData.Status__c,
       content: formData.Content__c
     });
+    setContent(formData.Content__c);
+    setTimeActive(formData.IsAutoSent__c);
   },[formData]);
 
   useEffect(() => {    
@@ -155,26 +163,25 @@ const ReportLesionPage = () => {
     setData(dataSource);
   },[date]);
 
-  const submit = async (values: any) => {
-    // console.log(values);
+  const submit = async (values: any) => {    
+    console.log(values);
     
     try {
       const rest: AxiosResponse = await apisLesion.saveLesion([{
         ...values,
         lessonID: formData ? formData.Id : undefined,
-        sentDay: dayjs(values.setDay).format('YYYY-MM-DD'),
-        sendTime: dayjs(values.time).get('hour'),
-        sendMinute: dayjs(values.time).get('minute'),
+        sentDay: values.sentDay.format('YYYY-MM-DD'),
+        sendTime:  values.isAutoSent ? dayjs(values.time).get('hour') : 16,
+        sendMinute:  values.isAutoSent ? dayjs(values.time).get('minute') : 0,
         isAutoSent: !!values.isAutoSent,
         classID: classId,
         status: isDraff ? 'Draft' : undefined,
         time: undefined,
         content: content
-      }]);
-      console.log('???');
-      
+      }]);      
       
       const data = rest.data.data;
+
       if(data) {
         if(data[0].Status__c === 'Accepted'){
           socket.emit('add-lesson-complete', {classId, lessonId: data[0].Id, dataLesson: data[0]});
@@ -200,23 +207,49 @@ const ReportLesionPage = () => {
 
   return (
     <ReportLesionPageStyled>
-      <Filter>
-        <ButtonImport />
-        <DatePicker onChange={datePickerChange} value={dayjs(date[0].format())} format='DD-MM-YYYY' defaultValue={dayjs()} picker='week' style={{backgroundColor: 'white'}} />
-        <Button size='large' type='primary' onClick={() => setDate(getWeekDate(date[0].subtract(7, 'day')))}>Trước</Button>
-        <Button onClick={() => setDate(getWeekDate(moment()))} size='large' type='primary'>Hiện tại</Button>
-        <Button size='large' type='primary' onClick={() => setDate(getWeekDate(date[1].add(7, 'day')))}>Sau</Button>
-        <ButtonPrimary onClick={() => setOpen(true)} label='Thêm bài học'/>
-        
-      </Filter>
-      <div style={{height: '12px'}}></div>
-      <DataTable bordered={false} columns={columns} dataSource={data}/>
+      <div className='table-container'>
+
+        <div className='filter'>
+          <ButtonExport />
+          <ButtonImport />
+          <ButtonPrimary onClick={() => {
+            form.resetFields();
+            setContent('');
+            setTimeActive(false);
+            setOpen(true);
+            }} label='Thêm bài học'/>
+        </div>
+        {/* <div style={{height: '12px'}}></div> */}
 
 
-      <ModalStyled footer={null}
+        <RowH className='date-picker-range'>
+          <Tooltip title="Tuần trước">
+            <Button icon={<LeftOutlined />} size='large' type='default' shape='circle' onClick={() => setDate(getWeekDate(date[0].subtract(7, 'day')))}></Button>
+          </Tooltip>
+          <Space.Compact block style={{width: 'auto'}}>
+            <DatePicker suffixIcon={<></>} onChange={datePickerChange} value={dayjs(date[0].format())} format='DD-MM-YYYY' defaultValue={dayjs()} picker='week' style={{backgroundColor: 'white'}} />
+            <Tooltip title="Tuần hiện tại">
+              <Button icon={<CalendarOutlined />} onClick={() => setDate(getWeekDate(moment()))} size='large' type='default'></Button>
+            </Tooltip>
+            
+          </Space.Compact>
+          <Tooltip title="Tuần sau">
+            <Button icon={<RightOutlined />} size='large' type='default' shape='circle' onClick={() => setDate(getWeekDate(date[1].add(7, 'day')))}></Button>
+          </Tooltip>
+        </RowH>
+
+        <DataTable bordered={false} columns={columns} dataSource={data}/>
+
+      </div>
+
+
+      {open && <ModalStyled footer={null}
         onCancel={handleClose}
-        forceRender open={open} title={'Báo bài'}>
-        <FormLayout form={form} renderButton={() => <></>} onSubmit={submit}>
+        forceRender 
+        open={open} 
+        title={'Báo bài'}>
+          <FormLayout form={form} renderButton={() => <></>} 
+        onSubmit={submit}>
             <InputText rules={[
               {required: true}
             ]} label={'Tiêu đề'} name={'title'} />
@@ -225,18 +258,25 @@ const ReportLesionPage = () => {
             ]} label='Ngày gửi' name='sentDay'>
               <DatePicker size='large' style={{width: '100%'}} placeholder='Chọn ngày gửi'/>
             </Form.Item>
-            <InputCheckbox onChange={(e: any) => setTimeActive(e.target.checked)} name={'isAutoSent'} labelCheckbox='Tự động gửi'/>
-            
+            <Form.Item valuePropName='checked' name={'isAutoSent'}>
+              <Checkbox onChange={(e: any) => setTimeActive(e.target.checked)} style={{fontWeight: 600}}>{'Tự động gửi'}</Checkbox>
+            </Form.Item>
+              <p style={{ color: 'gray', fontSize: '14px', marginTop: '-16px' }}>Điều chỉnh thời gia tự động gửi. Nếu không mặc định là 16:00</p>
+
             { timeActive ? <Form.Item rules={[
               {required: true}
             ]} label='Thời gian gửi' name='time'>
-              <TimePicker format={'HH:mm'} size='large' style={{width: '100%'}} placeholder='Chọn thời gian' defaultValue={dayjs().set('hour', 16).set('minute', 0)}/>
-            </Form.Item> : <></>}
+                <TimePickerAutoChange 
+                  format={'HH:mm'} size='large' 
+                  style={{width: '100%'}} 
+                  placeholder='Chọn thời gian'
+                />
+            </Form.Item> : <></> }
 
             <Form.Item>
              <InputTextEditor 
-              value={content} 
-              onChange={setContent} />
+                value={content} 
+                onChange={setContent} />
             </Form.Item>
 
             <ActionFormStyled justify={'center'} >
@@ -244,7 +284,7 @@ const ReportLesionPage = () => {
               <ButtonPrimary htmlType='submit' label={timeActive ? 'Lưu' : 'Gửi'}/>
             </ActionFormStyled>
         </FormLayout>
-      </ModalStyled>
+      </ModalStyled>}
     </ReportLesionPageStyled>
   );
 };
@@ -252,6 +292,27 @@ export default ReportLesionPage;
 
 const ReportLesionPageStyled = styled.div`
 
+  .filter {
+    display: flex;
+    justify-content: end;
+    gap: 8px;
+    border-bottom: 1px solid #F1F1F1;
+    padding: 8px;
+  }
+
+  .table-container {
+    background-color: white;
+    padding: 0px 16px;
+    .date-picker-range {
+      height: auto;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      margin: 12px 0px;
+    }
+  }
 `;
 
 const ModalStyled =styled(Modal)`
@@ -262,4 +323,6 @@ const ModalStyled =styled(Modal)`
     max-height: 160px;
   }
   
+  
+
 `;

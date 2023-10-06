@@ -1,14 +1,15 @@
-import { Modal, Upload } from 'antd';
-import ButtonOutline from './ButtonOutline';
-import DataTable from '../../molecule/DataTable';
+import { Button, Modal, Upload } from 'antd';
+import ButtonOutline from '../../../component/atom/Button/ButtonOutline';
+import DataTable from '../../../component/molecule/DataTable';
 import { useEffect, useState } from 'react';
-import { BoxPlotOutlined, DropboxOutlined } from '@ant-design/icons';
+import { BoxPlotOutlined, DownloadOutlined, DropboxOutlined, UploadOutlined } from '@ant-design/icons';
 import { DraggerProps, RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 import { read, utils } from 'xlsx';
 import dayjs from 'dayjs';
 import storage from '../../../utils/sessionStorage';
+import apisLesion from '../services/apis';
 
-const ButtonImport = () => {
+const ButtonExport = () => {
 
   const [open, setOpen] = useState<boolean>(false);
   const [data, setData] = useState<any>(false);
@@ -24,9 +25,12 @@ const ButtonImport = () => {
     isAutoSend = 'Tự động gửi'
   }
 
+  const saveReport = async(rest: any) => {
+    await apisLesion.saveLesion(rest); 
+  };
+
   useEffect(() => {
     if(data) {
-      console.log(data);
       const rest = data.map((o: any) => {
         const date = dayjs(o[EColExcel.date], 'DD/MM/YYYY HH:mm');
         const autoSend = (o[EColExcel.isAutoSend] as string).toLowerCase() === 'Có'.toLowerCase();
@@ -41,7 +45,9 @@ const ButtonImport = () => {
           status: status,
           content: o[EColExcel.content]
         };});
-        console.log(rest);
+        
+        saveReport(rest);
+         
         
       setOpen(false);
       
@@ -80,14 +86,27 @@ const ButtonImport = () => {
       title: 'Trạng thái',
       dataIndex: 'Status__c',
       key: 'Status__c',
+    },
+    {
+      title: 'Nội dung',
+      dataIndex: 'Content__c',
+      key: 'Content__c',
+    },
+    {
+      title: 'Tự động gửi',
+      dataIndex: 'IsAutoSent__c',
+      key: 'IsAutoSent__c',
     }
   ];
 
   const dataSource = [
     {
-      Title__c: 'Haha',
-      SentDay__c: '2023-12-04',
-      Status__c: 'Đã gửi'
+      Title__c: 'Bài học 1-1',
+      SentDay__c: '05/10/2023 14:23',
+      Status__c: 'Đã gửi',
+      Content__c: 'Làm bài tập số 3 trang 67', 
+      IsAutoSent__c: 'Có'
+
     }
   ];
 
@@ -106,7 +125,6 @@ const ButtonImport = () => {
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];
           const json = utils.sheet_to_json(worksheet);
-          console.log(json);
           setData(json);
           // const keys = Object.keys(json[0]);
 
@@ -122,27 +140,38 @@ const ButtonImport = () => {
 
   return(
     <>
-      <ButtonOutline onClick={() => setOpen(true)}>Import</ButtonOutline>
+      <Button size='large' type='default' icon={<DownloadOutlined />} onClick={() => setOpen(true)}>Export</Button>
       <Modal 
-        onCancel={() => setOpen(false)}
-        open={open}         
-        footer={null}
-        forceRender
-        >
-        <h3>Hãy import theo luồng data sao</h3>
-        <DataTable pagination={false} bordered={false} columns={columns} dataSource={dataSource}/>
-        <Dragger {...props}>
-          <p className="ant-upload-drag-icon">
-            <DropboxOutlined />
-          </p>
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
-          </p>
-        </Dragger>
+        style={{
+          minWidth: '800px'
+        }}
+          onCancel={() => setOpen(false)}
+          open={open}         
+          footer={null}
+          forceRender
+          >
+          <h2>Export file</h2>
+          <p style={{opacity: '.6'}}>* Xuất file sẽ có dịnh dạng như sau</p>
+          <DataTable pagination={false} bordered={false} columns={columns} dataSource={dataSource}/>
+          <div style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end'
+          }}>
+            <Button type='primary' size='large' style={{marginLeft: '0px'}}>Export File</Button>
+          </div>
+          {/* <Dragger {...props}>
+            <p className="ant-upload-drag-icon">
+              <DropboxOutlined />
+            </p>
+            <p className="ant-upload-text">Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
+            <p className="ant-upload-hint">
+              Hỗ trợ tải lên một lần. Xin hãy tuân thủ theo định dạng bên trên
+            </p>
+          </Dragger> */}
       </Modal>
     </>
   );
 };
 
-export default ButtonImport;
+export default ButtonExport;

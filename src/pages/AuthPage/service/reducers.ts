@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { NAME_REDUCER } from './constants';
 import { IState } from './types/reducer';
 import actions from './actions';
-import { IApiLoginResData } from './types/auth';
 
 const initialState: IState = {
   access_token: '',

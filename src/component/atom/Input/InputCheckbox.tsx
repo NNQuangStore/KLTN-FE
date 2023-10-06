@@ -16,7 +16,7 @@ const InputCheckbox = ({
   
 
   return (
-    <Form.Item {...props} valuePropName='checked'>
+    <Form.Item {...props}>
       <Checkbox onChange={onChange} style={{fontWeight: 600}}>{labelCheckbox}</Checkbox>
     </Form.Item>
   );

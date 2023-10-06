@@ -35,11 +35,11 @@ const InputTextEditor = ({value, onChange }: {value: string, onChange: any}) => 
 export default InputTextEditor;
 
 const ReactQuillStyled = styled(ReactQuill)`
-  border-radius: 12px;
+  border-radius: 4px;
   border: 1px solid #d9d9d9;
 
   .ql-toolbar  {
-    border-radius: 12px 12px 0 0;
+    border-radius: 3px 3ppx 0 0;
     background-color: lightgray;
   }
   .ql-editor {

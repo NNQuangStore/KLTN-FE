@@ -8,7 +8,7 @@ import { ColumnsType } from 'antd/es/table';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import { CalendarOutlined, DeleteOutlined, EditOutlined, LeftCircleOutlined, LeftOutlined, RightCircleOutlined, RightOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { Button, Checkbox, DatePicker, Form, Modal, Space, TimePicker, Tooltip, message } from 'antd';
+import { Button, Checkbox, DatePicker, Form, Modal, Space, Tag, TimePicker, Tooltip, message } from 'antd';
 import InputText from '../../component/atom/Input/InputText';
 import InputCheckbox from '../../component/atom/Input/InputCheckbox';
 import ButtonOutline from '../../component/atom/Button/ButtonOutline';
@@ -38,6 +38,7 @@ import { time } from 'console';
 import { getTimeToString } from '../../utils/unit';
 import ButtonExport from './widgets/ButtonExport';
 import TimePickerAutoChange from '../../component/atom/Input/TimePickerAutoChange';
+import uiActions from '../../services/UI/actions';
 
 
 
@@ -74,13 +75,13 @@ const ReportLesionPage = () => {
       render: (value) => {
         switch(value) {
           case 'Accepted':
-            return 'Đã gửi';
+            return <Tag color='green'>Đã gửi</Tag>;
           case 'Draft':
-            return 'Lưu nháp';
+            return <Tag color='red'>Lưu nháp</Tag>;
           case 'Pending':
-            return 'Đang gửi';
+            return <Tag color='blue'>Đang gửi</Tag>;
           default:
-            return 'Đang gửi';
+            return <Tag color='blue'>Đang gửi</Tag>;
         }
       }
     },
@@ -163,8 +164,10 @@ const ReportLesionPage = () => {
     setData(dataSource);
   },[date]);
 
-  const submit = async (values: any) => {        
+  const submit = async (values: any) => {      
+    let hasError = false;  
     try {
+      await dispatch(uiActions.setLoadingPage(true));
       const rest: AxiosResponse = await apisLesion.saveLesion([{
         ...values,
         lessonID: formData ? formData.Id : undefined,
@@ -185,16 +188,16 @@ const ReportLesionPage = () => {
           socket.emit('add-lesson-complete', {classId, lessonId: data[0].Id, dataLesson: data[0]});
         }
         setOpen(false);
-        dispatch(lesionActions.getListLesion.fetch());
-        message.success('Lưu bài thành công');
+        await dispatch(lesionActions.getListLesion.fetch());
       }
-      
     } catch (error: any) {
-      message.error('Đã có lỗi xảy ra, vui lòng thử lại');
+      hasError = true;
     } finally {
       form.resetFields();
       handleClose();
       setIsDraff(false);
+      await dispatch(uiActions.setLoadingPage(false));
+      hasError ? message.error('Đã có lỗi xảy ra, vui lòng thử lại') : message.success('Lưu bài thành công');
     }
       
   };
@@ -250,7 +253,7 @@ const ReportLesionPage = () => {
         onSubmit={submit}>
             <InputText rules={[
               {required: true}
-            ]} label={'Tiêu đề'} name={'title'} />
+            ]} label={'Tiêu đề'} name={'title'}/>
             <Form.Item rules={[
               {required: true}
             ]} label='Ngày gửi' name='sentDay'>
@@ -259,9 +262,8 @@ const ReportLesionPage = () => {
             <Form.Item valuePropName='checked' name={'isAutoSent'}>
               <Checkbox onChange={(e: any) => setTimeActive(e.target.checked)} style={{fontWeight: 600}}>{'Tự động gửi'}</Checkbox>
             </Form.Item>
-              <p style={{ color: 'gray', fontSize: '14px', marginTop: '-28px' }}>Điều chỉnh thời gian tự động gửi</p>
-
-            { timeActive ? <Form.Item rules={[
+            {timeActive && <p style={{ color: 'gray', fontSize: '14px', marginTop: '-28px' }}><i>* Báo bài sẽ được gửi tự động đến phụ huynh *</i></p>}
+            {timeActive ? <Form.Item rules={[
               {required: true}
             ]} label='Thời gian gửi' name='time'>
               <TimePickerAutoChange 

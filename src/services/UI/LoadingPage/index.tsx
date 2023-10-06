@@ -40,8 +40,7 @@ const LoadingPageStyled = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 95px 132px;
-    gap: 16px;
+    padding: 8px 32px;
     background: #FFFFFF;
     border-radius: 6px;
     p {

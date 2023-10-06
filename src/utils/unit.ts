@@ -58,5 +58,5 @@ export const hexToRGB = (hex: string, alpha?: number) => {
 };
 
 export const getTimeToString = (hour: number, minute: number) => {
-  return `${hour} giờ ${minute > 0 ? minute + 'phút' : ''}`;
+  return `${hour} giờ ${minute > 0 ? minute + ' phút' : ''}`;
 };

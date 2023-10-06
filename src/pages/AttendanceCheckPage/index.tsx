@@ -1,29 +1,39 @@
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import DataTable from '../../component/molecule/DataTable';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import Filter from '../../component/template/Filter';
 import { styled } from 'styled-components';
-import { Button } from 'antd';
+import { Button, DatePicker, Input, Select, Space } from 'antd';
 import { useNavigate } from 'react-router';
+import { SizeType } from 'antd/es/config-provider/SizeContext';
+import { useState } from 'react';
+import { formatDate } from '@fullcalendar/core';
+import dayjs from 'dayjs';
 
 const AttendanceCheckPage = () => {
+  const [size, setSize] = useState<SizeType>('middle');
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const navigate = useNavigate();
   const dataSource = [
     {
       date: '2023-12-19',
-      class_size: 23
+      present: 23,
+      absent:23,
     },
     {
       date: '2023-12-19',
-      class_size: 23
+      present: 23,
+      absent:23,
     },
     {
       date: '2023-12-19',
-      class_size: 23
+      present: 23,
+      absent:23,
     },
     {
       date: '2023-12-19',
-      class_size: 23
+      present: 23,
+      absent:23,
     },
   ];
 
@@ -32,11 +42,6 @@ const AttendanceCheckPage = () => {
       title: 'Ngày',
       dataIndex: 'date',
       key: 'date',
-    },
-    {
-      title: 'sĩ số',
-      dataIndex: 'class_size',
-      key: 'class_size',
     },
     {
       title: 'Có mặt',
@@ -49,12 +54,7 @@ const AttendanceCheckPage = () => {
       key: 'absent',
     },
     {
-      title: 'Lí do',
-      dataIndex: 'reason',
-      key: 'reason', 
-    },
-    {
-      title: 'Actions',
+      title: 'Thao tác',
       dataIndex: 'actions',
       key: 'actions',
       render: () => {
@@ -71,11 +71,50 @@ const AttendanceCheckPage = () => {
       },
     },
   ];
-
+  const handleDateChange = (date: any, dateString: string) => {
+    setSelectedDate(dateString);
+  };
   return (
     <AttendanceCheckPageStyled>
       {/* <Filter></Filter> */}
-      <Button onClick={() => navigate('/attendance/create-today')}>Điểm danh hôm nay</Button>
+      <div style={{ position: 'relative' }}>
+        <Space>
+          <h4>Từ ngày</h4>
+          <DatePicker
+          onChange={handleDateChange}
+          format="YYYY-MM-DD"
+          defaultValue={dayjs()}
+          placeholder="Chọn ngày"
+        />
+        </Space>
+        <Space style={{marginLeft:10}}>
+          <h4>Đến ngày</h4>
+          <DatePicker onChange={handleDateChange}
+          format="YYYY-MM-DD"
+          defaultValue={dayjs()}
+          placeholder="Chọn ngày"/>
+        </Space>
+      </div>
+      <div style={{ position: 'relative' }}>
+        <Space>
+          <h2>Sỉ số: 50</h2>
+          <span
+            className='mock-block'
+            style={{ position: 'absolute', top: 10, right: 0 }}
+          >
+            <Button
+              // onClick={showModal}
+              onClick={() => navigate('/attendance/create-today')}
+              type='primary'
+              icon={<PlusOutlined />}
+              size={size}
+              style={{ marginLeft: 10 }}
+            >
+              Điểm danh hôm nay
+            </Button>
+          </span>
+        </Space>
+      </div>
       <DataTable columns={columns} dataSource={dataSource} />
     </AttendanceCheckPageStyled>
   );

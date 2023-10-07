@@ -54,7 +54,7 @@ function AppUI() {
         <Route path='app' element={shield(ParentLayout)}>
           <Route index path='home' element={<ParentHomePage />}/>
           <Route index path='evaluation-sheet' element={<EvaluationSheetPage />}/>
-          <Route path='report-session' element={<ParentReportSessionPage />}/>
+          <Route path='report-session' element={<ParentReportSessionNewPage />}/>
           <Route path='parent-attendance' element={<AttendancePage />}/>
           <Route path='time-table' element={<TimeTablePage />}/>
         </Route>

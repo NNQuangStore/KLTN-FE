@@ -2,6 +2,9 @@ import { Dayjs } from 'dayjs';
 
 
 export const DATE_FORMAT = 'DD/MM/YYYY';
+
+export const BORDER_STYLED = '1px solid #F1F1F1';
+
 export const MESSAGE = {
   _NUMBER_SCORE: 'The score is only within the range of 1 - 10 and has only 2 decimal places.'
 };
@@ -25,11 +28,11 @@ export const roundNumber = (number: number) => {
   return Math.round(number * 100) / 100;
 };
 
-export const calculateAverage = (scores: any[]) => {
-  const scoresFilter = scores.filter(o => o !== '');  
-  const sum = (scoresFilter ?? []).reduce((a, b) => Number(a) + Number(b), 0);
-  return sum > 0 ? roundNumber(Number(sum) / scoresFilter.length) : 0;
-};
+// export const calculateAverage = (scores: any[]) => {
+//   const scoresFilter = scores.filter(o => o !== '');  
+//   const sum = (scoresFilter ?? []).reduce((a, b) => Number(a) + Number(b), 0);
+//   return sum > 0 ? roundNumber(Number(sum) / scoresFilter.length) : 0;
+// };
 
 export const getDatesBetween = (from: Dayjs, to: Dayjs) => {
   if(from || to) return [];

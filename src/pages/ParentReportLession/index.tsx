@@ -96,7 +96,6 @@ const ParentReportSessionPage = () => {
 
   const getLesson = async () => {
     const res = await apisLessonParent.getListLessonParent();
-    console.log(res);
   };
 
   useEffect(() => {

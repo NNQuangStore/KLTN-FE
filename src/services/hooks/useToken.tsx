@@ -31,8 +31,6 @@ export const useToken = () => {
       // }, 100);
       storage.set('path_name', fileNamePart);
     // const href = window.location.href;
-      console.log(fileNamePart);
-      // redirect(fileNamePart);
     
   }, []);
 

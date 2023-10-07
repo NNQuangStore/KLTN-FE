@@ -16,12 +16,11 @@ const DataTable = <T extends {}>({
   const tableRef = useRef<any>(null);
   const [exportTableRef, setExportTableRef] = useState();
 
+  console.log('???');
   
-  useEffect(() => {
-    setExportTableRef(tableRef.current.children[0].children[0].children[0].children[0].children[0].children[0]);
-  },[tableRef]);
-  
-  
+  // useEffect(() => {
+  //   setExportTableRef(tableRef.current.children[0].children[0].children[0].children[0].children[0].children[0]);
+  // },[tableRef]);
   
   return (
     <DataTableStyled>
@@ -35,7 +34,7 @@ const DataTable = <T extends {}>({
 
     </DownloadTableExcel> */}
       <TableStyled        
-        ref={tableRef}
+        // ref={tableRef}
         rowKey={(item) => item.id}
         size='small'
         bordered
@@ -78,14 +77,37 @@ const DataTableStyled = styled.div`
 const TableStyled = styled(Table)`
   width: 100%;
   .ant-table-thead {
+    /* tr:first-child {
+      th:last-child {
+        position: sticky;
+        right: 0;
+        top: 0;
+        z-index: 1000;
+        border: 1px solid #f0f0f0;
+      }
+    } */
     tr {
       th {
         background-color: white;
         text-wrap: nowrap;
       }
+      
       th::before {
         content: none !important;
       }
     }
+  }
+  /* .ant-table-row-level-0 {
+    .ant-table-cell:last-child {
+      position: sticky;
+      right: 0;
+      top: 0;
+      z-index: 1000;
+      border: 1px solid #f0f0f0;
+      background-color: white;
+    }
+  } */
+  .ant-table-cell {
+    white-space: nowrap;
   }
 `;

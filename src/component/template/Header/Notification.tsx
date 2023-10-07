@@ -94,7 +94,7 @@ const Notification = () => {
       arrow={false}
       onOpenChange={(newValue) => setOpen(newValue)}
     >
-      <Badge count={notification.reduce((total, item) => (item.IsSeen__c === false) ? total + 1 :total, 0)} size='small'>
+      <Badge count={notification?.reduce((total, item) => (item.IsSeen__c === false) ? total + 1 :total, 0)} size='small'>
         <BellOutlined />
       </Badge>
     </Popover>

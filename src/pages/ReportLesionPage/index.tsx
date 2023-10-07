@@ -39,6 +39,7 @@ import { getTimeToString } from '../../utils/unit';
 import ButtonExport from './widgets/ButtonExport';
 import TimePickerAutoChange from '../../component/atom/Input/TimePickerAutoChange';
 import uiActions from '../../services/UI/actions';
+import FormBlock from '../../component/organism/FormLayout/FormBlock';
 
 
 
@@ -52,6 +53,11 @@ dayjs.extend(weekYear);
 
 const ReportLesionPage = () => {
 
+  const isAccepted = (item: ReportLesion) => {    
+    if(!item) return false;
+
+    return item.Status__c === 'Accepted';
+  };
 
   const columns: ColumnsType<ReportLesion>= [
     {
@@ -89,7 +95,7 @@ const ReportLesionPage = () => {
       title: 'Hành động',
       align: 'right',
       render: (item) => 
-        item.Status__c !== 'Accepted' && (<ActionTable actions={[
+     (<ActionTable  actions={!isAccepted(item) ? [
           {
             handle: () => {setFormData(item); setOpen(true);},
             icon: <EditOutlined />,
@@ -98,20 +104,27 @@ const ReportLesionPage = () => {
           },
           {
             handle: async () => {
-              const res = await apisLesion.deleteLesion({id: item.Id});              
-              // dispatch(lesionActions.getListLesion.fetch());
+              await apisLesion.deleteLesion({id: item.Id});              
+              dispatch(lesionActions.getListLesion.fetch());
             },
             icon: <DeleteOutlined />,
             label: 'Xoá',
             color: '#f5222d'
           }
-        ]}/>)
+        ] : [
+          {
+            handle: () => {setFormData(item); setOpen(true); setErrContent('');},
+            icon: <EditOutlined />,
+            label: 'Chỉnh sửa',
+            color: '#faad14'
+          }]}/>)
     }
   ];
 
 
   const classId = storage.get('class_id');
   const [content, setContent] = useState<any>();
+  const [errContent, setErrContent] = useState<string>();
   const dataReportLesion = lesionSelectors.getLesionList();
   const [data, setData] = useState<ReportLesion[]>([]);
   const [isDraff, setIsDraff] = useState<boolean>(false);
@@ -141,10 +154,7 @@ const ReportLesionPage = () => {
   };
 
   useEffect(() => {
-    if(!formData) return;
-    
-    console.log(formData);
-    
+    if(!formData) return;    
 
     form.setFieldsValue({
       title: formData.Title__c,
@@ -164,7 +174,12 @@ const ReportLesionPage = () => {
     setData(dataSource);
   },[date]);
 
-  const submit = async (values: any) => {      
+  const submit = async (values: any) => {  
+    
+    if(content === '') {
+      setErrContent('Nội dung không được đề trống');
+      return;
+    }
     let hasError = false;  
     try {
       await dispatch(uiActions.setLoadingPage(true));
@@ -200,7 +215,7 @@ const ReportLesionPage = () => {
       hasError ? message.error('Đã có lỗi xảy ra, vui lòng thử lại') : message.success('Lưu bài thành công');
     }
       
-  };
+  };  
 
   const datePickerChange = (value: any) => {
     setDate(getWeekDate(moment(value?.format())));
@@ -216,6 +231,7 @@ const ReportLesionPage = () => {
           <ButtonPrimary onClick={() => {
             form.resetFields();
             setContent('');
+            setErrContent('');
             setTimeActive(false);
             setOpen(true);
             }} label='Thêm bài học'/>
@@ -251,37 +267,55 @@ const ReportLesionPage = () => {
         title={'Báo bài'}>
           <FormLayout form={form} renderButton={() => <></>} 
         onSubmit={submit}>
-            <InputText rules={[
-              {required: true}
-            ]} label={'Tiêu đề'} name={'title'}/>
-            <Form.Item rules={[
-              {required: true}
-            ]} label='Ngày gửi' name='sentDay'>
-              <DatePicker size='large' style={{width: '100%'}} placeholder='Chọn ngày gửi'/>
-            </Form.Item>
-            <Form.Item valuePropName='checked' name={'isAutoSent'}>
-              <Checkbox onChange={(e: any) => setTimeActive(e.target.checked)} style={{fontWeight: 600}}>{'Tự động gửi'}</Checkbox>
-            </Form.Item>
-            {timeActive && <p style={{ color: 'gray', fontSize: '14px', marginTop: '-28px' }}><i>* Báo bài sẽ được gửi tự động đến phụ huynh *</i></p>}
-            {timeActive ? <Form.Item rules={[
-              {required: true}
-            ]} label='Thời gian gửi' name='time'>
-              <TimePickerAutoChange 
-                format={'HH:mm'} size='large' 
-                style={{width: '100%'}} 
-                placeholder='Chọn thời gian'
-                defaultValue={dayjs().set('minute',0).set('hour', 16)}
-              />
-            </Form.Item> : <></> }
+            <FormBlock label='Điều chỉnh thời gian'>
 
-            <Form.Item label='Nội dung'>
-             <InputTextEditor 
-                value={content} 
-                onChange={setContent} />
-            </Form.Item>
+              <Form.Item rules={[
+                {required: true, message: 'Ngày gửi không được đề trống'}
+              ]} label='Ngày gửi' name='sentDay'>
+                <DatePicker disabledDate={(d) => {
+                  return (!d || d.isBefore(dayjs().subtract(1, 'day')));
+                }} onChange={(d) => {
+                  form.setFieldValue('title', `Báo bài ngày ${d?.format('DD/MM/YYYY')}`);
+                }} disabled={isAccepted(formData)} size='large' style={{width: '100%'}} placeholder='Chọn ngày gửi'/>
+              </Form.Item>
 
-            <ActionFormStyled justify={'center'} >
-              <ButtonOutline onClick={() => {setIsDraff(true); form.submit();}} label='Lưu Nháp'/>
+              <Form.Item valuePropName='checked' name={'isAutoSent'}>
+                <Checkbox disabled={isAccepted(formData)} onChange={(e: any) => setTimeActive(e.target.checked)} style={{fontWeight: 600}}>{'Tự động gửi'}</Checkbox>
+              </Form.Item>
+
+              {timeActive && <p style={{ color: 'gray', fontSize: '14px', marginTop: '-28px' }}><i>* Báo bài sẽ được gửi tự động đến phụ huynh *</i></p>}
+              
+              {timeActive ? <Form.Item rules={[
+                {required: true, message: 'Thời gian gửi không được đề trống'}
+              ]} label='Thời gian gửi' name='time'>
+                <TimePickerAutoChange 
+                  disabled={isAccepted(formData)}
+                  format={'HH:mm'} size='large' 
+                  style={{width: '100%'}} 
+                  placeholder='Chọn thời gian'
+                  defaultValue={dayjs().set('minute',0).set('hour', 16)}
+                />
+              </Form.Item> : <></> }
+            </FormBlock>
+            
+
+            <FormBlock label='Điều chỉnh nội dung'>
+
+              <InputText disabled={isAccepted(formData)} rules={[
+                {required: true, message: 'Tiêu đề không được đề trống'}
+              ]} label={'Tiêu đề'} name={'title'}/>
+
+              
+              <InputTextEditor 
+                  value={content} 
+                  onChange={setContent} />
+
+              {errContent && <p style={{color: 'red'}}>* Nội dung không được để trống</p>}
+                
+            </FormBlock>
+
+            <ActionFormStyled justify={'center'} style={{marginTop: '16px'}} >
+              {!isAccepted(formData) && <ButtonOutline onClick={() => {setIsDraff(true); form.submit();}} label='Lưu Nháp'/>}
               <ButtonPrimary htmlType='submit' label={timeActive ? 'Lưu' : 'Gửi'}/>
             </ActionFormStyled>
         </FormLayout>

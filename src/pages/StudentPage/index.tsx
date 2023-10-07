@@ -74,8 +74,6 @@ const StudentPage = () => {
     {
       title: ' ',
       render: (item) => {
-        console.log(item);
-        
         return (
           <ActionTable actions={[
             {
@@ -96,8 +94,6 @@ const StudentPage = () => {
 
   const data = StudentSelectors.getStudentList();
   const classId = storage.get('class_id');
-  console.log(classId);
-  
   const className = storage.get('class_name');
 
   return (

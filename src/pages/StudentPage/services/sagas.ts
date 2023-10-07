@@ -40,8 +40,6 @@ const getListStudents = function* () {
   try {
     yield setLoading(PATH_LOADING.getListStudents, true);
     const res: AxiosResponse<{ data: any[] }> = yield call(apis.getListStudent);
-    console.log(res?.data?.data[0].Student);
-    
     if (res?.data?.data) {
       const studentList = res?.data?.data[0].Student;
       yield put(actions.getListStudent.success(studentList));
@@ -64,8 +62,6 @@ const getDetailStudent: ISagaFunc<string> = function* ({ payload }) {
     const res: AxiosResponse<any> = yield call(apisStudent.getDetailStudent, param);
     if (res?.data?.data) {
       const StudentDetail = res.data.data[0];
-      console.log(StudentDetail);
-      
       yield put(actions.getDetailStudent.success(StudentDetail));
     } else {
       throw 'fail';

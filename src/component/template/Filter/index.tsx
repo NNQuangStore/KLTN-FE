@@ -10,8 +10,8 @@ interface Props {
 const Filter = ({children}: Props) => {
   return (
     <FilterStyled justify={'space-between'}>
-        <OBreadcrumb/>
-        {/* <div></div> */}
+        {/* <OBreadcrumb/> */}
+        <div></div>
         <div className='options'>
           {children}
         </div>

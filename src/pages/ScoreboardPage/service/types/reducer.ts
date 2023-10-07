@@ -1,5 +1,9 @@
-import { IScoreboard } from './scoreboard';
+import { Evalution } from '../apis';
+import { IScoreboardRes } from './scoreboard';
 
 export interface IState {
-  scoreboard: IScoreboard[];
+  scoreboard: IScoreboardRes | null;
+  params: {
+    evaluation: keyof typeof Evalution;
+  }
 }

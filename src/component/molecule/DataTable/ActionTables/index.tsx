@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import { hexToRGB } from '../../../../utils/unit';
 
 interface ActionTableProps {
-  actions: ActionItem[];
+  actions: (ActionItem)[];
 }
 
 interface ActionItem {

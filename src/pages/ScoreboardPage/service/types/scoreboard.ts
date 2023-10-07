@@ -1,12 +1,8 @@
 
 export interface IScoreboard {
-  stt:string;
+  stt: number;
   studentCode: string;
-  spokenExamScore?: (number | '')[];
-  _15MExamScore?: (number | '')[];
-  _1SessionExamScore?: (number | '')[];
-  finalScore?: number;
-  semesterCore: number;
+  fullName: string;
 }
 
 export interface IScoreboardAttr {
@@ -14,4 +10,31 @@ export interface IScoreboardAttr {
   col: [keyof IScoreboard, number?],
   value: string,
 
+}
+
+export interface IScoreboardRes {
+  typeEvalution: string;
+  data: Datum[];
+  classId: string;
+}
+
+interface Datum {
+  studentName: string;
+  studentId: string;
+  scores: Score[];
+  id: string;
+  EvaluationSheetId: string;
+}
+
+interface Score {
+  talent?: string | string;
+  subjectType: string;
+  subjectName?: string | string;
+  subjectId?: string | string;
+  subjectGroupName?: (null | string)[];
+  subjectGroupId?: (null | string)[];
+  score?: number;
+  id: string;
+  evaluationType?: string | string;
+  evaluationComment?: string;
 }

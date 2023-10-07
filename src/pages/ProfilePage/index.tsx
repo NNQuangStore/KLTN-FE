@@ -25,8 +25,6 @@ const ProfilePage = () => {
   },[id]);
 
   const studentDetail = StudentSelectors.getStudentDetail();
-  console.log(studentDetail);
-  
 
   return (
    <ProfilePageStyled>

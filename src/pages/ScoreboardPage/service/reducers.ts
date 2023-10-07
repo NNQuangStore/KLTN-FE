@@ -4,29 +4,13 @@ import { IState } from './types/reducer';
 import actions from './actions';
 import { IScoreboard, IScoreboardAttr } from './types/scoreboard';
 import { roundNumber } from '../../../utils/unit';
+import { Evalution } from './apis';
 
 const initialState: IState = {
-  scoreboard:  [
-    {
-      stt: '1',
-      studentCode: '1234',
-      spokenExamScore:[],
-      _15MExamScore: [],
-      _1SessionExamScore: [],
-      semesterCore: 0,
-      finalScore: 0,
-    },
-    {
-      stt: '2',
-      studentCode: '2314',
-      spokenExamScore:[],
-      _15MExamScore: [],
-      _1SessionExamScore: [],
-      semesterCore: 0,
-      finalScore: 0,
-
-    },
-  ]
+  scoreboard: null,
+  params: {
+    evaluation: 'GIUA_HK_1'
+  }
 };
 
 
@@ -36,13 +20,23 @@ export const Slice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(actions.setColScoreboard, (state, { payload }) => {
-      const {row, col, value} = payload;
-      const rowData = state.scoreboard.find(o => o.studentCode === row);
-      const [name, index] = col;      
-      if(!rowData) return;
-      // @ts-ignore
-      index !== undefined ? rowData[name][index] = value : rowData[name] = value;
+    builder
+    // .addCase(actions.setColScoreboard, (state, { payload }) => {
+    //   const {row, col, value} = payload;
+    //   const rowData = state.scoreboard.find(o => o.studentCode === row);
+    //   if(!rowData) return;
+    //   // @ts-ignore
+    //   index !== undefined ? rowData[name][index] = value : rowData[name] = value;
+    // })
+    .addCase(actions.getScoreboard.success, (state, { payload }) => {      
+      state.scoreboard = payload;
+    })
+    .addCase(actions.setParam, (state, { payload }) => {     
+      console.log('ffff');
+      
+      console.log(payload);
+       
+      state.params = payload;
     });
   },
 });

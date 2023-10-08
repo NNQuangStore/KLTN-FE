@@ -78,8 +78,6 @@ const ButtonImportScore = () => {
     useEffect(() => {
 
       try {
-
-      
         if(data.typeEvalution) {
           saveReport({
             requestBody: {
@@ -222,8 +220,7 @@ const ButtonImportScore = () => {
             const result = {
               typeEvalution: params.evaluation,
               classId: storage.get('class_id'),
-              data: dataStudent
-              
+              data: dataStudent.filter(o => !!o.studentId)  
             };
 
             setData(result);            

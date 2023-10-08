@@ -77,12 +77,15 @@ const ButtonImport = () => {
 
         const rest = data.map((o: any, index: number) => {
   
-          if(! dayjs(o[EColExcel.date], 'DD/MM/YYYYHH: mm: ss').isValid()) {
+          console.log(o[EColExcel.date]);
+          
+
+          if(! dayjs(o[EColExcel.date], 'DD/MM/YYYY  HH:mm').isValid()) {
             errors.push(getStringError(EColExcel.date, index));
             return;
           }
 
-          if( dayjs(o[EColExcel.date], 'DD/MM/YYYYHH: mm: ss').isBefore(dayjs().subtract(1, 'day'))) {
+          if( dayjs(o[EColExcel.date], 'DD/MM/YYYY  HH:mm').isBefore(dayjs().subtract(1, 'day'))) {
             errors.push(`Cột '${EColExcel.date}' dòng ${index + 4} phải lớn hơn ngày hiện tại`);
             return;
           }
@@ -109,7 +112,7 @@ const ButtonImport = () => {
   
   
   
-          const date = dayjs(o[EColExcel.date], 'DD/MM/YYYYHH: mm: ss');
+          const date = dayjs(o[EColExcel.date], 'DD/MM/YYYY  HH:mm');
           const autoSend = (o[EColExcel.isAutoSend] as string)?.toLowerCase() === 'Có'?.toLowerCase();
           // const status = (o[EColExcel.status] as string)?.toLowerCase() === 'Lưu nháp'?.toLowerCase() ? 'Draft' : undefined;
   
@@ -220,7 +223,13 @@ const ButtonImport = () => {
 
   return(
     <ButtonImportStyled>
-      <Button size='large' type='default' icon={<UploadOutlined />} onClick={() => setOpen(true)}>Import</Button>
+      <Button size='large' type='default' icon={<UploadOutlined />} onClick={() => {
+        setOpen(true);
+        setData([]);
+        setErrors([]);
+        setisImport(false);
+        setIsValid(false);
+        }}>Import</Button>
       {open && <ModalStyled
       style={{
         minWidth: '800px'

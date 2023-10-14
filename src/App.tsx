@@ -19,16 +19,23 @@ import AbsencePage from './pages/AbsencePage';
 import StudentPage from './pages/StudentPage';
 import ParentLayout from './layout/ParentLayout';
 import ParentHomePage from './pages/ParentHomePage';
-import ParentReportSessionPage from './pages/ParentReportLession';
 import ReportLesionPage from './pages/ReportLesionPage';
 import AttendanceCheckPage from './pages/AttendanceCheckPage';
 import EvaluationSheetPage from './pages/EvaluationSheetPage';
 import AttendancePage from './pages/Attendance';
 import ParentReportSessionNewPage from './pages/ParentReportLessionNew';
-import storage from './utils/sessionStorage';
-import { useAppDispatch } from './store/hooks';
-import authActions from './pages/AuthPage/service/actions';
 import AttendanceTodayPage from './pages/AttendanceToday';
+import ParentStudentLayout from './pages/_ParentStudentAdvance/ParentStudentLayout';
+import ParentStudentReportLessonPage from './pages/_ParentStudentAdvance/ReportLession';
+import { ConfigProvider } from 'antd';
+
+// import 'dayjs/locale/vi';
+// import updateLocale from 'dayjs/plugin/updateLocale';
+// import dayjs from 'dayjs';
+import locale from 'antd/es/locale/vi_VN';
+import ParentStudentHomePage from './pages/_ParentStudentAdvance/HomePage';
+
+// dayjs.extend(updateLocale);
 
 function AppUI() {
   const { shield} = useToken();
@@ -51,12 +58,21 @@ function AppUI() {
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
         </Route>
-        <Route path='app' element={shield(ParentLayout)}>
+        <Route path='app' element={<ParentLayout />}>
           <Route index path='home' element={<ParentHomePage />}/>
           <Route index path='evaluation-sheet' element={<EvaluationSheetPage />}/>
           <Route path='report-session' element={<ParentReportSessionNewPage />}/>
           <Route path='parent-attendance' element={<AttendancePage />}/>
           <Route path='time-table' element={<TimeTablePage />}/>
+        </Route>
+
+        <Route path='parent-student' element={<ParentStudentLayout />}>
+          <Route index path='report-lesson' element={<ParentStudentReportLessonPage />}/>
+          <Route index path='' element={<ParentStudentHomePage />}/>
+          {/* <Route index path='evaluation-sheet' element={<EvaluationSheetPage />}/>
+          <Route path='report-session' element={<ParentReportSessionNewPage />}/>
+          <Route path='parent-attendance' element={<AttendancePage />}/>
+          <Route path='time-table' element={<TimeTablePage />}/> */}
         </Route>
 
         <Route path='auth' element={<AuthLayout/>}>
@@ -79,8 +95,10 @@ function App() {
   
   return (
     <Provider store={store}>
-      <AppUI />
-      <LoadingPage />
+      <ConfigProvider locale={locale}>
+        <AppUI />
+        <LoadingPage />
+      </ConfigProvider>
     </Provider>
   );
 }

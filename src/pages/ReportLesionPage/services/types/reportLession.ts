@@ -11,3 +11,9 @@ export type ReportLesion = {
   Content__c: string;
   Title__c: string;
 }
+
+export type ParentReportDetail = {
+  title: string,
+  date: string,
+  content: string
+}

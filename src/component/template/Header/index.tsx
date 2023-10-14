@@ -11,6 +11,7 @@ import Notification from './Notification';
 import storage from '../../../utils/sessionStorage';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BORDER_STYLED } from '../../../utils/unit';
 
 
 const iconStyled: React.CSSProperties = {
@@ -108,10 +109,9 @@ const RowStyled = styled(RowH)`
   height: ${HEIGHT_HEADER};
   width: 100%;
   background-color: ${COLOR_WHITE};
-  z-index: 20;
   padding: 0px 20px;
-  box-shadow: 5px 5px 5px lightgray;
   z-index: 500;
+  box-shadow: 3px 3px 10px lightgray;
 
   .tool {
     display: flex;

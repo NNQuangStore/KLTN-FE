@@ -1,4 +1,4 @@
-import { Button, Card, Col, DatePicker, Empty, List, Row, Space, Tooltip } from 'antd';
+import { Button, Card, Col, DatePicker, Empty, List, Row, Space, Tooltip, message } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
@@ -45,30 +45,37 @@ const ParentReportSessionNewPage = () => {
   }
 
   const getLesson = async () => {
-    await dispatch(uiActions.setLoadingPage(true));
-    const res = await apisLessonParent.getListLessonParent();
-    if(res?.data?.data){
-      await res?.data.data.forEach((report:any) => {
-        console.log(getMonday(report.startOfWeek));
-        const firstOfWeek = getMonday(report.startOfWeek);
-        report.startOfWeek = dayjs(firstOfWeek).format('YYYY-MM-DD');
-        let newReport : LessonDTO[] = [];
-        for(let i = 0; i < 6; i++){
-          const d = dayjs(firstOfWeek).add(i, 'day');
-          const row = report.data.find((item : LessonDTO) => dayjs(item.sendDay).format('YYYY-MM-DD') === d.format('YYYY-MM-DD'));
-          newReport = [
-            ...newReport,
-            row ? row : { 
-            sendDay : d,
-            note : '',
-            title : '' 
-          }];
-        }
-        report.data = newReport;
-      });
-      await setAllData(res?.data.data);
+    try {
+
+      await dispatch(uiActions.setLoadingPage(true));
+      const res = await apisLessonParent.getListLessonParent();
+      if(res?.data?.data){
+        await res?.data.data.forEach((report:any) => {
+          console.log(getMonday(report.startOfWeek));
+          const firstOfWeek = getMonday(report.startOfWeek);
+          report.startOfWeek = dayjs(firstOfWeek).format('YYYY-MM-DD');
+          let newReport : LessonDTO[] = [];
+          for(let i = 0; i < 6; i++){
+            const d = dayjs(firstOfWeek).add(i, 'day');
+            const row = report.data.find((item : LessonDTO) => dayjs(item.sendDay).format('YYYY-MM-DD') === d.format('YYYY-MM-DD'));
+            newReport = [
+              ...newReport,
+              row ? row : { 
+              sendDay : d,
+              note : '',
+              title : '' 
+            }];
+          }
+          report.data = newReport;
+        });
+        await setAllData(res?.data.data);
     }
-    dispatch(uiActions.setLoadingPage(false));
+    } catch (err) {
+      message.error('Đã có lỗi xày ra');
+    } finally {
+
+      dispatch(uiActions.setLoadingPage(false));
+    }
   };
 
   useEffect(() => {

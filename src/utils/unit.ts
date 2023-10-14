@@ -1,4 +1,6 @@
 import { Dayjs } from 'dayjs';
+import moment, { Moment } from 'moment';
+import { days } from '../pages/_ParentStudentAdvance/component/Calendar';
 
 
 export const DATE_FORMAT = 'DD/MM/YYYY';
@@ -62,4 +64,9 @@ export const hexToRGB = (hex: string, alpha?: number) => {
 
 export const getTimeToString = (hour: number, minute: number) => {
   return `${hour} giờ ${minute > 0 ? minute + ' phút' : ''}`;
+};
+
+export const getDayOfWeek = (date: Moment) => {
+  return days.find((o: any) => o.value === date.day())?.label;
+
 };

@@ -1,19 +1,55 @@
-import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { AuditOutlined, CheckCircleOutlined, CloseCircleOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import DataTable from '../../component/molecule/DataTable';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import Filter from '../../component/template/Filter';
 import { styled } from 'styled-components';
-import { Button, DatePicker, Input, Select, Space } from 'antd';
+import { Button, Card, Col, DatePicker, Input, Radio, RadioChangeEvent, Row, Select, Space, Table, Tag } from 'antd';
 import { useNavigate } from 'react-router';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { formatDate } from '@fullcalendar/core';
 import dayjs from 'dayjs';
+import { ColumnsType } from 'antd/es/table';
+import { useAppDispatch } from '../../store/hooks';
+import uiActions from '../../services/UI/actions';
+import apisLetterTeacher from './service/apis';
+
+interface DataType {
+  ClassHeader__c: string;
+  CreatedDate: Date;
+  HocSinh__c: string;
+  Id: string;
+  LastModifiedDate: Date;
+  LyDo__c: string;
+  Name: string;
+  NgayNghi__c: string;
+  NgayNop__c: string;
+  SoNgayNghi__c: number;
+  TrangThai__c: string;
+  key: string;
+  endDay: string;
+  studentName: string;
+}
 
 const AttendanceCheckPage = () => {
   const [size, setSize] = useState<SizeType>('middle');
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [tab, setTab] = useState('DIEMDANH');
+  const [dataDonXinNghi, setDataDonXinNghi] = useState<DataType[]>([]);
+  const [dataDonXinNghiOrigin, setDataDonXinNghiOrigin] = useState<DataType[]>([]);
+  const [cntTotal, setCntTotal] = useState<number>(0);
+  const [cntTotalAccept, setCntTotalAccept] = useState<number>(0);
+  const [cntTotalPending, setCntTotalPending] = useState<number>(0);
+  const [cbxStatus, setcbxStatus] = useState<String>('PENDING');
+  const dispatch = useAppDispatch();
+  const handleChange = (value: string) => {
+    setcbxStatus(value);
+  };
+
+  const onChangeTab = ({ target: { value } }: RadioChangeEvent) => {
+    setTab(value);
+  };
   const dataSource = [
     {
       date: '2023-12-19',
@@ -71,51 +107,262 @@ const AttendanceCheckPage = () => {
       },
     },
   ];
+
   const handleDateChange = (date: any, dateString: string) => {
     setSelectedDate(dateString);
   };
+
+  const getLetter = async () => {
+    try {
+      await dispatch(uiActions.setLoadingPage(true));
+      const res = await apisLetterTeacher.getListLetter();
+      if(res?.data?.data){
+        console.log(res?.data?.data);
+        const data = res.data.data;
+        let cntPending = 0;
+        let cntAccept = 0;
+        const listData = data.map((item : any, index : number) => {
+          cntPending += (item.TrangThai__c === 'PENDING' ? 1 : 0);
+          cntAccept += (item.TrangThai__c === 'ACCEPT' ? 1 : 0);
+          return {
+            ...item,
+            key: index + 1,
+            endDay: dayjs(item.NgayNghi__c).add(item.SoNgayNghi__c, 'day'),
+            studentName: item.HocSinh?.Name
+          };
+        });
+        // console.log(listData);
+        // setDataDonXinNghi([...listData]);
+        setDataDonXinNghiOrigin([...listData]);
+        setCntTotal(listData.length);
+        setCntTotalAccept(cntAccept);
+        setCntTotalPending(cntPending);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      dispatch(uiActions.setLoadingPage(false));
+    }
+  };
+
+  const updateLetter = async (id : string) => {
+    try {
+      await dispatch(uiActions.setLoadingPage(true));
+      const res = await apisLetterTeacher.updateLetter(
+        {
+          TrangThai__c: 'ACCEPT',
+          Id: id
+        }
+      );
+      const letter = dataDonXinNghiOrigin.findIndex((item) => item.Id === id);
+      if(letter >= 0) {
+        const listData = [...dataDonXinNghiOrigin];
+        listData[letter].TrangThai__c = 'ACCEPT';
+        setDataDonXinNghiOrigin([...dataDonXinNghiOrigin]);
+        setCntTotalAccept(cntTotalAccept + 1);
+        setCntTotalPending(cntTotalPending - 1);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      dispatch(uiActions.setLoadingPage(false));
+    }
+  };
+
+  const columnsDonXinNghi: ColumnsType<DataType> = [
+    {
+      title: 'Tên học sinh',
+      dataIndex: 'studentName',
+      fixed: true,
+      width: 200,
+    },
+    {
+      title: 'Từ ngày',
+      dataIndex: 'NgayNop__c',
+      fixed: true,
+      width: 120,
+      align: 'center' as const,
+      render: (value) => (dayjs(value).format('DD/MM/YYYY'))
+    },
+    {
+      title: 'Đến ngày',
+      dataIndex: 'endDay',
+      fixed: true,
+      width: 120,
+      align: 'center' as const,
+      render: (value) => (dayjs(value).format('DD/MM/YYYY'))
+    },
+    {
+      title: 'Số ngày',
+      dataIndex: 'SoNgayNghi__c',
+      fixed: true,
+      width: 90,
+      align: 'center' as const
+    },
+    {
+      title: 'Lý do nghỉ',
+      rowSpan: 4,
+      dataIndex: 'LyDo__c',
+      fixed: true,
+    },
+    {
+      title: 'Trạng thái',
+      rowSpan: 4,
+      dataIndex: 'TrangThai__c',
+      fixed: true,
+      width: 100,
+      align: 'center' as const,
+      render: (value) => {
+        return (
+          value === 'PENDING' 
+          ? <Tag color='yellow'>Chờ duyệt</Tag> 
+          : value === 'ACCEPT' && <Tag color='green'>Đã duyệt</Tag>
+        );
+      }
+    },
+    {
+      title: 'Thao tác',
+      width: 100,
+      align: 'center' as const,
+      render: (item) => {
+        return (
+          item.TrangThai__c === 'PENDING' 
+          ? <ActionTable
+            actions={[
+              {
+                handle: () => {
+                  updateLetter(item.Id);
+                },
+                icon: <CheckCircleOutlined/>,
+                label: 'Xác nhận đơn',
+                color: '#4caf50',
+              },
+            ]}
+          />
+          : <></>
+        );
+      },
+    },
+  ];
+
+  useEffect(() => {
+    getLetter();
+  }, []);
+
+  useEffect(() => {
+    if(cbxStatus === 'ALL') {
+      setDataDonXinNghi([...dataDonXinNghiOrigin]);
+    } else {
+      const listData = dataDonXinNghiOrigin.filter((item) => item.TrangThai__c === cbxStatus);
+      setDataDonXinNghi([...listData]);
+    }
+  }, [cbxStatus, dataDonXinNghiOrigin]);
+
+
   return (
     <AttendanceCheckPageStyled>
       {/* <Filter></Filter> */}
-      <div style={{ position: 'relative' }}>
-        <Space>
-          <h4>Từ ngày</h4>
-          <DatePicker
-          onChange={handleDateChange}
-          format="YYYY-MM-DD"
-          defaultValue={dayjs()}
-          placeholder="Chọn ngày"
-        />
-        </Space>
-        <Space style={{marginLeft:10}}>
-          <h4>Đến ngày</h4>
-          <DatePicker onChange={handleDateChange}
-          format="YYYY-MM-DD"
-          defaultValue={dayjs()}
-          placeholder="Chọn ngày"/>
-        </Space>
+      <div style={{ position: 'relative'}}>
+        <Radio.Group buttonStyle="solid" className='radio-tab' onChange={onChangeTab} value={tab}>
+          <Radio.Button value="DIEMDANH">Điểm danh</Radio.Button>
+          <Radio.Button value="NGHIPHEP">Đơn nghỉ phép</Radio.Button>
+        </Radio.Group>
       </div>
-      <div style={{ position: 'relative' }}>
-        <Space>
-          <h2>Sỉ số: 50</h2>
-          <span
-            className='mock-block'
-            style={{ position: 'absolute', top: 10, right: 0 }}
-          >
-            <Button
-              // onClick={showModal}
-              onClick={() => navigate('/attendance/create-today')}
-              type='primary'
-              icon={<PlusOutlined />}
-              size={size}
-              style={{ marginLeft: 10 }}
-            >
-              Điểm danh hôm nay
-            </Button>
-          </span>
-        </Space>
-      </div>
-      <DataTable columns={columns} dataSource={dataSource} />
+      {tab === 'DIEMDANH' ? (
+        <>
+          <div style={{ position: 'relative'}}>
+            <Space>
+              <span
+                className='mock-block'
+              >
+                <Button
+                  // onClick={showModal}
+                  onClick={() => navigate('/attendance/create-today')}
+                  type='primary'
+                  icon={<PlusOutlined />}
+                  size={size}
+                >
+                  Điểm danh hôm nay
+                </Button>
+              </span>
+            </Space>
+          </div>
+          <div style={{ position: 'relative', padding: '1rem 0px'}}>
+            <Space>
+              <h4>Từ ngày</h4>
+              <DatePicker
+              onChange={handleDateChange}
+              format="YYYY-MM-DD"
+              defaultValue={dayjs()}
+              placeholder="Chọn ngày"
+            />
+            </Space>
+            <Space style={{marginLeft:10}}>
+              <h4>Đến ngày</h4>
+              <DatePicker onChange={handleDateChange}
+              format="YYYY-MM-DD"
+              defaultValue={dayjs()}
+              placeholder="Chọn ngày"/>
+            </Space>
+          </div>
+          <DataTable bordered={false} columns={columns} dataSource={dataSource} />
+        </>
+      ) : (
+        <>
+          <Row gutter={16} justify="space-between">
+            <Col span={6}>
+              <Card bordered={false}>
+                Tổng số đơn xin nghỉ phép
+                <p className='summary'>{cntTotal}</p>
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered={false}>
+                Tổng số đơn chưa duyệt
+                <p className='summary'>{cntTotalPending}</p>
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered={false}>
+                Tổng số đơn đã duyệt
+                <p className='summary'>{cntTotalAccept}</p>
+              </Card>
+            </Col>
+            {/* <Col span={6}>
+              <Card bordered={false}>
+                Tổng số đơn từ chối
+                <p className='summary'>{cntTotalAccept}</p>
+              </Card>
+            </Col> */}
+          </Row>
+          <br />
+          <Card className='col-2' bordered={false}>
+            <div style={{ position: 'relative', paddingBottom: '1rem'}}>
+              <Space>
+                <Select
+                  size={size}
+                  defaultValue='PENDING'
+                  style={{ width: 130 }}
+                  onChange={handleChange}
+                  options={[
+                    { value: 'ALL', label: 'Tất cả' },
+                    { value: 'PENDING', label: 'Chưa duyệt' },
+                    { value: 'ACCEPT', label: 'Đã duyệt' },
+                    { value: 'CANCEL', label: 'Từ chối' },
+                  ]}
+                />
+              </Space>
+            </div>
+            <Table
+              columns={columnsDonXinNghi}
+              dataSource={dataDonXinNghi}
+              bordered
+              pagination={false}
+            />
+          </Card>
+        </>
+      )}
+
     </AttendanceCheckPageStyled>
   );
 };
@@ -123,5 +370,18 @@ const AttendanceCheckPage = () => {
 export default AttendanceCheckPage;
 
 const AttendanceCheckPageStyled = styled.div`
-
+  .radio-tab {
+    width: 100%;
+    display: flex;
+    margin-bottom: 1rem;
+    justify-content: center;
+    label {
+      width: 150px;
+      text-align: center;
+    }
+  }
+  .summary {
+    font-weight: bold;
+    font-size: 2rem;
+  }
 `;

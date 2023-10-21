@@ -1,8 +1,11 @@
 import { Evalution } from '../apis';
-import { IScoreboardRes } from './scoreboard';
+import { TableScore } from './_scoreboard';
+import { Datum, TableScoreRes } from './scoreboard';
 
 export interface IState {
-  scoreboard: IScoreboardRes | null;
+  scoreboard: TableScoreRes | null;
+  scoreboardDetail: Datum | null;
+  scoreboardTable: TableScore[];
   params: {
     evaluation: keyof typeof Evalution;
   }

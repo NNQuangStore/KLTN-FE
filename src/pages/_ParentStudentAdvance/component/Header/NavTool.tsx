@@ -29,7 +29,7 @@ const NavTool = () => {
 
   return (
     <div className='tool'>
-    <p>Lớp {className}</p>
+    {/* <p>Lớp {className}</p> */}
     <Notification/>
     <Popover
       content={

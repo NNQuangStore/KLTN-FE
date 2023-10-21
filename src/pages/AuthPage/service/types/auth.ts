@@ -15,6 +15,7 @@ export interface IApiLoginResData {
   Role: Role;
   Account: Account;
   Class: Class;
+  Student: Student;
 }
 
 interface Class {
@@ -35,4 +36,9 @@ interface Role {
   Active__c: boolean;
   Description__c?: any;
   Title__c: string;
+}
+
+interface Student {
+  Id: string;
+  Name: string;
 }

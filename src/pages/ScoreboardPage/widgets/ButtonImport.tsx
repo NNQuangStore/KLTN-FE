@@ -25,6 +25,12 @@ enum EColScore {
   nhanXet = 'Nhận xét'
 }
 
+export enum ELessonType {
+  TALENT = 'talent',
+  QUALITY = 'quality',
+  LESSON = 'lesion'
+}
+
 export enum ELesions {
   TIENG_VIET = 'Tiếng Việt', 
   TOAN ='Toán', 

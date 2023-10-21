@@ -43,7 +43,9 @@ const TopBar = () => {
     fontSize: '14px',
     backgroundColor: COLOR_PRIMARY,
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginBottom: '40px',
+
   }}> 
     <div></div>
     <p> Nếu bạn có vấn đề gì, hãy liên hệ cho chúng tôi qua <span style={{textDecoration: 'underline'}}>0812345679</span> </p> 

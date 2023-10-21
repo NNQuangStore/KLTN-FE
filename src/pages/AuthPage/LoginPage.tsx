@@ -52,9 +52,9 @@ const LoginPage = () => {
         phone: values.phone ?? '0375767857',
         password: values.password ?? 'ksvchainamtest'
       });
-      console.log(res);
       if(res.status === 200){
         const resData = res?.data as (IApiLoginResData | null);
+        console.log(resData);
         if (!resData) throw 'fail';
         storage.set('token', resData.token);
         storage.set('user_name', resData.UserName__c);
@@ -62,6 +62,8 @@ const LoginPage = () => {
         storage.set('class_name', resData.Class.Name);   
         storage.set('role', resData.Role.Title__c);
         storage.set('user_id', resData.Id);
+        storage.set('student_id', resData.Student.Id);
+        storage.set('student_name', resData.Student.Name);
         if(resData.Role.Title__c === 'PARENT'){
           navigate('/app/home');
         }else{

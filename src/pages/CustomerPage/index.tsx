@@ -24,7 +24,6 @@ const CustomerPage = () => {
 
         // Convert the sheet data to JSON
         const jsonResult = sheetToJsonWithMergedCells(sheet);
-        console.log(jsonResult);
       };
 
       reader.readAsBinaryString(file);
@@ -39,8 +38,6 @@ const CustomerPage = () => {
     const mergedCells = sheet['!merges'] || [];
 
     for (const merge of mergedCells) {
-      console.log(merge);
-      
       // const [startRow, endRow, startCol, endCol] = merge;
 
       // // Merge the data in JSON

@@ -1,10 +1,9 @@
 import { useAppDispatch } from '../../../store/hooks';
 import scoreboardActions from '../service/actions';
 import scoreboardSelectors from '../service/selectors';
-import { IScoreboard } from '../service/types/scoreboard';
 
 
-export const useColDataTable = (row: string, col : [keyof IScoreboard, number?]) : [string, (value: string) => void] => {
+export const useColDataTable = (row: string, col : [any, number?]) : [string, (value: string) => void] => {
   const dispatch = useAppDispatch();
   // const rowData = scoreboardSelectors.getScoreboard().find(o => o.studentCode === row);
   const [name, index] = col;

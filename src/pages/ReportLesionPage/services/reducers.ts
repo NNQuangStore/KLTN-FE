@@ -42,8 +42,6 @@ export const Slice = createSlice({
         state.lesionList = data;
       })
       .addCase(actions.setDetailParentReportLesion, (state, { payload }) => {
-        console.log(payload);
-        
         const data = payload;
         state.lessonParentDetail = data as any;
       });

@@ -45,7 +45,7 @@ function AppUI() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={shield(AppLayout)}>
+        <Route path='/' element={<AppLayout/>}>
           <Route index path='dashboards' element={<DashboardPage />} />
           <Route path='customers' element={<CustomerPage />} />
           <Route path='time-table' element={<TimeTablePage />} />
@@ -58,10 +58,12 @@ function AppUI() {
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
         </Route>
-        <Route path='app' element={<ParentLayout />}>
-          <Route index path='home' element={<ParentHomePage />}/>
+        <Route path='app' element={<ParentStudentLayout />}>
+          {/* <Route index path='home' element={<ParentHomePage />}/> */}
+          <Route index path='home' element={<ParentStudentHomePage />}/>
           <Route index path='evaluation-sheet' element={<EvaluationSheetPage />}/>
-          <Route path='report-session' element={<ParentReportSessionNewPage />}/>
+          {/* <Route path='report-session' element={<ParentReportSessionNewPage />}/> */}
+          <Route path='report-session' element={<ParentStudentReportLessonPage />}/>
           <Route path='parent-attendance' element={<AttendancePage />}/>
           <Route path='time-table' element={<TimeTablePage />}/>
         </Route>

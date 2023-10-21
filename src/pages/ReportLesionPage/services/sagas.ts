@@ -10,8 +10,6 @@ const getListLesion = function* () {
   
   try {
     const res: AxiosResponse<{ data: any[] }> = yield call(apis.getListLesion);
-    console.log(res?.data?.data[0].Student);
-    
     if (res?.data?.data) {      
       const studentList = res?.data?.data;
       yield put(actions.getListLesion.success(studentList));

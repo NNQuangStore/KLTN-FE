@@ -1,24 +1,20 @@
+import { TableScore } from './_scoreboard';
 
-export interface IScoreboard {
-  stt: number;
-  studentCode: string;
-  fullName: string;
-}
 
-export interface IScoreboardAttr {
+export interface TableScoreAttr {
   row: string,
-  col: [keyof IScoreboard, number?],
+  col: [any, number?],
   value: string,
 
 }
 
-export interface IScoreboardRes {
+export interface TableScoreRes {
   typeEvalution: string;
   data: Datum[];
   classId: string;
 }
 
-interface Datum {
+export interface Datum {
   studentName: string;
   studentId: string;
   scores: Score[];
@@ -26,15 +22,15 @@ interface Datum {
   EvaluationSheetId: string;
 }
 
-interface Score {
-  talent?: string | string;
+export interface Score {
+  talent?: string;
   subjectType: string;
   subjectName?: string | string;
   subjectId?: string | string;
   subjectGroupName?: (null | string)[];
   subjectGroupId?: (null | string)[];
-  score?: number;
-  id: string;
+  score?: number | string;
+  id?: string;
   evaluationType?: string | string;
   evaluationComment?: string;
 }

@@ -13,8 +13,6 @@ const getListLesion = () => {
 };
 
 const saveLesion = (body: any) => {
-  console.log(body);
-  
   return fetch({
     method: 'post',
     url: 'lesson/save',

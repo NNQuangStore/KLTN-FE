@@ -2,8 +2,9 @@ import { get } from 'lodash';
 import { RootState } from '../../../store';
 import { useAppSelector } from '../../../store/hooks';
 // import { calculateAverage } from '../../../utils/unit';
-import { IScoreboardRes } from './types/scoreboard';
+import { Datum, Score, TableScoreRes } from './types/scoreboard';
 import { IState } from './types/reducer';
+import { TableScore } from './types/_scoreboard';
 
 
 
@@ -16,7 +17,7 @@ const selector = <T = MyState>(key: keyof T, defaultValue?: any) => useAppSelect
 const getParams = () => selector('params') as IState['params'];
 
 const getScoreboard = () => { 
-  return selector('scoreboard') as IScoreboardRes;
+  return selector('scoreboard') as TableScoreRes;
   // return data.map(o => {
   //   const finalScore = (
   //     calculateAverage(o.spokenExamScore as number[]) + 
@@ -29,9 +30,15 @@ const getScoreboard = () => {
   //   };}) ?? [];
 };
 
+const getScoreboardDetail = () => selector('scoreboardDetail') as Datum[];
+
+const getTableScore = () => selector('scoreboardTable') as TableScore[];
+
 
 const scoreboardSelectors = {
   getScoreboard,
-  getParams
+  getParams,
+  getTableScore,
+  getScoreboardDetail
 };
 export default scoreboardSelectors;

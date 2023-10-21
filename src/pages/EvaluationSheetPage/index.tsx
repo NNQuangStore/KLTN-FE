@@ -3,36 +3,39 @@ import { COLOR_PRIMARY } from '../../utils/variables/colors';
 import { Button, Card, Col, Form, Input, Row, Select, SelectProps, Space, Tag } from 'antd';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import scoreboardActions from '../ScoreboardPage/service/actions';
+import { Evalution } from '../ScoreboardPage/service/apis';
+import scoreboardSelectors from '../ScoreboardPage/service/selectors';
+import { getTalentByScore } from '../../utils/unit';
 type LayoutType = Parameters<typeof Form>[0]['layout'];
 interface DataType {
-  key: string;
-  content:string;
-  name: string;
-  age: number;
-  tel: string;
-  phone: number;
-  address: string;
+  key: number;
+  subject:string;
+  score: string;
+  comment: number;
+  talent: string;
 }
-const columns2: ColumnsType<DataType> = [
+const columns2: ColumnsType<any> = [
   {
     title: 'Năng lực',
-    dataIndex: 'content',
+    dataIndex: 'subject',
     fixed: true,
+    rowScope: 'row',
     width: 200,
     
   },
   {
     title: 'Mức đạt được',
-    dataIndex: 'name',
-    render: (text) => <a>{text}</a>,
+    dataIndex: 'talent',
     fixed: true,
     width: 80,
   },
   {
     title: 'Nhận xét',
     colSpan: 2,
-    dataIndex: 'tel',
+    dataIndex: 'comment',
     onCell: (_, index) => {
       if (index === 0) {
         return { rowSpan: 4 };
@@ -52,25 +55,25 @@ const columns2: ColumnsType<DataType> = [
     },
   },
 ];
-const columns3: ColumnsType<DataType> = [
+const columns3: ColumnsType<any> = [
   {
     title: 'Phẩm chất',
-    dataIndex: 'content',
+    dataIndex: 'subject',
     fixed: true,
+    rowScope: 'row',
     width: 200,
     
   },
   {
     title: 'Mức đạt được',
-    dataIndex: 'name',
-    render: (text) => <a>{text}</a>,
+    dataIndex: 'talent',
     fixed: true,
     width: 80,
   },
   {
     title: 'Nhận xét',
     colSpan: 2,
-    dataIndex: 'tel',
+    dataIndex: 'comment',
     onCell: (_, index) => {
       if (index === 0) {
         return { rowSpan: 4 };
@@ -93,10 +96,10 @@ const columns3: ColumnsType<DataType> = [
     },
   },
 ];
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<any> = [
   {
     title: 'Môn học và hoạt động giáo dục',
-    dataIndex: 'content',
+    dataIndex: 'subject',
     rowScope: 'row',
     fixed: true,
     width: 120,
@@ -104,15 +107,14 @@ const columns: ColumnsType<DataType> = [
   },
   {
     title: 'Mức đạt được',
-    dataIndex: 'name',
-    render: (text) => <a>{text}</a>,
+    dataIndex: 'talent',
     fixed: true,
     width: 100,
     
   },
   {
     title: 'Điển KTĐK',
-    dataIndex: 'age',
+    dataIndex: 'score',
     fixed: true,
     width: 100,
   },
@@ -120,181 +122,126 @@ const columns: ColumnsType<DataType> = [
     title: 'Nhận xét',
     colSpan: 2,
     rowSpan:4,
-    dataIndex: 'tel',
+    dataIndex: 'comment',
     fixed: true,
     width: 300,
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    content:'Tiếng Việt',
-    name: '',
-    age: 32,
-    tel: '',
-    phone: 0,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    content:'Toán',
-    name: '',
-    tel: '',
-    phone: 0,
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    content:'Khoa học',
-    name: '',
-    age: 32,
-    tel: '0',
-    phone: 0,
-    address: 'Sydney No. 1 Lake Park',
-  },
-  {
-    key: '4',
-    content:'LS và ĐL',
-    name: '',
-    age: 0,
-    tel: '',
-    phone: 0,
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    content:'Tiếng Anh',
-    name: '',
-    age: 0,
-    tel: '',
-    phone: 0,
-    address: 'Dublin No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    content:'Đạo đức',
-    name: '',
-    age: 0,
-    tel: '',
-    phone: 0,
-    address: 'Dublin No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    content:'Âm nhạc',
-    name: '',
-    age: 0,
-    tel: '0',
-    phone: 0,
-    address: 'Dublin No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    content:'Mĩ thuật',
-    name: '',
-    age: 0,
-    tel: '0',
-    phone: 0,
-    address: 'Dublin No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    content:'Kĩ thuật',
-    name: '',
-    age: 0,
-    tel: '0',
-    phone: 0,
-    address: 'Dublin No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    content:'Thể dục',
-    name: '',
-    age: 0,
-    tel: '0',
-    phone: 0,
-    address: 'Dublin No. 2 Lake Park',
-  },
-];
 
-const data2: DataType[] = [
-  {
-    key: '1',
-    content:'Chăm học, chăm làm',
-    name: '',
-    age: 32,
-    tel: '',
-    phone: 0,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    content:'Tự tin, trách nhiệm',
-    name: '',
-    tel: '',
-    phone: 0,
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    content:'Trung thủy, kỉ luật',
-    name: '',
-    age: 32,
-    tel: '',
-    phone: 0,
-    address: 'Sydney No. 1 Lake Park',
-  },
-  {
-    key: '4',
-    content:'Đoàn kết yêu thương',
-    name: '',
-    age: 32,
-    tel: '0',
-    phone: 0,
-    address: 'Sydney No. 1 Lake Park',
-  },
-  
-];
-
-const data3: DataType[] = [
-  {
-    key: '1',
-    content:'Tự phục vụ, tự quản',
-    name: '',
-    age: 32,
-    tel: '',
-    phone: 0,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    content:'Hợp tác',
-    name: '',
-    tel: '0',
-    phone: 0,
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    content:'Tự học, giải quyết vấn đề',
-    name: '',
-    age: 32,
-    tel: '0',
-    phone: 0,
-    address: 'Sydney No. 1 Lake Park',
-  },
-  
-];
 const EvaluationSheetPage = () => {
   // const classId = storage.get('class_id');
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState<LayoutType>('inline');
   const[dataSelect1, setDataSelect1]= useState('');
   const[dataSelect2, setDataSelect2]= useState('');
+  const params = scoreboardSelectors.getParams();
+
+  const scoreboardDetail = scoreboardSelectors.getScoreboardDetail()?.[0];  
+  const data = scoreboardDetail?.scores?.filter(o => o.evaluationType === 'SCORE')?.map((o, index) => ({
+    key: index + 1,
+    subject: o.subjectName,
+    score: o.score,
+    comment: o.evaluationComment,
+    talent: getTalentByScore(o.score)
+
+  }));
+
+  const data2 = scoreboardDetail?.scores?.filter(o => o.subjectId?.slice(0, -2) === 'NANG_LUC')?.map((o, index) => ({
+    key: index + 1,
+    subject: o.subjectName,
+    score: o.score,
+    comment: o.evaluationComment,
+    talent: o.talent
+  }));
+
+  const data3 = scoreboardDetail?.scores?.filter(o => o.subjectId?.slice(0, -2) === 'PHAM_CHAT')?.map((o, index) => ({
+    key: index + 1,
+    subject: o.subjectName,
+    score: o.score,
+    comment: o.evaluationComment,
+    talent: o.talent
+  }));
+  
+  // const data2: DataType[] = [
+  //   {
+  //     key: '1',
+  //     content:'Chăm học, chăm làm',
+  //     name: '',
+  //     age: 32,
+  //     tel: '',
+  //     phone: 0,
+  //     address: 'New York No. 1 Lake Park',
+  //   },
+  //   {
+  //     key: '2',
+  //     content:'Tự tin, trách nhiệm',
+  //     name: '',
+  //     tel: '',
+  //     phone: 0,
+  //     age: 42,
+  //     address: 'London No. 1 Lake Park',
+  //   },
+  //   {
+  //     key: '3',
+  //     content:'Trung thủy, kỉ luật',
+  //     name: '',
+  //     age: 32,
+  //     tel: '',
+  //     phone: 0,
+  //     address: 'Sydney No. 1 Lake Park',
+  //   },
+  //   {
+  //     key: '4',
+  //     content:'Đoàn kết yêu thương',
+  //     name: '',
+  //     age: 32,
+  //     tel: '0',
+  //     phone: 0,
+  //     address: 'Sydney No. 1 Lake Park',
+  //   },
+    
+  // ];
+  
+  // const data3: DataType[] = [
+  //   {
+  //     key: '1',
+  //     content:'Tự phục vụ, tự quản',
+  //     name: '',
+  //     age: 32,
+  //     tel: '',
+  //     phone: 0,
+  //     address: 'New York No. 1 Lake Park',
+  //   },
+  //   {
+  //     key: '2',
+  //     content:'Hợp tác',
+  //     name: '',
+  //     tel: '0',
+  //     phone: 0,
+  //     age: 42,
+  //     address: 'London No. 1 Lake Park',
+  //   },
+  //   {
+  //     key: '3',
+  //     content:'Tự học, giải quyết vấn đề',
+  //     name: '',
+  //     age: 32,
+  //     tel: '0',
+  //     phone: 0,
+  //     address: 'Sydney No. 1 Lake Park',
+  //   },
+    
+  // ];
+
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(scoreboardActions.getScoreboardDetail.fetch({
+      typeEvalution: params.evaluation
+    }));
+  }, []);
 
   const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
     setFormLayout(layout);
@@ -399,8 +346,8 @@ const EvaluationSheetPage = () => {
         </Col>
         <Col >
           <Card className='col-2' title="2. Các năng lực phẩm chất" bordered={false}>
-            <Table columns={columns2} dataSource={data3} bordered pagination={false}/>
-            <Table style={{paddingTop:'24px'}} columns={columns3} dataSource={data2} bordered pagination={false}/>
+            <Table columns={columns2} dataSource={data2} bordered pagination={false}/>
+            <Table style={{paddingTop:'24px'}} columns={columns3} dataSource={data3} bordered pagination={false}/>
           </Card>
         </Col>
       </Row>
@@ -451,4 +398,21 @@ const EvaluationSheetPageStyled = styled.div`
       width: 100%;
     }
   }
+
+  .ant-card-head-wrapper {
+    color: ${COLOR_PRIMARY};
+  }
+  /* .ant-table-thead {
+
+    th {
+      background-color: ${COLOR_PRIMARY} !important;
+      color: white !important;
+    }
+
+    
+  }
+  .ant-table-cell[scope] {
+    background-color: ${COLOR_PRIMARY} !important;
+      color: white !important;
+  } */
 `;

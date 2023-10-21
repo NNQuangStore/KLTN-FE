@@ -16,9 +16,6 @@ const ButtonExportTemplateScore = () => {
 
   const handleDownTemplate = () => {
 
-    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const fileExtension = '.xlsx';
-
     
     const workbook = read(TEMPLATE_NHAP_DIEM_X64, {type: 'base64'});
     const base64 = write(workbook, { bookType: 'xlsx', type: 'binary' });
@@ -75,7 +72,7 @@ const ButtonExportTemplateScore = () => {
           <Button size='small' type='default' icon={<DownloadOutlined />}><a href={template} download="template_score_board">Download</a></Button>
           
         {/* </DownloadTableExcel> */}
-        <table style={{
+        {/* <table style={{
           display: 'none'
         }} ref={exportTableRef}>
           <tr >
@@ -84,9 +81,6 @@ const ButtonExportTemplateScore = () => {
           <tr >
             <td style={{color: 'red'}} colSpan={39}>* Lưu ý: Chỉ nhập thông tin, không chỉnh sửa format của bảng điểm</td>
           </tr>
-          {/* <td>Lớp 1 - 1</td>
-          <td style={{color: 'red'}}>* Lưu ý: Chỉ nhập thông tin, không chỉnh sửa format của bảng điểm</td>
-          <td>Cột tự động gửi chỉ có 2 giá trị là: Có hoặc Không</td> */}
           <tr>
             <th rowSpan={4}>STT</th>
             <th rowSpan={4}>Mã Học Sinh</th>
@@ -162,7 +156,7 @@ const ButtonExportTemplateScore = () => {
             <td >Nguyễn Nhật</td>
             <td >Quang</td>
           </tr>
-        </table>
+        </table> */}
     </>
     )
 

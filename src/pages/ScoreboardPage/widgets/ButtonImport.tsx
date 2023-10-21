@@ -143,45 +143,40 @@ const ButtonImportScore = () => {
 
             const dataStudent: any[] = [];
                       
-            studentInfos.forEach((item => {
+            studentInfos.forEach((item, index) => {
 
               const scores = [];
               const talents = [];
               const quality = [];
 
               const talentIds = Object.values(ETalent);
-              for (const index in talentInfos) {
-
-                const talentItem = talentInfos[index] as any;
-                
+              const talentItem = talentInfos[index] as any;
+              if(talentItem) {
                 for(const talent_index in talentIds) {
-
+                  console.log(talentIds[talent_index]);
                   const num_index = Number(talent_index) + 1;
                   talents.push({
                     subjectType: 'SUBJECT',
-                    subjectId: 'PHAM_CHAT_' + num_index,
-                    evaluationType: 'PHAM_CHAT',
+                    subjectId: 'NANG_LUC_' + num_index,
+                    evaluationType: 'TALENT',
                     talent: talentItem[talentIds[talent_index]]
                   });
                 }
+  
                 talents. push({
                   subjectType: 'GROUP',
                   subjectGroupId: 'NANG_LUC',
                   evaluationComment: talentItem['Nhận xét']
                 });
-              }
 
-              const qualityIds = Object.values(EQuality);
-              for (const index in talentInfos) {
-
-                const talentItem = talentInfos[index] as any;
+                const qualityIds = Object.values(EQuality);
                 for(const quality_index in qualityIds) {
 
                   const num_index = Number(quality_index) + 1;
                   quality.push({
                     subjectType: 'SUBJECT',
-                    subjectId: 'NANG_LUC_' + num_index,
-                    evaluationType: 'NANG_LUC',
+                    subjectId: 'PHAM_CHAT_' + num_index,
+                    evaluationType: 'TALENT',
                     talent: talentItem[qualityIds[quality_index]]
                   });
                 }
@@ -190,10 +185,8 @@ const ButtonImportScore = () => {
                   subjectGroupId: 'PHAM_CHAT',
                   evaluationComment: talentItem['Nhận xét_1']
                 });
-              }              
 
-              const lesions = Object.keys(ELesions);
-              for (const index in scoresInfos) {
+                const lesions = Object.keys(ELesions);
                 for( const lesion_index in lesions ) {
                   const scoresInfo = scoresInfos[index] as any;
                   const getRow = (col: EColScore) => {
@@ -209,14 +202,13 @@ const ButtonImportScore = () => {
                     evaluationComment: scoresInfo[getRow(EColScore.nhanXet)],
                   });
                 }
+                dataStudent.push({
+                  studentId: item[EColScore.maHS as any],
+                  scores: [...scores, ...talents, ...quality, ]
+                });
               }
+            });
 
-            
-              dataStudent.push({
-                studentId: item[EColScore.maHS as any],
-                scores: [...scores, ...talents, ...quality, ]
-              });
-            }));
             const result = {
               typeEvalution: params.evaluation,
               classId: storage.get('class_id'),

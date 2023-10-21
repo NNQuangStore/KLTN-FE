@@ -11,7 +11,7 @@ const Logo = () => {
 
   return (
     <LogoStyled style={{ fontSize: collapsed ? '24px' : '26px'}}>
-      <img width={70} height={50} src={logo}/>
+      <img width={70} height={60} src={logo}/>
     </LogoStyled>
   );
 };

@@ -126,8 +126,6 @@ const CalendarDays = () => {
       
       if(s.slice(-1) === '0' || currentMonthDates.length === index + 1) {
         const dataRep = days.map(o => {
-          console.log(o.date);
-          
           const data = dataReport.filter(e => {
             return moment(e.date, 'YYYY-MM-DD').isSame(moment(o.date, 'YYYY/MM/DD'), 'day');
           });         
@@ -162,11 +160,7 @@ const CalendarDays = () => {
   const date: Moment = useMemo(() => moment(dateSelected), [dateSelected]);
 
   const isCalendarSelected = useCallback((date?: string) => {
-    console.log(date, moment(dateSelected).format('YYYY/MM/DD'), moment(dateSelected).format('YYYY/MM/DD') === date);
-
     if(moment(dateSelected).format('YYYY/MM/DD') === date) {
-    console.log('----------' ,date, moment(dateSelected).format('YYYY/MM/DD'), moment(dateSelected).format('YYYY/MM/DD') === date);
-
     }
     
     return moment(dateSelected).format('YYYY/MM/DD') === date; 
@@ -293,7 +287,8 @@ const CalendarStyled = styled.div`
       }
     
       &:hover {
-        background-color: ${COLOR_PRIMARY_LIGHT};
+        color: white;
+        background-color: ${COLOR_PRIMARY};
         /* color: white !important; */
 
       }
@@ -304,7 +299,8 @@ const CalendarStyled = styled.div`
     }
 
     .selected {
-      background-color: ${COLOR_PRIMARY_LIGHT};
+      color: white;
+      background-color: ${COLOR_PRIMARY};
     }
 
     .block {

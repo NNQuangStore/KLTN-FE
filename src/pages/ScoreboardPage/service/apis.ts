@@ -32,10 +32,23 @@ const getScoreboard = (body: TScoreboardParamReq) => {
   });
 };
 
+const getScoreboardDetail = (body: TScoreboardParamReq) => {
+  const studentId = storage.get('student_id');
+  return fetch({
+    method: 'post',
+    url: '/score/get-score',
+    body: {
+      studentId: studentId,
+        ...body
+    },
+  });
+};
+
 // api here
 const apisScoreboard = {
   importScoreboard,
-  getScoreboard
+  getScoreboard,
+  getScoreboardDetail
 };
 
 export default apisScoreboard;

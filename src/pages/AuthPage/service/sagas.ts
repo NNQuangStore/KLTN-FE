@@ -44,8 +44,6 @@ const refreshToken: ISagaFunc<{ pathname: string }> = function* ({ payload }) {
     yield put(actions.setToken(token));
     
     redirect(pathname);
-    console.log('???');
-    
 
   } catch (error) {
     yield put(actions.setToken(''));

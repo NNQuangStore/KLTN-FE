@@ -68,5 +68,20 @@ export const getTimeToString = (hour: number, minute: number) => {
 
 export const getDayOfWeek = (date: Moment) => {
   return days.find((o: any) => o.value === date.day())?.label;
+};
 
+export const getTalentByScore = (value: any) => {
+
+  switch(true) {
+    case value >= 9 && value <= 10:
+      return 'Hoàn thành xuất sắc';
+    case value >= 7:
+      return 'Hoàn thành tốt';
+    case value >= 5:
+      return 'Hoàn thành';
+    case value > 0 && value <= 4:
+      return 'Chưa hoàn thành';
+    default: 
+      return '';
+  }
 };

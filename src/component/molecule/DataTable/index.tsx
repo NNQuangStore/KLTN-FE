@@ -12,11 +12,6 @@ const DataTable = <T extends {}>({
   // ref,
   ...props
 } : Props<T>) => {
-
-  const tableRef = useRef<any>(null);
-  const [exportTableRef, setExportTableRef] = useState();
-
-  console.log('???');
   
   // useEffect(() => {
   //   setExportTableRef(tableRef.current.children[0].children[0].children[0].children[0].children[0].children[0]);

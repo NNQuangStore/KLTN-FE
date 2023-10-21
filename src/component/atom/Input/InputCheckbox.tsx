@@ -12,9 +12,6 @@ const InputCheckbox = ({
   ...props
 }: Props) => {
   const form = Form.useFormInstance();
-  console.log(form.getFieldValue(name ?? ''));
-  
-
   return (
     <Form.Item {...props}>
       <Checkbox onChange={onChange} style={{fontWeight: 600}}>{labelCheckbox}</Checkbox>

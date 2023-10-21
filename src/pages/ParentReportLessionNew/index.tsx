@@ -51,7 +51,6 @@ const ParentReportSessionNewPage = () => {
       const res = await apisLessonParent.getListLessonParent();
       if(res?.data?.data){
         await res?.data.data.forEach((report:any) => {
-          console.log(getMonday(report.startOfWeek));
           const firstOfWeek = getMonday(report.startOfWeek);
           report.startOfWeek = dayjs(firstOfWeek).format('YYYY-MM-DD');
           let newReport : LessonDTO[] = [];
@@ -90,9 +89,7 @@ const ParentReportSessionNewPage = () => {
   },[dataDisplay]);
 
   useEffect(() => {
-    console.log(dayChoose);
     const row = reportData.find((item) => dayjs(item.sendDay).format('YYYY-MM-DD') === dayChoose);
-    console.log(row);
     setDataDisplay(row);
   },[dayChoose]);
 

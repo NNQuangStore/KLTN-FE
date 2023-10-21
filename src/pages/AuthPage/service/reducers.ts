@@ -15,7 +15,6 @@ export const Slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(actions.login.success, (state, { payload }) => {
-      console.log(payload);
       const data = payload;      
       
       state.access_token = data?.token ?? null;

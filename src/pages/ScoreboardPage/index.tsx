@@ -3,13 +3,14 @@ import Filter from '../../component/template/Filter';
 import ButtonImportScore from './widgets/ButtonImport';
 import ScoreboardDataTable from './widgets/ScoreboardDataTable';
 import InputSelect from '../../component/atom/Input/InputSelect';
-import { Evalution } from './service/apis';
+import apisScoreboard, { Evalution } from './service/apis';
 import { useEffect } from 'react';
 import scoreboardActions from './service/actions';
 import { useDispatch } from 'react-redux';
 import { BORDER_STYLED } from '../../utils/unit';
 import scoreboardSelectors from './service/selectors';
-import { Select } from 'antd';
+import { Button, Select } from 'antd';
+import uiActions from '../../services/UI/actions';
 
 const ScoreboardPage = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,10 @@ const ScoreboardPage = () => {
     
   };
   
+  const scoreReq = scoreboardSelectors.getScoreboard();
+
+  console.log(JSON.stringify(scoreReq));
+  
 
   return (
     <ScoreboardPageStyled>
@@ -46,6 +51,13 @@ const ScoreboardPage = () => {
         <div>
           <ButtonImportScore/>
           <InputSelect onChange={onChange} defaultValue={params.evaluation} style={{width: '150px'}} options={options} />
+          <Button size='large' type='primary' onClick={async () => {
+            dispatch(uiActions.setLoadingPage(true));
+            await apisScoreboard.importScoreboard({requestBody: {
+              ...scoreReq
+            }}); 
+            dispatch(uiActions.setLoadingPage(false));
+          }}>Lưu bảng điểm</Button>
         </div>
       </FilterStyled>
       <ScoreboardDataTable/>

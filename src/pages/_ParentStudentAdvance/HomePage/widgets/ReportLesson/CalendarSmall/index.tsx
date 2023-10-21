@@ -47,9 +47,6 @@ const CalendarSmallDays = () => {
     //   getLesson();
     // },[]);
 
-    console.log(lessonRes);
-    
-
     const dataReport = [
       {
         title: 'Báo bài ngày 23/10/2023',

@@ -65,11 +65,8 @@ const ButtonImport = () => {
         const xlsxCol: string[] = Object.values(EColExcel);
         const columns = Object.keys(data[0])?.filter(o => xlsxCol?.find(i => i?.toLowerCase() === o?.toLowerCase()));
   
-        console.log(columns);
-        
 
         if(! (columns.length === xlsxCol.length)) {
-          console.log('wrong');
           return;
           
         }
@@ -77,9 +74,6 @@ const ButtonImport = () => {
 
         const rest = data.map((o: any, index: number) => {
   
-          console.log(o[EColExcel.date]);
-          
-
           if(! dayjs(o[EColExcel.date], 'DD/MM/YYYY  HH:mm').isValid()) {
             errors.push(getStringError(EColExcel.date, index));
             return;

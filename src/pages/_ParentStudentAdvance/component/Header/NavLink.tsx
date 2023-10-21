@@ -1,15 +1,21 @@
 import { styled } from 'styled-components';
 import { COLOR_PRIMARY } from '../../../../utils/variables/colors';
+import { PATH } from '../../../../utils/paths';
+import { link } from 'fs';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const navItem = [
   {
-    label: 'Báo bài'
+    label: 'Báo bài',
+    link: '/app/report-session'
   },
   {
-    label: 'Điểm số'
+    label: 'Điểm số',
+    link: '/app/evaluation-sheet'
   },
   {
-    label: 'Thời khoá biểu'
+    label: 'Thời khoá biểu',
+    link: '/app/time-table'
   },
   {
     label: 'Giáo viên'
@@ -17,10 +23,19 @@ const navItem = [
 ];
 
 const NavLink = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  console.log(location.pathname);
+  
+
   return (
     <NavLinkStyled>
         {navItem.map((o, index) => (
-          <div key={index} className={`item ${index === 0 ? 'item-active' : ''}`}>
+          <div onClick={() => {
+            navigate(o.link ?? '');
+          }} key={index} className={`item ${location.pathname === o.link ? 'item-active' : ''}`}>
             <p>{o.label}</p>
             <div className='underline'></div>
           </div>

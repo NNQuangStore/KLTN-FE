@@ -221,7 +221,7 @@ const ButtonImport = () => {
         setOpen(true);
         setData([]);
         setErrors([]);
-        setisImport(false);
+        // setisImport(false);
         setIsValid(false);
         }}>Import</Button>
       {open && <ModalStyled

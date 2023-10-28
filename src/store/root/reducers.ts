@@ -1,3 +1,5 @@
+import absenceServiceReducer from '../../pages/AbsencePage/service/reducers';
+import attendanceServiceReducer from '../../pages/Attendance/service/reducers';
 import authServiceReducer from '../../pages/AuthPage/service/reducers';
 import lesionServiceReducer from '../../pages/ReportLesionPage/services/reducers';
 import scoreboardServiceReducer from '../../pages/ScoreboardPage/service/reducers';
@@ -9,7 +11,9 @@ const rootReducer = {
   auth: authServiceReducer,
   scoreboard: scoreboardServiceReducer,
   student: studentServiceReducer,
-  lesion: lesionServiceReducer
+  lesion: lesionServiceReducer,
+  absence: absenceServiceReducer,
+  attendance: attendanceServiceReducer
 };
 
 export default rootReducer;

@@ -53,7 +53,7 @@ function AppUI() {
           <Route path={PATH._STUDENT._INDEX} element={<StudentPage />} />
           <Route path={`${PATH._STUDENT._INDEX}/:id`} element={<ProfilePage/>} />
           <Route path={PATH._REPORT_CARD} element={<ReportCardPage/>} />
-          <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} />
+          {/* <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} /> */}
           <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
@@ -66,6 +66,8 @@ function AppUI() {
           <Route path='report-session' element={<ParentStudentReportLessonPage />}/>
           <Route path='parent-attendance' element={<AttendancePage />}/>
           <Route path='time-table' element={<TimeTablePage />}/>
+          <Route path='leave-of-absence' element={<AbsencePage/>} />
+
         </Route>
 
         <Route path='parent-student' element={<ParentStudentLayout />}>

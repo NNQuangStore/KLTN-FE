@@ -8,6 +8,8 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { EMonth, TDate, days } from '../../../../component/Calendar';
 import { COLOR_PRIMARY } from '../../../../../../utils/variables/colors';
 import { useAppDispatch } from '../../../../../../store/hooks';
+import lesionSelectors from '../../../../../ReportLesionPage/services/selectors';
+import lesionActions from '../../../../../ReportLesionPage/services/actions';
 
 
 
@@ -23,6 +25,31 @@ const CalendarSmallDays = () => {
 
   const [dateSelected, setDateSelected] = useState<string>(moment().format());
   // const [dayOfWeek, setDayOfWeek] = useState<TDate[][]>([]);
+
+
+  useEffect(() => {
+    dispatch(lesionActions.getListLesion.fetch());
+  }, []);
+
+  const dataReportLesion = lesionSelectors.getLesionList();
+
+
+  const dataReport = useMemo(() =>  (dataReportLesion ?? [])?.map(o => ({
+    title: o.Title__c,
+    date: moment(o.SentDay__c).format('DD/MM/YYYY'),
+    content: o.Content__c
+  })),[dataReportLesion]) ;
+
+  // const dataReport = [
+  //   {
+  //     content: 'Hai Nam Test',
+  //     date :'2023-11-27',
+  //     title : 'Báo bài ngày 45257',
+  //   }
+  // ];
+
+  console.log(dataReport);
+  
 
   const getDaysOfWeek = () => {
 
@@ -47,13 +74,6 @@ const CalendarSmallDays = () => {
     //   getLesson();
     // },[]);
 
-    const dataReport = [
-      {
-        title: 'Báo bài ngày 23/10/2023',
-        date: '23/10/2023',
-        content: 'Haha al ready okd'
-      }
-    ];
 
     const date = moment(dateSelected);
 
@@ -70,7 +90,7 @@ const CalendarSmallDays = () => {
         key: Number(dates[1])
       });      
       
-      if(s.slice(-1) === '0' || currentMonthDates.length === index + 1) {
+      if(s.slice(-1) === '0' || currentMonthDates?.length === index + 1) {
 
         const dataRep = days.map(o => {
           const data = dataReport.filter(e => {
@@ -149,7 +169,7 @@ const CalendarSmallDays = () => {
                   const date = o.find(d => d.key === e.value);
                   return <td style={{pointerEvents: date?.date ? undefined : 'none'}} className={` col ${ isCurrentDate(date?.date) ? 'current' : ''}`} key={indexDay}> 
                     {date?.date ? 
-                      <div className={`${ (date.data?.length ?? 0) > 0 ? 'report' : ''}`}>
+                      <div className={`${ (date?.data?.length ?? 0) > 0 ? 'report' : ''}`}>
                         <p className={` ${ isCurrentDate(date?.date) ? 'current' : ''}`}>{moment(date?.date).date()}</p> 
                       </div>
                       : <></>}  </td>;

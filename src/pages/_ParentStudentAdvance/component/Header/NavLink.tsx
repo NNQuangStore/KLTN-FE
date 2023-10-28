@@ -18,6 +18,10 @@ const navItem = [
     link: '/app/time-table'
   },
   {
+    label: 'Xin nghỉ phép',
+    link: '/app/leave-of-absence'
+  },
+  {
     label: 'Giáo viên'
   }
 ];

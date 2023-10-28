@@ -1,6 +1,6 @@
 import { Card, Typography, DatePicker, Form, List, Input, Empty } from 'antd';
 import { styled } from 'styled-components';
-import FormLayout from '../../../../component/organism/FormLayout';
+import FormLayout, { ActionFormStyled } from '../../../../component/organism/FormLayout';
 import InputSelectRange from '../../../../component/atom/Input/InputSelectRange';
 import AvatarSidebar from '../../../../component/molecule/AvatarSidebar';
 import FormRow from '../../../../component/organism/FormLayout/FormRow';
@@ -12,6 +12,12 @@ import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { DATE_FORMAT, getDatesBetween } from '../../../../utils/unit';
 import InputText from '../../../../component/atom/Input/InputText';
+import { useAppDispatch } from '../../../../store/hooks';
+import uiActions from '../../../../services/UI/actions';
+import apisAbsence from '../../service/apis';
+import storage from '../../../../utils/sessionStorage';
+import moment from 'moment';
+import ButtonPrimary from '../../../../component/atom/Button/ButtonPrimary';
 
 const { RangePicker } = DatePicker;
 
@@ -22,6 +28,7 @@ const LeaveOfAbsence = () => {
 
   const [form] = useForm();
   const [listLesion, setListLesion] = useState<Dayjs[]>([]);
+  const dispatch = useAppDispatch();
 
   // useEffect(() => {    
   //   setListLesion();
@@ -31,19 +38,42 @@ const LeaveOfAbsence = () => {
     setListLesion(getDatesBetween(values[0], values[1]));
   };
 
+  const handleSubmit = async (values: {time_absence: Dayjs[], reason: string}) => {
+    dispatch(uiActions.setLoadingPage(true));
+    await apisAbsence.saveAbsenceParent({
+      ClassHeader__c: storage.get('class_id') ?? '',
+      HocSinh__c: storage.get('student_id') ?? '',
+      LyDo__c: values.reason,
+      NgayNghi__c: values.time_absence[0].format('YYYY-MM-DD'),
+      NgayNop__c: moment().format('YYYY-MM-DD'),
+      SoNgayNghi__c: values.time_absence[1].diff(values.time_absence[0], 'day'),
+      TrangThai__c: 'PENDING'
+
+    });
+    dispatch(uiActions.setLoadingPage(false));
+
+  };
+
   return (
     <LeaveOfAbsenceStyled>
-      <Card style={{width: '30%'}} className='profile-avatar'>
+      {/* <Card style={{width: '30%'}} className='profile-avatar'>
         <AvatarSidebar collapsed={false} />
         <h3>About</h3>
         <p>Là một giáo viên có kiến thức chuyên môn vững vàng mà còn là một người mang trong mình niềm đam mê mãnh liệt với việc dạy và hướng dẫn học sinh.</p>
-      </Card>
-      <Card title='Xin nghỉ phép' style={{width: '80%', justifyContent:'center'}}>
+      </Card> */}
+      <Card title='Đơn xin nghỉ phép' style={{width: '100%', justifyContent:'center'}}>
         <FormLayout<any> 
           layout='horizontal'
           form={form}
-          onSubmit={(values) => console.log(values)} >
-            <FormBlock label='Thời gian nghỉ'>
+          renderButton={<ActionFormStyled justify={'center'} >
+          <ButtonPrimary htmlType='submit' label='Xin nghỉ'/>
+        </ActionFormStyled>}
+          onSubmit={handleSubmit} >
+            <FormBlock style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }} label='Thời gian nghỉ: '>
               <Form.Item name={'time_absence'}>
                 <RangePicker 
                     disabledDate={(current) => {
@@ -62,13 +92,13 @@ const LeaveOfAbsence = () => {
                     </Form.Item>
                     <Form.Item initialValue={true} name={[index, 'lesion', 1]}>
                       <InputCheckbox key={index} labelCheckbox={`${o.format(DATE_FORMAT)} - Chiều`}/>
-                    </Form.Item>
+                    </Form.Item> 
                   </>
                 ))}
               </div> : <Empty description='Không có buổi học nào được chọn'/>}
             </FormBlock> */}
-            <FormBlock label='Lý do xin nghỉ'>
-              <Form.Item >
+            <FormBlock label='Lý do xin nghỉ:'>
+              <Form.Item name={'reason'} >
                 <TextArea rows={4} />
               </Form.Item>
             </FormBlock>

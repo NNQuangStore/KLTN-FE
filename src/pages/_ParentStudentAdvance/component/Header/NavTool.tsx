@@ -21,7 +21,7 @@ const NavTool = () => {
 
   const userActions = [
     {
-      title: 'logout'
+      title: 'Logout'
     }
   ];
 
@@ -40,8 +40,9 @@ const NavTool = () => {
       
           <ListItemStyled onClick={() => {storage.set('token', ''); navigate('/auth/sign-in');
             }}>
-              <LogoutOutlined />
-              {item.title}
+              <LogoutOutlined style={{marginRight: '8px'}} />
+    
+                {item.title}
             </ListItemStyled>
           )}
         />
@@ -66,6 +67,7 @@ export default NavTool;
 const ListItemStyled = styled(List.Item)`
   cursor: pointer;
   width: 100px;
+  font-weight: 700;
 
   &:hover {
     background-color: #cccccc40;

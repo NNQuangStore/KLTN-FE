@@ -1,17 +1,11 @@
 import { Card, Typography, DatePicker, Form, List, Input, Empty } from 'antd';
 import { styled } from 'styled-components';
 import FormLayout, { ActionFormStyled } from '../../../../component/organism/FormLayout';
-import InputSelectRange from '../../../../component/atom/Input/InputSelectRange';
-import AvatarSidebar from '../../../../component/molecule/AvatarSidebar';
-import FormRow from '../../../../component/organism/FormLayout/FormRow';
 import FormBlock from '../../../../component/organism/FormLayout/FormBlock';
-import InputSwitcher from '../../../../component/atom/Input/InputSwitcher';
-import InputCheckbox from '../../../../component/atom/Input/InputCheckbox';
 import { useForm } from 'antd/es/form/Form';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { DATE_FORMAT, getDatesBetween } from '../../../../utils/unit';
-import InputText from '../../../../component/atom/Input/InputText';
+import {  getDatesBetween } from '../../../../utils/unit';
 import { useAppDispatch } from '../../../../store/hooks';
 import uiActions from '../../../../services/UI/actions';
 import apisAbsence from '../../service/apis';
@@ -21,7 +15,6 @@ import ButtonPrimary from '../../../../component/atom/Button/ButtonPrimary';
 
 const { RangePicker } = DatePicker;
 
-const { Text } = Typography;
 const { TextArea } = Input;
 
 const LeaveOfAbsence = () => {
@@ -124,5 +117,9 @@ const LeaveOfAbsenceStyled = styled.div`
     .ant-form-item {
       margin-bottom: 0px;
     }
+  }
+
+  .ant-picker-range {
+    margin-top: 24px;
   }
 `;

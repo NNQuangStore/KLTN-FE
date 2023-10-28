@@ -8,6 +8,8 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import absenceSelectors from '../../service/selectors';
 import moment from 'moment';
 import { EAbsenceStatus } from '../..';
+import apisAbsence from '../../service/apis';
+import { TAbsenceRes } from '../../service/types/absence';
 
 const ListAbsence = ({isAccept = false}: {isAccept?: boolean}) => {
 
@@ -16,7 +18,7 @@ const ListAbsence = ({isAccept = false}: {isAccept?: boolean}) => {
       case EAbsenceStatus.ACCEPT:
         return <Tag color='green'>Đã duyệt</Tag>;
       case EAbsenceStatus.DELETE:
-        return <Tag color='red'>Xoá</Tag>;
+        return <Tag color='red'>Đã huỷ</Tag>;
       case EAbsenceStatus.PENDING:
         return <Tag color='yellow'>Đang duyêt</Tag>;
       case EAbsenceStatus.DRAFT:
@@ -65,13 +67,18 @@ const ListAbsence = ({isAccept = false}: {isAccept?: boolean}) => {
     },
     {
       title: 'Hành động',
-      dataIndex: 'actions',
-      key: 'actions',
-      render: () => {
+      render: ( record: any) => {
+        console.log(record);
+        
         return (
           <ActionTable actions={[
             {
-              handle: () => undefined,
+              handle: async () => {
+                await apisAbsence.saveAbsenceParent({
+                  ...record,
+                  TrangThai__c: EAbsenceStatus.DELETE
+                });
+              },
               icon: <DeleteOutlined />,
               label: 'Huỷ đơn nghỉ',
               color: '#f5222d'
@@ -121,7 +128,7 @@ const ListAbsence = ({isAccept = false}: {isAccept?: boolean}) => {
   const absenceParents = absenceSelectors.getAbsenceParent();
 
   const absenceParent = isAccept ? 
-    absenceParents.filter(o => o.TrangThai__c === EAbsenceStatus.ACCEPT): 
+    absenceParents.filter(o => o.TrangThai__c === EAbsenceStatus.ACCEPT):
     absenceParents.filter(o => o.TrangThai__c !== EAbsenceStatus.ACCEPT);
 
   const data = absenceParent.map(o => ({

@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import ColTimeTable from './ColTimeTable';
+import moment from 'moment';
 
 export type IDataTimeTable = {
   day_of_week: 'mon' | 'tue' | 'wed' | 'thu' | 'fri',
@@ -14,23 +15,29 @@ export  type ITimeTable = {
 export const headerTableTime = [
   {
     value: 'mon',
-    label: 'Thứ 2'
+    label: 'Thứ 2',
+    color: '#ffec3d'
   },
   {
     value: 'tue',
-    label: 'Thứ 3'
+    label: 'Thứ 3',
+    color: '#73d13d'
   },
   {
     value: 'wed',
-    label: 'Thứ 4'
+    label: 'Thứ 4',
+    color: '#ffa940'
+
   },
   {
     value: 'thu',
-    label: 'Thứ 5'
+    label: 'Thứ 5',
+    color: '#4096ff'
   },
   {
     value: 'fri',
-    label: 'Thứ 6'
+    label: 'Thứ 6',
+    color: '#ff4d4f'
   },
 ];
 
@@ -53,11 +60,11 @@ const dataSource: (ITimeTable | null)[] = [
     data: [
       {
         day_of_week: 'tue',
-        lesson: ' Nói',
+        lesson: 'LS & DL',
       },
       {
         day_of_week: 'wed',
-        lesson: 'Đọc',
+        lesson: 'Toán',
       },
     ]
   },
@@ -66,12 +73,12 @@ const dataSource: (ITimeTable | null)[] = [
     index: 3,
     data: [
       {
-        day_of_week: 'tue',
-        lesson: ' Nói',
+        day_of_week: 'fri',
+        lesson: ' Khoa học',
       },
       {
         day_of_week: 'wed',
-        lesson: 'Đọc',
+        lesson: 'Tiếng việt',
       },
     ]
   },
@@ -79,12 +86,12 @@ const dataSource: (ITimeTable | null)[] = [
     index: 4,
     data: [
       {
-        day_of_week: 'tue',
-        lesson: ' Nói',
+        day_of_week: 'mon',
+        lesson: ' Tiếng việt',
       },
       {
-        day_of_week: 'wed',
-        lesson: 'Đọc',
+        day_of_week: 'thu',
+        lesson: 'LS & DL',
       },
     ]
   },
@@ -94,12 +101,12 @@ const dataSource: (ITimeTable | null)[] = [
     index: 5,
     data: [
       {
-        day_of_week: 'tue',
-        lesson: ' Nói',
+        day_of_week: 'wed',
+        lesson: 'Khoa học',
       },
       {
-        day_of_week: 'wed',
-        lesson: 'Đọc',
+        day_of_week: 'tue',
+        lesson: 'Tiếng việt',
       },
     ]
   },
@@ -107,12 +114,12 @@ const dataSource: (ITimeTable | null)[] = [
     index: 6,
     data: [
       {
-        day_of_week: 'tue',
-        lesson: ' Nói',
+        day_of_week: 'fri',
+        lesson: 'Toán',
       },
       {
         day_of_week: 'wed',
-        lesson: 'Đọc',
+        lesson: 'Tiếng việt',
       },
     ]
   },
@@ -120,16 +127,19 @@ const dataSource: (ITimeTable | null)[] = [
     index: 7,
     data: [
       {
-        day_of_week: 'tue',
-        lesson: ' Nói',
+        day_of_week: 'mon',
+        lesson: ' Tiếng việt',
       },
       {
         day_of_week: 'wed',
-        lesson: 'Đọc',
+        lesson: 'LS & DL',
       },
     ]
   },
 ];
+
+console.log(moment().get('day'));
+
 
 const TimeTable = () => {
 
@@ -142,14 +152,18 @@ const TimeTable = () => {
           <th className='sessions-days'>Buổi</th>
           <th>Tiết</th>
           {headerTableTime.map((o, index) => (
-            <th key={index}>{o.label}</th>
+            <th  style={moment().get('day') === index ? {
+              backgroundColor: o.color
+            } : {}} key={index}>{o.label}</th>
           ))}
         </tr>
         </thead>
         <tbody>
 
         <tr>
-          <td className='sessions-days' rowSpan={6}>Buổi sáng</td>
+          <td style={{
+            backgroundColor: '#ffccc7'
+          }} className='sessions-days' rowSpan={6}>Buổi sáng</td>
         </tr>
         {dataSource.map((o, index) => {
           switch(true) {
@@ -162,13 +176,17 @@ const TimeTable = () => {
             case o === null && index === 5:
                 return (
                   <tr>
-                    <td className='sessions-days' colSpan={7}>NGHĨ TRƯA</td>
+                    <td style={{
+                      backgroundColor: '#bae0ff'
+                    }} className='sessions-days' colSpan={7}>NGHĨ TRƯA</td>
                   </tr>
                 );
             case o === null && index === 6:
               return (
                 <tr>
-                  <td className='sessions-days' rowSpan={4}>Buổi chiều</td>
+                  <td style={{
+                    backgroundColor: '#ffccc7'
+                  }} className='sessions-days' rowSpan={4}>Buổi chiều</td>
                 </tr>
               );
             default: 

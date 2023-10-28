@@ -5,18 +5,29 @@ import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
 import Footer from '../../../component/template/Footer';
 import { COLOR_PRIMARY } from '../../../utils/variables/colors';
+import { ConfigProvider } from 'antd';
 
 
 const ParentStudentLayout = () => {
   
 
   return (
-    <ParentStudentLayoutStyled>
-      <ParentStudentHeader/>
-      <TopBar/> 
-      <Outlet/>
-      <Footer/>
-    </ParentStudentLayoutStyled>
+    <ConfigProvider
+        theme={{
+          token: {
+            fontFamily: '"Raleway", sans-serif',
+            colorPrimary: COLOR_PRIMARY
+            
+          },
+        }}
+      >
+        <ParentStudentLayoutStyled>
+          <ParentStudentHeader/>
+          <TopBar/> 
+          <Outlet/>
+          <Footer/>
+        </ParentStudentLayoutStyled>
+      </ConfigProvider>
   );
 };
 

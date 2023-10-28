@@ -4,13 +4,18 @@ import { useCollapseSidebar } from '../../../services/hooks/useCollapseSidebar';
 import { COLOR_PRIMARY } from '../../../utils/variables/colors';
 import { Avatar } from 'antd';
 import logo from '../../../asset/img/logo.png';
+import { useNavigate } from 'react-router-dom';
+import storage from '../../../utils/sessionStorage';
 
 const Logo = () => {
 
   const [collapsed] = useCollapseSidebar();
+  const navigate = useNavigate();
 
   return (
-    <LogoStyled style={{ fontSize: collapsed ? '24px' : '26px'}}>
+    <LogoStyled onClick={() => {
+      storage.get('role') === 'PARENT' ? navigate('/app/home') : undefined;
+    }} style={{ fontSize: collapsed ? '24px' : '26px'}}>
       <img width={70} height={60} src={logo}/>
     </LogoStyled>
   );

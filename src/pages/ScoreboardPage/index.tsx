@@ -11,9 +11,10 @@ import { BORDER_STYLED } from '../../utils/unit';
 import scoreboardSelectors from './service/selectors';
 import { Button, Select } from 'antd';
 import uiActions from '../../services/UI/actions';
+import { useAppDispatch } from '../../store/hooks';
 
 const ScoreboardPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const options = Object.keys(Evalution).map((key) => ({
     value: key,

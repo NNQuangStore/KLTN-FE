@@ -63,7 +63,7 @@ const AbsencePage = () => {
         margin: '24px 0px',
         textAlign: 'center',
         fontSize: '24px'
-      }}>Xin nghỉ phép</h3>
+      }}>Nghỉ phép</h3>
       <div className='info' style={{margin: '26px 0px'}}>
         {info.map((o, index) => (
             <Card key={index} className='col-info' bordered={false}>

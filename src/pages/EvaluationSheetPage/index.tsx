@@ -258,7 +258,9 @@ const EvaluationSheetPage = () => {
     };
 
     const onChange2 = (value: string) => {
-      setDataSelect2(value);
+      dispatch(scoreboardActions.getScoreboardDetail.fetch({
+        typeEvalution: value as any
+      }));
     };
     
     const onSearch = (value: string) => {
@@ -284,7 +286,7 @@ const EvaluationSheetPage = () => {
                   onValuesChange={onFormLayoutChange}
                   style={{ maxWidth: formLayout === 'inline' ? 'none' : 600 }}
                 >
-                <Form.Item label="Lớp">
+                {/* <Form.Item label="Lớp">
                 <Select
                   showSearch
                   placeholder="Lớp"
@@ -307,8 +309,8 @@ const EvaluationSheetPage = () => {
                       },
                     ]}
                   />
-                  </Form.Item>
-                  <Form.Item label="Bảng điểm">
+                  </Form.Item> */}
+                  <Form.Item label="Học kì">
                   <Select
                     showSearch
                     placeholder="Bảng điểm"
@@ -316,24 +318,25 @@ const EvaluationSheetPage = () => {
                     onChange={onChange2}
                     onSearch={onSearch}
                     filterOption={filterOption}
+                    defaultValue={'GIUA_HK_1'}
                     options={[
                       {
-                        value: 'hk1',
-                        label: 'HK1',
+                        value: 'GIUA_HK_1',
+                        label: 'Giữa kì 1',
                       },
                       {
-                        value: 'hk2',
-                        label: 'HK2',
+                        value: 'CUOI_HK_1',
+                        label: 'Cuối kì 1',
                       },
                       {
-                        value: 'hk3',
-                        label: 'HK3',
+                        value: 'GIUA_HK_2',
+                        label: 'Giữa kì 3',
                       },
                       {
-                        value: 'hk4',
-                        label: 'HK4',
+                        value: 'CUOI_HK_2',
+                        label: 'Cuối kì 2',
                       },
-                    ]}
+                    ] as {value: 'GIUA_HK_1' | 'CUOI_HK_1' | 'GIUA_HK_2' | 'CUOI_HK_2', label: string} []}
                   />
                 </Form.Item>
               </Form>

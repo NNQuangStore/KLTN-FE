@@ -13,11 +13,12 @@ import { useDispatch } from 'react-redux';
 import studentActions from '../StudentPage/services/actions';
 import StudentSelectors from '../StudentPage/services/selectors';
 import { getGender } from '../../utils/unit';
+import { useAppDispatch } from '../../store/hooks';
 
 const ProfilePage = () => {
 
   const {id} = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // const id = searchParams.get('id'); 
 
   useEffect(() => {

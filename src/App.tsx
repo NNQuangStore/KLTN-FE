@@ -34,6 +34,7 @@ import { ConfigProvider } from 'antd';
 // import dayjs from 'dayjs';
 import locale from 'antd/es/locale/vi_VN';
 import ParentStudentHomePage from './pages/_ParentStudentAdvance/HomePage';
+import ParentStudentTimeTablePage from './pages/_ParentStudentAdvance/TimeTable';
 
 // dayjs.extend(updateLocale);
 
@@ -57,6 +58,7 @@ function AppUI() {
           <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
+          <Route path='/time-table' element={<TimeTablePage />}/>
         </Route>
         <Route path='app' element={<ParentStudentLayout />}>
           {/* <Route index path='home' element={<ParentHomePage />}/> */}
@@ -65,7 +67,7 @@ function AppUI() {
           {/* <Route path='report-session' element={<ParentReportSessionNewPage />}/> */}
           <Route path='report-session' element={<ParentStudentReportLessonPage />}/>
           <Route path='parent-attendance' element={<AttendancePage />}/>
-          <Route path='time-table' element={<TimeTablePage />}/>
+          <Route path='time-table' element={<ParentStudentTimeTablePage />}/>
           <Route path='leave-of-absence' element={<AbsencePage/>} />
 
         </Route>

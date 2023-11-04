@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import CalendarDays from '../component/Calendar';
 import ReportLessonContent from './widgets/ReportLessonContent';
-import { BORDER_STYLED } from '../../../utils/unit';
 import bgReport from '../../../asset/img/bg-report.png';
 
 dayjs.extend(updateLocale);

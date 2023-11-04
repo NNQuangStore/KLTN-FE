@@ -1,17 +1,22 @@
 import { styled } from 'styled-components';
 import TimeTable from './TimeTable';
+import Filter from '../../component/template/Filter';
+import ButtonImport from './widgets/ImportButton';
 
 const TimeTablePage = () => {
 
 
   return (
     <TimeTablePageStyled>
-      <h3 style={{
+      {/* <h3 style={{
         fontWeight: 700,
         fontSize: '46px',
         textAlign: 'center',
         marginBottom: '46px'
-      }}>Thời khoá biểu</h3>
+      }}>Thời khoá biểu</h3> */}
+      <Filter>
+        <ButtonImport/>
+      </Filter>
       <div className='card'>
         <TimeTable />
       </div>

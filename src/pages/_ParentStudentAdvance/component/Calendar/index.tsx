@@ -104,7 +104,7 @@ const CalendarDays = () => {
   //   }
   // ];
 
-  const dataReport = useMemo(() =>  dataReportLesion.map(o => ({
+  const dataReport = useMemo(() =>  dataReportLesion?.map(o => ({
     title: o.Title__c,
     date: o.SentDay__c,
     content: o.Content__c
@@ -126,7 +126,7 @@ const CalendarDays = () => {
       
       if(s.slice(-1) === '0' || currentMonthDates.length === index + 1) {
         const dataRep = days.map(o => {
-          const data = dataReport.filter(e => {
+          const data = dataReport?.filter(e => {
             return moment(e.date, 'YYYY-MM-DD').isSame(moment(o.date, 'YYYY/MM/DD'), 'day');
           });         
           return {

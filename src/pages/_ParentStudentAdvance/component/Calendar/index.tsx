@@ -87,7 +87,11 @@ const CalendarDays = () => {
 
   const {state} = useLocation();
 
-  const [dateSelected, setDateSelected] = useState<string>(state?.date ? moment(state.date, 'YYYY/MM/DD').format() : moment().format());
+
+  console.log(state?.date);
+  
+
+  const [dateSelected, setDateSelected] = useState<string>(state?.date ? moment(state?.date, 'YYYY/MM/DD').format() : moment().format());
   const [, setReportDetail] = useLessonParentReportDetail([]);
 
   
@@ -98,7 +102,7 @@ const CalendarDays = () => {
     }, []);
   const dataReportLesion = lesionSelectors.getLesionList();
 
-    console.log(state.date);
+    console.log(state?.date);
     
   
   // const dataReport = [
@@ -132,7 +136,7 @@ const CalendarDays = () => {
       if(s.slice(-1) === '0' || currentMonthDates.length === index + 1) {
         const dataRep = days.map(o => {
           const data = dataReport?.filter(e => {
-            return moment(e.date, 'YYYY-MM-DD').isSame(moment(o.date, 'YYYY/MM/DD'), 'day');
+            return moment(e?.date, 'YYYY-MM-DD').isSame(moment(o?.date, 'YYYY/MM/DD'), 'day');
           });         
           return {
             ...o,
@@ -215,7 +219,7 @@ const CalendarDays = () => {
 
                     {date?.date ? 
                       <div className='block'>
-                        <p>{moment(date?.date).date()}</p> 
+                        <p>{moment(date?.date)?.date()}</p> 
                         <div style={{
                           }}>
                             {((date?.data ?? []).length) > 0 ? date?.data?.map((tag, index) => (

@@ -1,8 +1,8 @@
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import { getDayOfWeek } from '../../../../../utils/unit';
-import { Divider, Timeline, TimelineItemProps } from 'antd';
+import { Divider, Empty, Timeline, TimelineItemProps } from 'antd';
 import { hexToRGB } from '../../../../../utils/unit';
 import { COLOR_DISABLE, COLOR_PRIMARY_LIGHT, COLOR_WHITE } from '../../../../../utils/variables/colors';
 import InputDatePicker from '../../../../../component/atom/Input/InputDatePicker';
@@ -19,30 +19,18 @@ const TimeTableLine = () => {
 
   const [dataTimeTable, setDataTimeTable] = useState<any[]>();
 
-
-  console.log(dataTimeTable);
+  console.log(date.format('dddd'));
+  
+  // console.log(dataTimeTable);
   
   const fetchApi = async () => {
     const res = await apisTimetable.getTimeTable({
       date: date.format('YYYY-MM-DD'),
-      day: 'Monday'
+      day: date.format('dddd') as any
     });
     
-    const data = groupBy(res?.data?.Schedule?.detail, o => o.Lesson__c);
 
-    console.log(res?.data);
-    
-
-    const dataTimeTable = Object.keys(data).map(key => ({
-      index: Number(key.charAt(1)),
-      data: (data[key] as DetailType[]).map(o => ({
-        day_of_week: o.Day__c,
-        lesson: o.Name
-      }))
-    }));
-    
-
-    setDataTimeTable(dataTimeTable ?? []);
+    setDataTimeTable(res?.data?.Schedule?.detail ?? []);
   };
 
   useEffect(() => {
@@ -56,58 +44,65 @@ const TimeTableLine = () => {
 
   }, [date]);
 
-  const lessonToday = [
+  const lessonToday =  useMemo(() => [
     {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
-      lesson: 'Chính tả',
+      timeStart: '7g40',
+      timeEnd: '8g15',
+      lesson: dataTimeTable?.[0]?.Name,
       color: '#2f54eb',
     },
     {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
-      lesson: 'Chính tả',
+      timeStart: '8g20',
+      timeEnd: '8g55',
+      lesson: dataTimeTable?.[1]?.Name,
       color: '#722ed1',
 
     },
     {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
-      lesson: 'Chính tả',
+      timeStart: '8g55',
+      timeEnd: '9g25',
+      lesson: 'Giờ ra chơi',
+      color: 'gray'
+
+    },
+    {
+      timeStart: '9g25',
+      timeEnd: '10 giờ',
+      lesson: dataTimeTable?.[2]?.Name,
       color: '#eb2f96',
     },
     {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
+      timeStart: '10 giờ',
+      timeEnd: '10g40',
+      lesson: dataTimeTable?.[3]?.Name,
+      color: '#2f54eb',
+    },
+    {
+      timeStart: '10g40',
+      timeEnd: '14 giờ',
       lesson: 'Thời gian nghỉ trưa',
       color: 'gray',
     },
     {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
-      lesson: 'Chính tả',
-      color: '#2f54eb',
-    },
-    {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
-      lesson: 'Chính tả',
+      timeStart: '14 giờ',
+      timeEnd: '14g35',
+      lesson: dataTimeTable?.[4]?.Name,
       color: '#722ed1',
 
     },
     {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
-      lesson: 'Chính tả',
+      timeStart: '14g40',
+      timeEnd: '15g15',
+      lesson: dataTimeTable?.[5]?.Name,
       color: '#eb2f96',
     },
     {
-      timeStart: '8 giờ',
-      timeEnd: '8 giờ',
-      lesson: 'Chính tả',
+      timeStart: '15g20',
+      timeEnd: '4g05',
+      lesson: dataTimeTable?.[6]?.Name,
       color: '#722ed1',
     },
-  ];
+  ], [dataTimeTable]);
 
   const itemTimeLine: TimelineItemProps[] = lessonToday.map(o => ({
     // label: o.timeStart,
@@ -122,13 +117,17 @@ const TimeTableLine = () => {
           <h3>Tiết học trong ngày</h3>
           <p>{getDayOfWeek(date)}, {date.format('DD/MM/YYYY')}</p>
         </div>
-        <InputDatePicker style={{
+        <InputDatePicker
+        onChange={value => {
+          setDate(moment(value?.format() ));
+        }}
+         style={{
           borderRadius: '999px',
           padding: '1px 20px'
         }} size={'small'} />
       </div>
       <Divider  orientation='left' style={{fontWeight: 800, fontSize: '20px', color: 'gray'}}>7 giờ 30 phút</Divider>
-      <TimeLineStyled items={itemTimeLine}/>
+      {lessonToday.length > 0 ? <TimeLineStyled items={itemTimeLine}/> : <Empty description='Hôm nay không có buổi học nào'/>}
     </TimeTableLineStyled>
   );
 };

@@ -1,15 +1,61 @@
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { getDayOfWeek } from '../../../../../utils/unit';
 import { Divider, Timeline, TimelineItemProps } from 'antd';
 import { hexToRGB } from '../../../../../utils/unit';
 import { COLOR_DISABLE, COLOR_PRIMARY_LIGHT, COLOR_WHITE } from '../../../../../utils/variables/colors';
 import InputDatePicker from '../../../../../component/atom/Input/InputDatePicker';
+import apisTimetable from '../../../../TimeTablePage/services/apis';
+import { groupBy } from 'lodash';
+import { useAppDispatch } from '../../../../../store/hooks';
+import { DetailType } from '../../../../TimeTablePage/services/type/timeTable';
+import uiActions from '../../../../../services/UI/actions';
 
 const TimeTableLine = () => {
 
   const [date, setDate] = useState(moment());
+  const dispatch = useAppDispatch();
+
+  const [dataTimeTable, setDataTimeTable] = useState<any[]>();
+
+
+  console.log(dataTimeTable);
+  
+  const fetchApi = async () => {
+    const res = await apisTimetable.getTimeTable({
+      date: date.format('YYYY-MM-DD'),
+      day: 'Monday'
+    });
+    
+    const data = groupBy(res?.data?.Schedule?.detail, o => o.Lesson__c);
+
+    console.log(res?.data);
+    
+
+    const dataTimeTable = Object.keys(data).map(key => ({
+      index: Number(key.charAt(1)),
+      data: (data[key] as DetailType[]).map(o => ({
+        day_of_week: o.Day__c,
+        lesson: o.Name
+      }))
+    }));
+    
+
+    setDataTimeTable(dataTimeTable ?? []);
+  };
+
+  useEffect(() => {
+    dispatch(uiActions.setLoadingPage(true));
+    try {
+
+      fetchApi();
+    } finally{
+      dispatch(uiActions.setLoadingPage(false));
+    }
+
+  }, [date]);
+
   const lessonToday = [
     {
       timeStart: '8 giờ',

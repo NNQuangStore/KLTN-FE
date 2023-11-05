@@ -6,6 +6,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const navItem = [
   {
+    label: 'Trang chủ',
+    link: '/app/home'
+  },
+  {
     label: 'Báo bài',
     link: '/app/report-session'
   },

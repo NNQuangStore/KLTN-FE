@@ -14,9 +14,9 @@ const TimeTablePage = () => {
         textAlign: 'center',
         marginBottom: '46px'
       }}>Thời khoá biểu</h3> */}
-      <Filter>
+      {/* <Filter>
         <ButtonImport/>
-      </Filter>
+      </Filter> */}
       <div className='card'>
         <TimeTable />
       </div>
@@ -27,11 +27,15 @@ const TimeTablePage = () => {
 export default TimeTablePage;
 
 const TimeTablePageStyled = styled.div`
+
+  /* table {
+    background-color: transparent;
+  } */
+
   .card {
     border-radius: 12px;
+    background-color: transparent;
     /* box-shadow: 3px 3px 20px lightgray; */
-    padding: 16px 46px;
-    max-width: 80%;
     margin: 0px auto;
   }
 `;

@@ -10,6 +10,7 @@ import { COLOR_PRIMARY } from '../../../../../../utils/variables/colors';
 import { useAppDispatch } from '../../../../../../store/hooks';
 import lesionSelectors from '../../../../../ReportLesionPage/services/selectors';
 import lesionActions from '../../../../../ReportLesionPage/services/actions';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -24,6 +25,7 @@ const CalendarSmallDays = () => {
   const dispatch = useAppDispatch();
 
   const [dateSelected, setDateSelected] = useState<string>(moment().format());
+  const navigate = useNavigate();
   // const [dayOfWeek, setDayOfWeek] = useState<TDate[][]>([]);
 
 
@@ -167,7 +169,7 @@ const CalendarSmallDays = () => {
               <tr key={index}>
                 {days.map((e, indexDay) => {
                   const date = o.find(d => d.key === e.value);
-                  return <td style={{pointerEvents: date?.date ? undefined : 'none'}} className={` col ${ isCurrentDate(date?.date) ? 'current' : ''}`} key={indexDay}> 
+                  return <td onClick={() => navigate('/app/report-session', { state: { date: date?.date } })} style={{pointerEvents: date?.date ? undefined : 'none'}} className={` col ${ isCurrentDate(date?.date) ? 'current' : ''}`} key={indexDay}> 
                     {date?.date ? 
                       <div className={`${ (date?.data?.length ?? 0) > 0 ? 'report' : ''}`}>
                         <p className={` ${ isCurrentDate(date?.date) ? 'current' : ''}`}>{moment(date?.date).date()}</p> 
@@ -253,6 +255,11 @@ const CalendarStyled = styled.div`
       width: ${(heightCell - 8)+'px'};
       p {
       }
+    }
+
+    .report .current   {
+      color: white;
+      
     }
 
     & th {

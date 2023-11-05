@@ -43,23 +43,22 @@ const ParentStudentHomePage = () => {
             <div className='info-content-avatar-main'>
               <div>
 
-              <RowInfo label='MaHS' value='HS0003'/>
-              <RowInfo label='Họ và tên' value='Nguyễn Nhật Quang'/>
-              <RowInfo label='MaHS' value='HS0003'/>
+              <RowInfo label='MaHS' value={'HS0004'}/>
+              <RowInfo label='Họ và tên' value={storage.get('student_name') ?? ''}/>
+              <RowInfo label='Ngày sinh' value='15/10/2001'/>
               </div>
 
               <div>
 
-              <RowInfo label='MaHS' value='HS0003'/>
-              <RowInfo label='Họ và tên' value='Nguyễn Nhật Quang'/>
-              <RowInfo label='MaHS' value='HS0003'/>
+              <RowInfo label='Quê quán' value='Phú yên'/>
+              <RowInfo label='Email' value={`${storage.get('student_name')?.split(' ')?.[(storage.get('student_name')?.split(' ')?.length ?? 0) - 1]}@gmail.com`}/>
+              <RowInfo label='Số điện thoại' value='0987654321'/>
               </div>
               <div>
 
-<RowInfo label='MaHS' value='HS0003'/>
-<RowInfo label='Họ và tên' value='Nguyễn Nhật Quang'/>
-<RowInfo label='MaHS' value='HS0003'/>
-</div>
+                <RowInfo label='Dân tộc' value='Kinh'/>
+                <RowInfo label='Tôn giáo' value='Không'/>
+              </div>
             </div>
           </div>
         </div>

@@ -12,10 +12,22 @@ import { styled } from 'styled-components';
 import { useAppDispatch } from '../../../store/hooks';
 import uiActions from '../../../services/UI/actions';
 import FormBlock from '../../../component/organism/FormLayout/FormBlock';
+import apisClass from '../../ClassPage/services/apis';
 // import ButtonExportTemplate from './ButtonExportTemplate';
 // import lesionActions from '../services/actions';
 
 const { RangePicker } = DatePicker;
+
+interface ClassType {
+  Id: string;
+  Name: string;
+  GiaoVien__c: string;
+  NumOfStudent__c: number;
+  Status__c: string;
+  SchoolYear__c: number;
+  CreatedDate: string;
+  LastModifiedDate: string;
+}
 
 const ButtonImport = () => {
 
@@ -28,9 +40,20 @@ const ButtonImport = () => {
   const classId = storage.get('class_id');
   const dispatch = useAppDispatch();
   const [dates, setDates] = useState<Dayjs[]>();
+  const [classes, setClasses] = useState<ClassType[]>([]);
 
   const statusAccept = ['đã gửi', 'lưu nháp', 'đang gửi', 'Gửi tự động  '];
   const isAutoSendAccept = ['có', 'không'];
+
+  const fetchApi = async () => {
+    const res = await apisClass.getListClass();
+
+    setClasses(res?.data?.data);
+  };
+
+  useEffect(() => {
+    fetchApi();
+  },[]);
 
   const handleRangPicker = (values: any) => {
     setDates(values);
@@ -143,32 +166,27 @@ const ButtonImport = () => {
     }
   }, [data]);
 
-  const columns = [
+  const day = [
     {
-      title: 'Tiêu đề',
-      dataIndex: 'Title__c',
-      key: 'Title__c',
+      value: 'Thứ 2',
+      label: 'Monday'
     },
     {
-      title: 'Ngày gửi',
-      dataIndex: 'SentDay__c',
-      key: 'SentDay__c',
+      value: 'Thứ 3',
+      label: 'Tuesday'
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'Status__c',
-      key: 'Status__c',
+      value: 'Thứ 4',
+      label: 'Wednesday'
     },
     {
-      title: 'Nội dung',
-      dataIndex: 'Content__c',
-      key: 'Content__c',
+      value: 'Thứ 5',
+      label: 'Thursday'
     },
     {
-      title: 'Tự động gửi',
-      dataIndex: 'IsAutoSent__c',
-      key: 'IsAutoSent__c',
-    }
+      value: 'Thứ 6',
+      label: 'Friday'
+    },
   ];
 
   // const dataSource = [
@@ -205,6 +223,9 @@ const ButtonImport = () => {
           const data = e?.target?.result;
           const workbook = read(data, { type: 'array' });
 
+          const schedules = [];
+
+
           for (let i = 0; i < workbook.SheetNames.length; ++i) {
 
             const sheetName = workbook.SheetNames[i];
@@ -214,14 +235,33 @@ const ButtonImport = () => {
             rangeInfo.s.r = 3; //row = row + 1
             rangeInfo.s.c = 1; //row = row + 1
   
-  
-            const json = utils.sheet_to_json(worksheet, {range: rangeInfo});
+            const timeTable = [];
+            
+            const json: any[] = utils.sheet_to_json(worksheet, {range: rangeInfo});
+              for(const o of json) {
+                const keys = Object.keys(o);
+                const dataLesson: any[] = [];
 
-            console.log(workbook.SheetNames[i]);
+                
+                for(const key of keys) {
+                  dataLesson.push({Name: o[key]});
+                }
+                console.log(classes);
+                
+                timeTable.push({
+                  ...dataLesson
+                });
+
+
+            }
+
+            console.log({
+              ClassHeader__c: classes?.find(clss => clss.Name === workbook.SheetNames[i])?.Id,
+              detail: timeTable
+            });
             
-            console.log(json);
-            
-            setData(json.filter((o: any) => !!o[EColExcel.content]));
+
+            // classes.map(o => o.Name)
             // const keys = Object.keys(json[0]);
   
             // template.forEach(o => {
@@ -231,6 +271,9 @@ const ButtonImport = () => {
             // });
 
           }
+
+
+          
 
         };
         reader.readAsArrayBuffer(file);
@@ -274,6 +317,9 @@ const ButtonImport = () => {
             }} label='Thời gian thời khoá biểu được áp dụng: '>
               <Form.Item name={'time_absence'}>
                 <RangePicker
+                    style={{
+                      marginTop: '22px'
+                    }}
                     disabledDate={(current) => {
                     const customDate = dayjs().format('YYYY-MM-DD');
                     return current && current < dayjs(customDate, 'YYYY-MM-DD');

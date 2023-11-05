@@ -18,11 +18,20 @@ const getTimeTable = (params: {
   });
 };
 
+const saveTimeTable = (body: any) => {
+  return fetch({
+    method: 'post',
+    url: '/schedule/save',
+    body: body,
+  });
+};
+
 
 
 
 const apisTimetable = {
   getTimeTable,
+  saveTimeTable
 };
 
 export default apisTimetable;

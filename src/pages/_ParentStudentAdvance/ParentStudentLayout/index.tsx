@@ -17,7 +17,6 @@ const ParentStudentLayout = () => {
           token: {
             fontFamily: '"Raleway", sans-serif',
             colorPrimary: COLOR_PRIMARY
-            
           },
         }}
       >

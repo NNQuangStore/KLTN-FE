@@ -17,7 +17,7 @@ const ParentStudentTimeTablePage = () => {
 };
 
 const ParentStudentTimeTablePageStyled = styled.div`
-
+  padding: 0 100px;
 `;
 
 export default ParentStudentTimeTablePage;

@@ -27,28 +27,28 @@ export const headerTableTime = [
   {
     value: 'Monday',
     label: 'Thứ 2',
-    color: '#ffec3d'
+    // color: '#ffec3d'
   },
   {
     value: 'Tuesday',
     label: 'Thứ 3',
-    color: '#73d13d'
+    // color: '#73d13d'
   },
   {
     value: 'Wednesday',
     label: 'Thứ 4',
-    color: '#ffa940'
+    // color: '#ffa940'
 
   },
   {
     value: 'Thursday',
     label: 'Thứ 5',
-    color: '#4096ff'
+    // color: '#4096ff'
   },
   {
     value: 'Friday',
     label: 'Thứ 6',
-    color: '#ff4d4f'
+    // color: '#ff4d4f'
   },
 ];
 
@@ -167,7 +167,7 @@ const TimeTable = () => {
             <th>Tiết</th>
             {headerTableTime.map((o, index) => (
               <th  style={moment().get('day') === index ? {
-                backgroundColor: o.color
+                // backgroundColor: o.color
               } : {}} key={index}>{o.label}</th>
             ))}
           </tr>
@@ -176,7 +176,8 @@ const TimeTable = () => {
 
           <tr>
             <td style={{
-              backgroundColor: '#ffccc7'
+              backgroundColor: '#ffccc7',
+              border: '0px'
             }} className='sessions-days' rowSpan={6}>Buổi sáng</td>
           </tr>
           {dataSource.map((o, index) => {
@@ -184,14 +185,19 @@ const TimeTable = () => {
               case o === null && index === 2: 
                 return (
                 <tr>
-                  <td colSpan={6}>Giờ ra chơi</td>
+                  <td style={{
+                    backgroundColor: '#bae0ff',
+                    border: '0px',
+                    fontWeight: 800
+                  }} colSpan={6}>GIỜ RA CHƠI</td>
                 </tr>
                 );
               case o === null && index === 5:
                   return (
                     <tr>
                       <td style={{
-                        backgroundColor: '#bae0ff'
+                        backgroundColor: '#bae0ff',
+                        border: '0px'
                       }} className='sessions-days' colSpan={7}>NGHĨ TRƯA</td>
                     </tr>
                   );
@@ -199,7 +205,9 @@ const TimeTable = () => {
                 return (
                   <tr>
                     <td style={{
-                      backgroundColor: '#ffccc7'
+                      backgroundColor: '#ffccc7',
+                      border: '0px'
+
                     }} className='sessions-days' rowSpan={4}>Buổi chiều</td>
                   </tr>
                 );
@@ -251,12 +259,18 @@ const TimeTableStyled = styled.table`
     color: black;
   }
    */
+
   td, th {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 8px;
-
+    border-color: black;
   }
+
+  th {
+    border: 0px;
+  }
+
   .sessions-days {
     width: 70px;
     font-size: 16px;

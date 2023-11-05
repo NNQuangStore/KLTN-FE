@@ -13,6 +13,7 @@ import apisLessonParent from '../../../ParentReportLessionNew/service/apis';
 import lesionSelectors from '../../../ReportLesionPage/services/selectors';
 import lesionActions from '../../../ReportLesionPage/services/actions';
 import { useLessonParentReportDetail } from '../../../../services/hooks/useLessonDetail';
+import { useLocation } from 'react-router-dom';
 
 export enum EDays {
   mon = 'Thứ 2',
@@ -84,7 +85,9 @@ export const days = [
 
 const CalendarDays = () => {
 
-  const [dateSelected, setDateSelected] = useState<string>(moment().format());
+  const {state} = useLocation();
+
+  const [dateSelected, setDateSelected] = useState<string>(state?.date ? moment(state.date, 'YYYY/MM/DD').format() : moment().format());
   const [, setReportDetail] = useLessonParentReportDetail([]);
 
   
@@ -95,6 +98,8 @@ const CalendarDays = () => {
     }, []);
   const dataReportLesion = lesionSelectors.getLesionList();
 
+    console.log(state.date);
+    
   
   // const dataReport = [
   //   {

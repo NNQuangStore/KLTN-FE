@@ -1,7 +1,37 @@
 import { styled } from 'styled-components';
 import CalendarSmallDays from './CalendarSmall';
+import ReportDate from './Reportdate';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import lesionActions from '../../../../ReportLesionPage/services/actions';
+import { Radio, RadioChangeEvent } from 'antd';
+import ReportWeek from './ReportWeek';
 
 const ParentStudentReportLesson = () => {
+
+  const dispatch = useDispatch();
+
+  const [mode, setMode] = useState<'day' | 'week'>('day');
+  useEffect(() => {
+    dispatch(lesionActions.getListLesion.fetch());
+  }, []);
+
+  const handleModeChange = (e: RadioChangeEvent) => {
+    setMode(e.target.value);
+  };
+
+  const RenderReport = () => {
+    switch(mode) {
+      case 'week':
+        return (
+          <ReportWeek />
+        );
+      case 'day':
+      default:
+        return <ReportDate />;
+    }
+  };
+
   return (
     <ReportLessonStyled>
       <div className='header'>
@@ -9,15 +39,23 @@ const ParentStudentReportLesson = () => {
           <h3>Báo bài trong tháng</h3>
           <p>01.10.2023 - 31.10.2023</p>
         </div>
+        <div>
+        <Radio.Group onChange={handleModeChange} value={mode} style={{ marginBottom: 8 }}>
+          <Radio.Button value="day">Ngày</Radio.Button>
+          <Radio.Button value="week">Tuần</Radio.Button>
+        </Radio.Group>
+        </div>
 
       </div>
-      <CalendarSmallDays />
+      <RenderReport/>
+      {/* <CalendarSmallDays /> */}
     </ReportLessonStyled>
   );
 };
 
 const ReportLessonStyled = styled.div`
 
+  min-width: 450px;
 .header {
     display: flex;
     justify-content: space-between;

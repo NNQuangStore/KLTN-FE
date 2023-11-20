@@ -75,9 +75,9 @@ const ParentStudentHomePage = () => {
       </div>
       <div className='content'>
         <div className='content-box'>
-          <TimeTableLine />
-          <Divider type='vertical' style={{height: '100vh'}}/>
           <ParentStudentReportLesson />
+          <Divider type='vertical' style={{height: '100vh'}}/>
+          <TimeTableLine />
           <Divider type='vertical' style={{height: '100vh'}}/>
           <ParentStudentNotification />
         </div>

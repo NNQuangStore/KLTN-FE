@@ -1,12 +1,12 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
 
-const getListClass = () => {
+const getListClass = (params?: {year: number}) => {
 
   return fetch({
     method: 'get',
-    url: 'class'
-    // params: { ...params, per_page: 100 },
+    url: 'class',
+    params: params as any,
   });
 };
 

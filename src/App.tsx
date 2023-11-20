@@ -35,6 +35,8 @@ import { ConfigProvider } from 'antd';
 import locale from 'antd/es/locale/vi_VN';
 import ParentStudentHomePage from './pages/_ParentStudentAdvance/HomePage';
 import ParentStudentTimeTablePage from './pages/_ParentStudentAdvance/TimeTable';
+import ClassPage from './pages/_Admin/Class';
+import TeacherPage from './pages/_Admin/Teacher';
 
 // dayjs.extend(updateLocale);
 
@@ -59,7 +61,10 @@ function AppUI() {
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
           <Route path='/time-table' element={<TimeTablePage />}/>
+          <Route path='/class' element={<ClassPage />}/>
+          <Route path='/teacher' element={<TeacherPage />}/>
         </Route>
+
         <Route path='app' element={<ParentStudentLayout />}>
           {/* <Route index path='home' element={<ParentHomePage />}/> */}
           <Route index path='home' element={<ParentStudentHomePage />}/>

@@ -37,8 +37,13 @@ export const roundNumber = (number: number) => {
 // };
 
 export const getDatesBetween = (from: Dayjs, to: Dayjs) => {
-  if(from || to) return [];
+  console.log('??/');
+  console.log(from, to);
   
+  if(!from || !to) return [];
+  
+  
+
   const dates: Dayjs[] = [from];
   let date: Dayjs = from;  
   do{
@@ -46,6 +51,9 @@ export const getDatesBetween = (from: Dayjs, to: Dayjs) => {
     dates.push(date);
   }
   while (date.isBefore(to));
+
+  console.log(dates);
+  
 
   return dates;
 };

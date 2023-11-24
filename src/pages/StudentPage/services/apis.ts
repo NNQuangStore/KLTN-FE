@@ -12,6 +12,15 @@ const getListStudent = () => {
   });
 };
 
+const getListStudentByClass = (class_id: string) => {
+
+  return fetch({
+    method: 'get',
+    url: `class/${class_id}`
+    // params: { ...params, per_page: 100 },
+  });
+};
+
 const getDetailStudent = (id: string) => {
   return fetch({
     method: 'get',
@@ -32,6 +41,7 @@ const getDetailStudent = (id: string) => {
 const apisStudent = {
   getListStudent,
   getDetailStudent,
+  getListStudentByClass
 };
 
 export default apisStudent;

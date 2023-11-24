@@ -6,7 +6,7 @@ const getListTeacher = () => {
     url: 'teacher'
   });
 };
-const updateLetter = (body : any) => {
+const saveTeacher = (body : any) => {
   return fetch({
     method: 'post',
     url: 'teacher/save',
@@ -16,7 +16,7 @@ const updateLetter = (body : any) => {
 // api here
 const apisTeacher= {
   getListTeacher, 
-  updateLetter
+  saveTeacher
 };
 
 export default apisTeacher;

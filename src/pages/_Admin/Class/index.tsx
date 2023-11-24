@@ -8,11 +8,16 @@ import { useAppDispatch } from '../../../store/hooks';
 import apisClass from '../../ClassPage/services/apis';
 import LoadingPage from '../../../services/UI/LoadingPage';
 import uiActions from '../../../services/UI/actions';
-import { message } from 'antd';
+import { Form, message } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import userEvent from '@testing-library/user-event';
 import { ColumnsType } from 'antd/es/table';
 import apisTeacher from '../Teacher/services/apis';
+import ModalButton from '../../../component/organism/ModalButton';
+import FormLayout from '../../../component/organism/FormLayout';
+import InputText from '../../../component/atom/Input/InputText';
+import InputSearchText from '../../../component/atom/Input/InputSearch';
+import InputSelect from '../../../component/atom/Input/InputSelect';
 
 
 export type ClassType = {
@@ -55,39 +60,12 @@ const ClassPage= () => {
   const [dataClass, setDataClass] = useState<ClassType[]>();
   const [dataTeacher, setDataTeacher] = useState<TeacherType[]>();
 
-  // const data = [
-  //   {
-  //     MaHocSinh__c: '123',
-  //     Name: 'Nhật Nam',
-  //     birth__c: '2021/12/23',
-  //     gender__c: true,
-  //   },
-  //   {
-  //     MaHocSinh__c: '123',
-  //     Name: 'Nhật Nam',
-  //     birth__c: '2021/12/23',
-  //     gender__c: true,
-  //   },
-  //   {
-  //     MaHocSinh__c: '123',
-  //     Name: 'Nhật Nam',
-  //     birth__c: '2021/12/23',
-  //     gender__c: true,
-  //   },
-  //   {
-  //     MaHocSinh__c: '123',
-  //     Name: 'Nhật Nam',
-  //     birth__c: '2021/12/23',
-  //     gender__c: true,
-  //   }
-  // ];
+  const teacherOption = useMemo(() => dataTeacher?.map(teacher => ({
+    label: teacher.Name,
+    value: teacher.Id
+  })),[dataTeacher]); 
 
   const columns : ColumnsType<any> = [
-    {
-      title: 'Mã HS',
-      dataIndex: 'Ma_Hoc_Sinh__c',
-      key: 'Ma_Hoc_Sinh__c',
-    },
     {
       title: 'Lớp',
       dataIndex: 'Name',
@@ -176,6 +154,21 @@ const ClassPage= () => {
           label: className,
         }]} /> */}
         {/* <InputSearchText /> */}
+        <ModalButton 
+          title={'Lớp học'}
+          label='Thêm lớp học'
+        >
+          <FormLayout<any>
+              onSubmit={() => {
+                
+              }}
+            >
+            <InputText label='Tên lớp học'/>
+            <Form.Item label='Giáo viên chủ nhiệm'>
+              <InputSelect options={teacherOption} />
+            </Form.Item>
+          </FormLayout>
+        </ModalButton>
       </Filter>
       <div style={{margin: '12px'}}></div>
       <DataTable bordered={false} columns={columns} dataSource={dataTable}/>

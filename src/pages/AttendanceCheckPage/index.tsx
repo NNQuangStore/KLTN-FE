@@ -13,6 +13,7 @@ import { ColumnsType } from 'antd/es/table';
 import { useAppDispatch } from '../../store/hooks';
 import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from './service/apis';
+import InputDatePicker from '../../component/atom/Input/InputDatePicker';
 
 interface DataType {
   ClassHeader__c: string;
@@ -310,19 +311,19 @@ const AttendanceCheckPage = () => {
       ) : (
         <>
           <Row gutter={16} justify="space-between">
-            <Col span={6}>
-              <Card bordered={false}>
+            <Col span={8}>
+              <Card style={{width: '100%'}} bordered={false}>
                 Tổng số đơn xin nghỉ phép
                 <p className='summary'>{cntTotal}</p>
               </Card>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <Card bordered={false}>
                 Tổng số đơn chưa duyệt
                 <p className='summary'>{cntTotalPending}</p>
               </Card>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <Card bordered={false}>
                 Tổng số đơn đã duyệt
                 <p className='summary'>{cntTotalAccept}</p>
@@ -352,6 +353,8 @@ const AttendanceCheckPage = () => {
                   ]}
                 />
               </Space>
+              {/* <div style={{marginLeft: '10px'}}></div> */}
+              <InputDatePicker style={{ marginLeft: '10px'}} size='middle' />
             </div>
             <Table
               columns={columnsDonXinNghi}

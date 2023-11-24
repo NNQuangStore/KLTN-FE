@@ -7,11 +7,13 @@ import { useShowModal } from './hooks/useShowModal';
 interface Props extends ModalProps {
   children: React.ReactNode;
   buttonRender?: React.ReactElement;
+  label?:string
 } 
 
 const ModalButton = ({
   children, 
   buttonRender,
+  label,
   ...props
 }: Props) => {
   const [open, setOpen] = useShowModal(false);
@@ -24,7 +26,7 @@ const ModalButton = ({
     setOpen(true);
   };
 
-  buttonRender =  buttonRender ? React.cloneElement(buttonRender, {onClick: onOpen}) : <ButtonPrimary onClick={onOpen} />;
+  buttonRender =  buttonRender ? React.cloneElement(buttonRender, {onClick: onOpen}) : <ButtonPrimary label={label} onClick={onOpen} />;
 
   return (
     <>

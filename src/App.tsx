@@ -37,6 +37,7 @@ import ParentStudentHomePage from './pages/_ParentStudentAdvance/HomePage';
 import ParentStudentTimeTablePage from './pages/_ParentStudentAdvance/TimeTable';
 import ClassPage from './pages/_Admin/Class';
 import TeacherPage from './pages/_Admin/Teacher';
+import StudentAdminPage from './pages/_Admin/Student';
 
 // dayjs.extend(updateLocale);
 
@@ -63,6 +64,7 @@ function AppUI() {
           <Route path='/time-table' element={<TimeTablePage />}/>
           <Route path='/class' element={<ClassPage />}/>
           <Route path='/teacher' element={<TeacherPage />}/>
+          <Route path='/students' element={<StudentAdminPage />}/>
         </Route>
 
         <Route path='app' element={<ParentStudentLayout />}>

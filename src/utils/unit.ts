@@ -1,11 +1,14 @@
 import { Dayjs } from 'dayjs';
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 import { days } from '../pages/_ParentStudentAdvance/component/Calendar';
+// import bcrypt from 'bcryptjs';
 
 
 export const DATE_FORMAT = 'DD/MM/YYYY';
 
 export const BORDER_STYLED = '1px solid #F1F1F1';
+
+export const KEY_BCRYPT = 'anhthuxinhdepdangyeudethuongmuonchot';
 
 export const MESSAGE = {
   _NUMBER_SCORE: 'The score is only within the range of 1 - 10 and has only 2 decimal places.'
@@ -93,3 +96,8 @@ export const getTalentByScore = (value: any) => {
       return '';
   }
 };
+
+// export const bcryptEncode = (text: string) => {
+//   // const salt = bcrypt.genSaltSync(KEY_BCRYPT);
+//   return bcrypt.hash(text, KEY_BCRYPT);
+// };

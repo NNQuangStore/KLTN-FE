@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import StudentIcon from '../../../asset/svg/StudentIcon';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../../utils/paths';
+import storage from '../../../utils/sessionStorage';
 
 
 interface IMenuItem {
@@ -40,7 +41,12 @@ const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
     };
   };
 
-  const items: IMenuItem[] = [
+  const items: IMenuItem[] = storage.get('role') === 'ADMIN' ? [
+    getItem('Lớp học', 'class', <ContactsOutlined />,'/class'),
+    getItem('Học sinh', 'student',<ReadOutlined />, '/students'),
+    getItem('Phụ huynh', 'parent',<ReadOutlined />, '/parent'),
+    getItem('Giáo viên', 'teacher',<ReadOutlined />, '/teacher'),
+  ] : [
     getItem('Điểm danh', 'diem_danh', <ContactsOutlined />,'/attendance'),
     getItem('Báo bài', 'báo_bai',<ReadOutlined />, '/report-lesion'),
     getItem('Thời khoá biểu', 'tkb', <ScheduleOutlined />, '/time-table'),

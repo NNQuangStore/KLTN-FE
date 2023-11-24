@@ -25,8 +25,8 @@ const FormLayout = <T extends {}> ({
 
   const ButtonForm = () => {
     return renderButton ?? <ActionFormStyled justify={'center'} >
-      <ButtonOutline onClick={() => setOpen(false)} label='Cancel'/>
-      <ButtonPrimary htmlType='submit' label='Save'/>
+      <ButtonOutline onClick={() => setOpen(false)} label='Huỷ'/>
+      <ButtonPrimary htmlType='submit' label='Lưu'/>
     </ActionFormStyled>;
   };
 
@@ -36,6 +36,7 @@ const FormLayout = <T extends {}> ({
       autoComplete='off'
       layout='vertical'
       onFinish={onSubmit}
+      
       {...props}
     >
       {children}
@@ -50,6 +51,8 @@ const FormStyled = styled(Form)`
   .ant-form-item-label {
     font-weight: bold;
   }
+
+  
 `;
 
 export const ActionFormStyled = styled(RowH)`

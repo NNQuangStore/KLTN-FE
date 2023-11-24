@@ -21,9 +21,10 @@ import InputTextPassword from '../../../component/atom/Input/InputPassword';
 import InputPhone from '../../../component/atom/Input/InputPhone';
 import { COLOR_YELLOW_DARK } from '../../../utils/variables/colors';
 import dayjs, { Dayjs } from 'dayjs';
+import apisParent from './services/apis';
 // import { bcryptEncode } from '../../../utils/unit';
 
-const TeacherPage = () => {
+const ParentAdminPage = () => {
 
   const navigate = useNavigate();
   const [gender, setGender] = useState<boolean>();
@@ -62,13 +63,13 @@ const TeacherPage = () => {
   // ];
 
   const columns : ColumnsType<TeacherType> = [
+    // {
+    //   title: 'Mã GV',
+    //   dataIndex: 'MaGiaoVien__c',
+    //   key: 'MaGiaoVien__c',
+    // },
     {
-      title: 'Mã GV',
-      dataIndex: 'MaGiaoVien__c',
-      key: 'MaGiaoVien__c',
-    },
-    {
-      title: 'Tên giáo viên',
+      title: 'Tên Phụ huynh',
       dataIndex: 'Name',
       key: 'Name',
     },
@@ -84,12 +85,12 @@ const TeacherPage = () => {
         return record.User.Email__c;
       }
     },
-    {
-      title: 'Lớp chủ nhiệm hiện tại',
-      render: (_, record: TeacherType) => {
-        return dataClass?.find(o => o.GiaoVien__c === record.Id)?.Name;
-      }
-    },
+    // {
+    //   title: 'Lớp chủ nhiệm hiện tại',
+    //   render: (_, record: TeacherType) => {
+    //     return dataClass?.find(o => o.GiaoVien__c === record.Id)?.Name;
+    //   }
+    // },
     {
       title: 'Hành động',
       render: (item) => {
@@ -121,7 +122,7 @@ const TeacherPage = () => {
         year: 2023,
       });
 
-      const resTeacher = await apisTeacher.getListTeacher();
+      const resTeacher = await apisParent.getListParent();
 
       if(res?.data?.data) {
         setDataClass(res.data.data);
@@ -150,7 +151,7 @@ const TeacherPage = () => {
       UserName__c: detail?.User.UserName__c,
       Phone__c: detail?.User.Phone__c,
       Email__c: detail?.User.Email__c,
-      BirthDay__c: dayjs(detail?.User?.BirthDay__c) ,
+      BirthDay__c: dayjs(detail?.User?.BirthDay__c ?? '1969-12-08') ,
       Gender__c: detail?.User?.Gender__c,
       // Password__c: detail?.User.Password__c
     });
@@ -168,7 +169,7 @@ const TeacherPage = () => {
   // }, [dataClass, dataTeacher]); 
 
   return (
-    <TeacherPageStyled>
+    <ParentAdminPageStyled>
       <Filter>
         {/* <InputSelect value={classId} options={[{
           value: classId,
@@ -178,8 +179,8 @@ const TeacherPage = () => {
 
         <ModalButton 
           // isOpen={open}
-          title={'Giáo viên'}
-          label='Thêm giáo viên'
+          title={'Phụ huynh'}
+          label='Thêm Phụ huynh'
         >
           <FormLayout<any>
               onSubmit={async (value) => {
@@ -187,7 +188,7 @@ const TeacherPage = () => {
                 console.log(value);
                 
                 try {
-                  const res = await apisTeacher.saveTeacher({
+                  const res = await apisParent.saveParent({
                     ...value,
                     Phone__c: value.Phone__c.replaceAll('-', ''),
                     Gender__c: gender,
@@ -249,15 +250,14 @@ const TeacherPage = () => {
                 console.log(value);
                 
                 try {
-                  const res = await apisTeacher.saveTeacher({
-                    // ...detail,
-                    // ...value,
-                    Id: detail?.Id,
+                  const res = await apisParent.saveParent({ 
+                    ...detail,
+                    ...value,
                     Gender__c: gender,
                     BirthDay__c: value.BirthDay__c.format('YYYY-MM-DD'),
                     Phone__c: value.Phone__c === detail?.User.Phone__c ? undefined : value.Phone__c,
                     Email__c: value.Email__c === detail?.User.Email__c ? undefined : value.Email__c,
-                    // Password__c: detail?.User.Phone__c
+                    Password__c: detail?.User.Phone__c
                   });
                   window.location.reload();
 
@@ -291,14 +291,14 @@ const TeacherPage = () => {
             </Form.Item> */}
           </FormLayout>
         </ModalStyled>
-    </TeacherPageStyled>
+    </ParentAdminPageStyled>
   );
 
 };
 
-export default TeacherPage;
+export default ParentAdminPage;
 
-const TeacherPageStyled = styled.div`
+const ParentAdminPageStyled = styled.div`
 
 `;
 

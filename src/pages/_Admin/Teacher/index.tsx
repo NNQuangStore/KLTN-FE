@@ -95,12 +95,12 @@ const TeacherPage = () => {
       render: (item) => {
         return (
           <ActionTable actions={[
-            {
-              handle: () => navigate(item.Id),
-              icon: <EyeOutlined />,
-              label: 'Xem chi tiết',
-              color: '#1890ff'
-            },
+            // {
+            //   handle: () => navigate(item.Id),
+            //   icon: <EyeOutlined />,
+            //   label: 'Xem chi tiết',
+            //   color: '#1890ff'
+            // },
             {
               handle: () => setDetail(item),
               icon: <EditOutlined />,
@@ -169,6 +169,7 @@ const TeacherPage = () => {
 
   return (
     <TeacherPageStyled>
+      <h1 style={{margin: '12px 0px'}}>Giáo viên</h1>
       <Filter>
         {/* <InputSelect value={classId} options={[{
           value: classId,

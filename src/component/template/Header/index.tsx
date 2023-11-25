@@ -52,7 +52,7 @@ const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
         {! getBreakpointSidebar() ? <Logo/> : <></>}
 
         <div className='tool'>
-          <span>Lớp {className}</span>
+          {storage.get('role') !== 'ADMIN' && <span>Lớp {className}</span>}
           <Notification/>
           <Popover
       content={

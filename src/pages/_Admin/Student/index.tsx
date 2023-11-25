@@ -25,7 +25,7 @@ const StudentAdminPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [dataClass, setDataClass] = useState<ClassType[]>();
-  const [dataStudent, setDataStudent] = useState<ClassType[]>();
+  const [dataStudent, setDataStudent] = useState<any[]>();
   const [classFilter, setClassFilter] = useState<string>();
 
   // const data = [
@@ -143,7 +143,7 @@ const StudentAdminPage = () => {
       // const resTeacher = await apisTeacher.getListTeacher();
 
       if(res?.data?.data) {
-        setDataStudent(res.data.data);
+        setDataStudent(res.data.data.Student);
       }
 
       // if(resTeacher?.data?.data) {
@@ -159,6 +159,7 @@ const StudentAdminPage = () => {
   };
 
   useEffect(() => {
+    if(!classOption || !classFilter) return;
     fetchStudent();
   }, [classFilter, classOption]);
 
@@ -168,15 +169,18 @@ const StudentAdminPage = () => {
 
   return (
     <StudentAdminPageStyled>
+      <h1 style={{margin: '12px 0px'}}>Học sinh</h1>
+
       <Filter>
         {/* <InputSelect value={classId} options={[{
           value: classId,
           label: className,
         }]} /> */}
         <InputSearchText />
-        <InputSelect onChange={value => setClassFilter(value)} options={classOption}/>
+        <InputSelect defaultValue={classOption?.[0].value} onChange={value => setClassFilter(value)} options={classOption}/>
       </Filter>
       <div style={{margin: '12px'}}></div>
+
       <DataTable bordered={false} columns={columns} dataSource={dataStudent}/>
     </StudentAdminPageStyled>
   );

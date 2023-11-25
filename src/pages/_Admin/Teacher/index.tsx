@@ -169,6 +169,7 @@ const TeacherPage = () => {
 
   return (
     <TeacherPageStyled>
+      <h1 style={{margin: '12px 0px'}}>Giáo viên</h1>
       <Filter>
         {/* <InputSelect value={classId} options={[{
           value: classId,

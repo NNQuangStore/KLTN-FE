@@ -95,12 +95,12 @@ const TeacherPage = () => {
       render: (item) => {
         return (
           <ActionTable actions={[
-            {
-              handle: () => navigate(item.Id),
-              icon: <EyeOutlined />,
-              label: 'Xem chi tiết',
-              color: '#1890ff'
-            },
+            // {
+            //   handle: () => navigate(item.Id),
+            //   icon: <EyeOutlined />,
+            //   label: 'Xem chi tiết',
+            //   color: '#1890ff'
+            // },
             {
               handle: () => setDetail(item),
               icon: <EditOutlined />,

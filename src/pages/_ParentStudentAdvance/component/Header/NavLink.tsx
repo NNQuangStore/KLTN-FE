@@ -89,6 +89,8 @@ const  NavLinkStyled = styled.div`
   }
   .item-active {
       color: ${COLOR_PRIMARY};
+      background-color: rgb(255 255 255);
+      border-color: white !important;
       .underline {
         width: 100%;
       }

@@ -54,7 +54,7 @@ const ParentStudentReportLesson = () => {
 };
 
 const ReportLessonStyled = styled.div`
-
+  width: 70%;
   min-width: 450px;
 .header {
     display: flex;

@@ -33,6 +33,10 @@ const ParentStudentLayout = () => {
 export default ParentStudentLayout;
 
 const ParentStudentLayoutStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
   .tool {
     display: flex;
     gap: 8px;
@@ -54,7 +58,7 @@ const TopBar = () => {
     backgroundColor: COLOR_PRIMARY,
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: '40px',
+    marginBottom: '20px',
 
   }}> 
     <div></div>

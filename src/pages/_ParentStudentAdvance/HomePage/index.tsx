@@ -29,7 +29,7 @@ const ParentStudentHomePage = () => {
         color: 'gray',
       }}>Xin chào, <span style={{color: COLOR_PRIMARY}}>{storage.get('student_name')}</span>!</h2>
       <div className='container-header'>
-        <div className='info'>
+        {/* <div className='info'>
           <h3>Thông tin học sinh</h3>
           <Divider/>
 
@@ -61,7 +61,7 @@ const ParentStudentHomePage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* <CardButton
         >
           <div>
@@ -76,10 +76,10 @@ const ParentStudentHomePage = () => {
       <div className='content'>
         <div className='content-box'>
           <ParentStudentReportLesson />
-          <Divider type='vertical' style={{height: '100vh'}}/>
+          <Divider type='vertical' style={{height: '100%'}}/>
           <TimeTableLine />
-          <Divider type='vertical' style={{height: '100vh'}}/>
-          <ParentStudentNotification />
+          {/* <Divider type='vertical' style={{height: '100vh'}}/>
+          <ParentStudentNotification /> */}
         </div>
 
       </div>
@@ -90,7 +90,7 @@ const ParentStudentHomePage = () => {
 export default ParentStudentHomePage;
 
 const ParentStudentHomePageStyled = styled.div`
-  margin-top: 100px;
+  margin-top: 20px;
   .container-header {
     padding: 0px 60px;
     display: flex;
@@ -143,7 +143,7 @@ const ParentStudentHomePageStyled = styled.div`
 
   .content {
     
-    padding: 40px 60px;
+    padding: 20px 60px;
     /* width: 100%; */
     .content-box {
       box-shadow: 3px 3px 10px lightgray;

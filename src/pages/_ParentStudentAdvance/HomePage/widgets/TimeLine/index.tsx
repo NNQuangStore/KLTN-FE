@@ -24,13 +24,15 @@ const TimeTableLine = () => {
   // console.log(dataTimeTable);
   
   const fetchApi = async () => {
-    const res = await apisTimetable.getTimeTable({
-      date: date.format('YYYY-MM-DD'),
-      day: date.format('dddd') as any
-    });
-    
-
-    setDataTimeTable(res?.data?.Schedule?.detail ?? []);
+    try {
+      const res = await apisTimetable.getTimeTable({
+        date: date.format('YYYY-MM-DD'),
+        day: date.format('dddd') as any
+      });
+      setDataTimeTable(res?.data?.Schedule?.detail ?? []);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -46,59 +48,46 @@ const TimeTableLine = () => {
 
   const lessonToday =  useMemo(() => [
     {
-      timeStart: '7g40',
-      timeEnd: '8g15',
+      timeStart: '',
+      timeEnd: '',
       lesson: dataTimeTable?.[0]?.Name,
       color: '#2f54eb',
     },
     {
-      timeStart: '8g20',
-      timeEnd: '8g55',
+      timeStart: '',
+      timeEnd: '',
       lesson: dataTimeTable?.[1]?.Name,
       color: '#722ed1',
 
     },
     {
-      timeStart: '8g55',
-      timeEnd: '9g25',
-      lesson: 'Giờ ra chơi',
-      color: 'gray'
-
-    },
-    {
-      timeStart: '9g25',
-      timeEnd: '10 giờ',
+      timeStart: '',
+      timeEnd: '',
       lesson: dataTimeTable?.[2]?.Name,
       color: '#eb2f96',
     },
     {
-      timeStart: '10 giờ',
-      timeEnd: '10g40',
+      timeStart: '',
+      timeEnd: '',
       lesson: dataTimeTable?.[3]?.Name,
       color: '#2f54eb',
     },
     {
-      timeStart: '10g40',
-      timeEnd: '14 giờ',
-      lesson: 'Thời gian nghỉ trưa',
-      color: 'gray',
-    },
-    {
-      timeStart: '14 giờ',
-      timeEnd: '14g35',
+      timeStart: '',
+      timeEnd: '',
       lesson: dataTimeTable?.[4]?.Name,
       color: '#722ed1',
 
     },
     {
-      timeStart: '14g40',
-      timeEnd: '15g15',
+      timeStart: '',
+      timeEnd: '',
       lesson: dataTimeTable?.[5]?.Name,
       color: '#eb2f96',
     },
     {
-      timeStart: '15g20',
-      timeEnd: '4g05',
+      timeStart: '',
+      timeEnd: '',
       lesson: dataTimeTable?.[6]?.Name,
       color: '#722ed1',
     },
@@ -126,7 +115,7 @@ const TimeTableLine = () => {
           padding: '1px 20px'
         }} size={'small'} />
       </div>
-      <Divider  orientation='left' style={{fontWeight: 800, fontSize: '20px', color: 'gray'}}>7 giờ 30 phút</Divider>
+      {/* <Divider  orientation='left' style={{fontWeight: 800, fontSize: '20px', color: 'gray'}}>7 giờ 30 phút</Divider> */}
       {lessonToday.length > 0 ? <TimeLineStyled items={itemTimeLine}/> : <Empty description='Hôm nay không có buổi học nào'/>}
     </TimeTableLineStyled>
   );
@@ -152,6 +141,9 @@ const TimeTableLineStyled = styled.div`
       font-size: 14px;
       color: grey;
     }
+  }
+  .time{
+    display: none;
   }
 `;
 

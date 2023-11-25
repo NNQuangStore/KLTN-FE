@@ -19,7 +19,12 @@ const ReportDate = () => {
   })),[dataReportLesion]);
 
   const report = useMemo(() => {
-    return dataReport.find(o => o.date === date);
+    const tmp = dataReport.find(o => o.date === date);
+    const element: HTMLElement = document.getElementById('content') as HTMLElement;
+    if(element && tmp?.content != undefined){
+      element.innerHTML = tmp?.content;
+    }
+    return tmp;
   }, [date]);
 
   return (
@@ -43,8 +48,8 @@ const ReportDate = () => {
         <div className='header'>
           {report?.title}
         </div>
-        <div className='content'>
-        {report?.content}
+        <div className='content' id='content'>
+        {/* {report?.content} */}
         </div>
       </div>
 

@@ -35,11 +35,11 @@ export default Footer;
 const FooterStyled = styled.div`
   background: ${COLOR_PRIMARY};
   color: #fff;
-  padding: 30px 16px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   bottom: 0px;
-  margin-top: 50px;
+  margin-top: 20px;
 
   & > svg {
     display: none;

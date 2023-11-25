@@ -43,9 +43,9 @@ const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
 
   const items: IMenuItem[] = storage.get('role') === 'ADMIN' ? [
     getItem('Lớp học', 'class', <ContactsOutlined />,'/class'),
-    getItem('Học sinh', 'student',<ReadOutlined />, '/students'),
+    getItem('Học sinh', 'student',<StudentIcon/>, '/students'),
     getItem('Phụ huynh', 'parent',<ReadOutlined />, '/parent'),
-    getItem('Giáo viên', 'teacher',<ReadOutlined />, '/teacher'),
+    getItem('Giáo viên', 'teacher',<FundProjectionScreenOutlined />, '/teacher'),
   ] : [
     getItem('Điểm danh', 'diem_danh', <ContactsOutlined />,'/attendance'),
     getItem('Báo bài', 'báo_bai',<ReadOutlined />, '/report-lesion'),

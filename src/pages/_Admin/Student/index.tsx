@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { EyeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { ColumnType, ColumnsType } from 'antd/es/table';
 import { useAppDispatch } from '../../../store/hooks';
@@ -81,6 +81,13 @@ const StudentAdminPage = () => {
     }
   };
 
+  const classOption = useMemo(() => {
+    return dataClass?.map(o => ({
+      label: o.Name,
+      value: o.Id,
+    }));
+  }, [dataClass]);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -131,7 +138,7 @@ const StudentAdminPage = () => {
     try{
       dispatch(uiActions.setLoadingPage(true));
 
-      const res = await apisStudent.getListStudentByClass(classFilter ?? '');
+      const res = await apisStudent.getListStudentByClass(classFilter ?? classOption?.[0]?.value ?? '');
 
       // const resTeacher = await apisTeacher.getListTeacher();
 
@@ -153,7 +160,7 @@ const StudentAdminPage = () => {
 
   useEffect(() => {
     fetchStudent();
-  }, [classFilter]);
+  }, [classFilter, classOption]);
 
   const data = StudentSelectors.getStudentList();
   const classId = storage.get('class_id');
@@ -167,10 +174,7 @@ const StudentAdminPage = () => {
           label: className,
         }]} /> */}
         <InputSearchText />
-        <InputSelect onChange={value => setClassFilter(value)} options={dataClass?.map(o => ({
-          label: o.Name,
-          value: o.Id,
-        }))}/>
+        <InputSelect onChange={value => setClassFilter(value)} options={classOption}/>
       </Filter>
       <div style={{margin: '12px'}}></div>
       <DataTable bordered={false} columns={columns} dataSource={dataStudent}/>

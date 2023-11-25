@@ -253,6 +253,7 @@ const TeacherPage = () => {
                     // ...detail,
                     // ...value,
                     Id: detail?.Id,
+                    IdUser: detail?.User?.Id,
                     Gender__c: gender,
                     BirthDay__c: value.BirthDay__c.format('YYYY-MM-DD'),
                     Phone__c: value.Phone__c === detail?.User.Phone__c ? undefined : value.Phone__c,

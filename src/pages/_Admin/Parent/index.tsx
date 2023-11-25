@@ -191,7 +191,8 @@ const ParentAdminPage = () => {
                   const res = await apisParent.saveParent({
                     ...value,
                     Phone__c: value.Phone__c.replaceAll('-', ''),
-                    Gender__c: gender,
+                    Gender__c: gender ?? false,
+                    Type__c: !gender ? 'Mother' : 'Father',
                     BirthDay__c: value.BirthDay__c.format('YYYY-MM-DD'),
                     Password__c: value.Phone__c.replaceAll('-', '')
                   });
@@ -251,9 +252,12 @@ const ParentAdminPage = () => {
                 
                 try {
                   const res = await apisParent.saveParent({ 
-                    ...detail,
-                    ...value,
+                    // ...detail,
+                    // ...value,
+                    Id: detail?.Id,
                     Gender__c: gender,
+                    Type__c: !gender ? 'Mother' : 'Father',
+                    IdUser: detail?.User.Id,
                     BirthDay__c: value.BirthDay__c.format('YYYY-MM-DD'),
                     Phone__c: value.Phone__c === detail?.User.Phone__c ? undefined : value.Phone__c,
                     Email__c: value.Email__c === detail?.User.Email__c ? undefined : value.Email__c,

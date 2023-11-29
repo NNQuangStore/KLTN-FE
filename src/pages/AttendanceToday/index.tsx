@@ -308,7 +308,7 @@ const AttendanceTodayPage = () => {
           border: 'none',
           outline: 'none',
         }}
-        disabled={dataStudentAbsent.find((o: any) => o.maHS === record.maHS)?.vang}
+        disabled={!dataStudentAbsent.find((o: any) => o.maHS === record.maHS)?.vang}
         value={dataStudentAbsent?.find((o: any) => o.maHS === record.maHS)?.coPhep}
         options={options}
         onChange={(value) => {
@@ -405,12 +405,12 @@ const AttendanceTodayPage = () => {
       {/* <Filter></Filter> */}
       <div>
         <Space>
-          <h2>Điểm danh ngày:  {formattedDate}</h2> <span />
-          <Input
+          <h2 style={{marginBottom: '30px'}}>Điểm danh ngày:  {formattedDate}</h2> <span />
+          {/* <Input
           placeholder="Tìm kiếm theo tên"
           onChange={handleSearch}
           value={searchText}
-        />
+        /> */}
         </Space>
         
         <DataTable  style={{ height: '480px' }}  scroll={{ x: 300 }} 

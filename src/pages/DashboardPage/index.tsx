@@ -1,5 +1,7 @@
+import { useNavigate } from 'react-router-dom';
 import DataTable from '../../component/molecule/DataTable';
 import Filter from '../../component/template/Filter';
+import { useEffect } from 'react';
 
 const DashboardPage = () => {
 
@@ -18,6 +20,12 @@ const DashboardPage = () => {
   // const onSubmit = (values: any) => {
     
   // };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/auth/sign-in');
+
+  }, []);
 
   return (
     <>

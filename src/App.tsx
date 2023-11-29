@@ -46,8 +46,13 @@ function AppUI() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='auth' element={<AuthLayout/>}>
+          <Route path='sign-in' element={<LoginPage/>}/>
+        </Route>
+
         <Route path='/' element={<AppLayout/>}>
-          <Route index path='dashboards' element={<DashboardPage />} />
+          <Route index path='/' element={<DashboardPage />} />
+          <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='customers' element={<CustomerPage />} />
           <Route path='time-table' element={<TimeTablePage />} />
           <Route path={PATH._STUDENT._SCOREBOARD} element={<ScoreboardPage />} />
@@ -56,7 +61,6 @@ function AppUI() {
           <Route path={PATH._REPORT_CARD} element={<ReportCardPage/>} />
           {/* <Route path={PATH._LEAVE_OF_ABSENCE} element={<AbsencePage/>} /> */}
           <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
-          <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
           <Route path='/analytic' element={<AnalyticPage />}/>
 
@@ -91,9 +95,7 @@ function AppUI() {
           <Route path='time-table' element={<TimeTablePage />}/> */}
         </Route>
 
-        <Route path='auth' element={<AuthLayout/>}>
-          <Route path='sign-in' element={<LoginPage/>}/>
-        </Route>
+        
         <Route
             path="*"
             element={

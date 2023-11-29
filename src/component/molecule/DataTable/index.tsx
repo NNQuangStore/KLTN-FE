@@ -1,6 +1,4 @@
 import { Table, TableProps } from 'antd';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { DownloadTableExcel } from 'react-export-table-to-excel';
 import { styled } from 'styled-components';
 
 

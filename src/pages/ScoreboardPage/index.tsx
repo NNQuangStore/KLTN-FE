@@ -1,15 +1,13 @@
 import { styled } from 'styled-components';
-import Filter from '../../component/template/Filter';
 import ButtonImportScore from './widgets/ButtonImport';
 import ScoreboardDataTable from './widgets/ScoreboardDataTable';
 import InputSelect from '../../component/atom/Input/InputSelect';
 import apisScoreboard, { Evalution } from './service/apis';
 import { useEffect } from 'react';
 import scoreboardActions from './service/actions';
-import { useDispatch } from 'react-redux';
 import { BORDER_STYLED } from '../../utils/unit';
 import scoreboardSelectors from './service/selectors';
-import { Button, Select } from 'antd';
+import { Button } from 'antd';
 import uiActions from '../../services/UI/actions';
 import { useAppDispatch } from '../../store/hooks';
 

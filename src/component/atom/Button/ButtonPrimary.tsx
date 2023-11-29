@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from 'antd';
+import { ButtonProps } from 'antd';
 import { ButtonStyled } from './ButtonOutline';
 import { styled } from 'styled-components';
 

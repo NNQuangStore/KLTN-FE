@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import {  HEIGHT_HEADER, WIDTH_SIDEBAR, WIDTH_SIDEBAR_COLLAPSED } from '../../../utils/variables/unit';
 import { useCollapseSidebar } from '../../../services/hooks/useCollapseSidebar';
-import AvatarSidebar from '../../molecule/AvatarSidebar';
 import useScreenDetect, { EScreen } from '../../../services/hooks/useScreenDetect';
 import { useEffect } from 'react';
 import { COLOR_WHITE } from '../../../utils/variables/colors';

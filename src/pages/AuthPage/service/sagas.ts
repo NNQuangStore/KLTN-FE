@@ -6,8 +6,7 @@ import { IApiLoginBody, IApiLoginResData } from './types/auth';
 // import { setLoading } from '../../../services/UI/sagas';
 import uiActions from '../../../services/UI/actions';
 import storage from '../../../utils/sessionStorage';
-import { redirect, useNavigate } from 'react-router-dom';
-import { setLoading } from '../../../services/UI/sagas';
+import { redirect } from 'react-router-dom';
 
 const login: ISagaFunc<IApiLoginBody> = function* ({ payload }) {
   yield put(uiActions.setLoadingPage(true));

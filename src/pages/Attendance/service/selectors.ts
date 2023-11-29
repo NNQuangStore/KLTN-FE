@@ -2,8 +2,6 @@ import { get } from 'lodash';
 import { RootState } from '../../../store';
 import { useAppSelector } from '../../../store/hooks';
 // import { calculateAverage } from '../../../utils/unit';
-import { IState } from './types/reducer';
-import { TableScore } from './types/_scoreboard';
 import { DataAttendance } from './types/attendance';
 
 

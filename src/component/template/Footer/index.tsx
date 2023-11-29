@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import Logo from '../../molecule/Logo';
 import moment from 'moment';
 import { COLOR_PRIMARY } from '../../../utils/variables/colors';
 

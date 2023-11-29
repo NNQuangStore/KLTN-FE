@@ -1,13 +1,12 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import {put, takeLatest } from 'redux-saga/effects';
 import actions from './actions';
-import apis, { TScoreboardParamReq } from './apis';
+import { TScoreboardParamReq } from './apis';
 import { ISagaFunc } from '../../../services/actionConfigs';
 // import { setLoading } from '../../../services/UI/sagas';
 import uiActions from '../../../services/UI/actions';
-import storage from '../../../utils/sessionStorage';
 import { DataAttendance } from './types/attendance';
 
-const getAttendanceDetail: ISagaFunc<TScoreboardParamReq> = function* ({ payload }) {
+const getAttendanceDetail: ISagaFunc<TScoreboardParamReq> = function* ({ }) {
   yield put(uiActions.setLoadingPage(true));
   
   try {

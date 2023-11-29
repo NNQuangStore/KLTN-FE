@@ -2,15 +2,11 @@ import InputText from '../../component/atom/Input/InputText';
 import { styled } from 'styled-components';
 import FormLayout from '../../component/organism/FormLayout';
 import ButtonPrimary from '../../component/atom/Button/ButtonPrimary';
-import { useSetLoadingPage } from '../../services/UI/LoadingPage';
 import InputTextPassword from '../../component/atom/Input/InputPassword';
-import { useDispatch } from 'react-redux';
 import authActions from './service/actions';
 import { useAppDispatch } from '../../store/hooks';
 import { useNavigate } from 'react-router-dom';
-import uiSelector from '../../services/UI/selectors';
 import storage from '../../utils/sessionStorage';
-import { useEffect } from 'react';
 import apisAuth from './service/apis';
 import { IApiLoginResData } from './service/types/auth';
 import uiActions from '../../services/UI/actions';
@@ -20,10 +16,10 @@ interface AuthForm {
   password: string
 }
 
-enum ERole {
-  TEACHER = 'TEACHER',
-  PARENT = 'PARENT'
-}
+// enum ERole {
+//   TEACHER = 'TEACHER',
+//   PARENT = 'PARENT'
+// }
 
 const LoginPage = () => {
 

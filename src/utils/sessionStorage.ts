@@ -26,10 +26,10 @@ const genGetSetKeyLocal = (key: IKeyStore) => ({
   set: (value: string) => local.set(key, value),
 });
 
-const genGetSetKeySession = (key: IKeyStore) => ({
-  get: () => session.get(key) ?? '',
-  set: (value: string) => session.set(key, value),
-});
+// const genGetSetKeySession = (key: IKeyStore) => ({
+//   get: () => session.get(key) ?? '',
+//   set: (value: string) => session.set(key, value),
+// });
 
 const storage = {
   get: session.get,

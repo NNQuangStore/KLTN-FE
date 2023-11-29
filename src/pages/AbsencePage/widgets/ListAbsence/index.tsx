@@ -1,15 +1,12 @@
-import { Card, List, Modal, Tag } from 'antd';
+import {  Modal, Tag } from 'antd';
 import { styled } from 'styled-components';
 import DataTable from '../../../../component/molecule/DataTable';
-import { getDatesBetween } from '../../../../utils/unit';
-import dayjs from 'dayjs';
 import ActionTable from '../../../../component/molecule/DataTable/ActionTables';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import absenceSelectors from '../../service/selectors';
 import moment from 'moment';
 import { EAbsenceStatus } from '../..';
 import apisAbsence from '../../service/apis';
-import { TAbsenceRes } from '../../service/types/absence';
 
 const ListAbsence = ({isAccept = false}: {isAccept?: boolean}) => {
 

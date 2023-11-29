@@ -1,10 +1,7 @@
-import { Button, Modal, Upload } from 'antd';
-import ButtonOutline from '../../../component/atom/Button/ButtonOutline';
+import { Button, Modal } from 'antd';
 import DataTable from '../../../component/molecule/DataTable';
 import { useEffect, useState } from 'react';
-import { BoxPlotOutlined, DownloadOutlined, DropboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { DraggerProps, RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
-import { read, utils } from 'xlsx';
+import {  DownloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import storage from '../../../utils/sessionStorage';
 import apisLesion from '../services/apis';
@@ -12,8 +9,8 @@ import apisLesion from '../services/apis';
 const ButtonExport = () => {
 
   const [open, setOpen] = useState<boolean>(false);
-  const [data, setData] = useState<any>(false);
-  const { Dragger } = Upload;
+  const [data,] = useState<any>(false);
+  // const { Dragger } = Upload;
   const classId = storage.get('class_id');
 
 
@@ -55,21 +52,21 @@ const ButtonExport = () => {
   }, [data]);
   
 
-  const template = [
-    {
-      title: 'Tiêu đề',
-    },
-    {
-      title: 'Ngày gửi',
-      valid: (value: string) => {
-        const regex = /^\d{4}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/g;
-        return value.match(regex);
-      }
-    },
-    {
-      title: 'Trạng thái',
-    }
-  ];
+  // const template = [
+  //   {
+  //     title: 'Tiêu đề',
+  //   },
+  //   {
+  //     title: 'Ngày gửi',
+  //     valid: (value: string) => {
+  //       const regex = /^\d{4}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/g;
+  //       return value.match(regex);
+  //     }
+  //   },
+  //   {
+  //     title: 'Trạng thái',
+  //   }
+  // ];
 
   const columns = [
     {
@@ -110,33 +107,33 @@ const ButtonExport = () => {
     }
   ];
 
-  const props: DraggerProps = {
-      accept: '.xlsx',
-      name: 'file',
-      multiple: false,
-      showUploadList: false,
-      // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      beforeUpload: (file: RcFile) => {
+  // const props: DraggerProps = {
+  //     accept: '.xlsx',
+  //     name: 'file',
+  //     multiple: false,
+  //     showUploadList: false,
+  //     // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  //     beforeUpload: (file: RcFile) => {
         
-        const reader = new FileReader();
-        reader.onload = (e) => {          
-          const data = e?.target?.result;
-          const workbook = read(data, { type: 'array' });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const json = utils.sheet_to_json(worksheet);
-          setData(json);
-          // const keys = Object.keys(json[0]);
+  //       const reader = new FileReader();
+  //       reader.onload = (e) => {          
+  //         const data = e?.target?.result;
+  //         const workbook = read(data, { type: 'array' });
+  //         const sheetName = workbook.SheetNames[0];
+  //         const worksheet = workbook.Sheets[sheetName];
+  //         const json = utils.sheet_to_json(worksheet);
+  //         setData(json);
+  //         // const keys = Object.keys(json[0]);
 
-          // template.forEach(o => {
-            // if(keys.find(s => s === o.title)) {
-            //   o.valid()
-            // }
-          // });
-        };
-        reader.readAsArrayBuffer(file);
-      },
-    };
+  //         // template.forEach(o => {
+  //           // if(keys.find(s => s === o.title)) {
+  //           //   o.valid()
+  //           // }
+  //         // });
+  //       };
+  //       reader.readAsArrayBuffer(file);
+  //     },
+  //   };
 
   return(
     <>

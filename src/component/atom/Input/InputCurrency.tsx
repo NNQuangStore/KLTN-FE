@@ -1,5 +1,3 @@
-import { MaskedInput } from 'antd-mask-input';
-import NumberMask from '../../../utils/Mask/number';
 import { Form, FormItemProps, InputNumber } from 'antd';
 
 interface Props extends FormItemProps {

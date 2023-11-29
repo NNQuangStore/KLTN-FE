@@ -1,5 +1,5 @@
 import { Modal, ModalProps } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import ButtonPrimary from '../../atom/Button/ButtonPrimary';
 import { styled } from 'styled-components';
 import { useShowModal } from './hooks/useShowModal';

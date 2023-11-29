@@ -8,7 +8,7 @@ import { groupBy } from 'lodash';
 import RowH from '../../../component/atom/Row/RowH';
 import { Button, DatePicker, Space, Tooltip } from 'antd';
 import { CalendarOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { COLOR_PRIMARY } from '../../../utils/variables/colors';
 import uiActions from '../../../services/UI/actions';
 import { useAppDispatch } from '../../../store/hooks';
@@ -90,10 +90,10 @@ const dataTemplate: (ITimeTable | null)[] = [
 
 const TimeTable = () => {
 
-  const [dataTimeTable, setDataTimeTable] = useState<any[]>();
   const [date, setDate] = useState<Moment>(moment());
   const dispatch = useAppDispatch();
-
+  
+  const [dataTimeTable, setDataTimeTable] = useState<any[]>();
   const fetchApi = async () => {
     const res = await apisTimetable.getTimeTable({
       date: date.format('YYYY-MM-DD')

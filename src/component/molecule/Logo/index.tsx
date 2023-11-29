@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 import RowCenter from '../../atom/Row/RowCenter';
 import { useCollapseSidebar } from '../../../services/hooks/useCollapseSidebar';
 import { COLOR_PRIMARY } from '../../../utils/variables/colors';
-import { Avatar } from 'antd';
 import logo from '../../../asset/img/logo.png';
 import { useNavigate } from 'react-router-dom';
 import storage from '../../../utils/sessionStorage';

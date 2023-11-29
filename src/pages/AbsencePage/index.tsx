@@ -1,12 +1,10 @@
 import { styled } from 'styled-components';
-import Filter from '../../component/template/Filter';
-import { Card, Col, Row, Tabs, TabsProps } from 'antd';
+import { Card, Tabs, TabsProps } from 'antd';
 import LeaveOfAbsence from './widgets/LeaveOfAbsence';
 import ListAbsence from './widgets/ListAbsence';
 import { useAppDispatch } from '../../store/hooks';
 import { useEffect } from 'react';
 import absenceAction from './service/actions';
-import absenceSelectors from './service/selectors';
 
   
 export enum EAbsenceStatus {

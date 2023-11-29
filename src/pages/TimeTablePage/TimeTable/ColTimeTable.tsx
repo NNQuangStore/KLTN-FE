@@ -7,7 +7,7 @@ import InputText from '../../../component/atom/Input/InputText';
 const ColTimeTable = ({data}: {data: IDataTimeTable[]}) => {
 
   const [open, setOpen] = useState<boolean>();
-  const [formDatam, setFormData] = useState<IDataTimeTable>();
+  const [, setFormData] = useState<IDataTimeTable>();
 
   const handleOpen = (data?: IDataTimeTable) => {
     setOpen(true);

@@ -1,9 +1,8 @@
-import { Button, Modal, Tooltip, Upload, message } from 'antd';
-import ButtonOutline from '../../../component/atom/Button/ButtonOutline';
+import { Button, Modal, Tooltip, Upload } from 'antd';
 import DataTable from '../../../component/molecule/DataTable';
 import { useEffect, useState } from 'react';
-import { ArrowDownOutlined, BoxPlotOutlined, CheckOutlined, CloseOutlined, DropboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { DraggerProps, RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
+import { ArrowDownOutlined, CheckOutlined, CloseOutlined, DropboxOutlined, UploadOutlined } from '@ant-design/icons';
+import { DraggerProps, RcFile } from 'antd/es/upload';
 import { read, utils } from 'xlsx';
 import dayjs from 'dayjs';
 import storage from '../../../utils/sessionStorage';
@@ -25,8 +24,8 @@ const ButtonImport = () => {
   const classId = storage.get('class_id');
   const dispatch = useAppDispatch();
 
-  const statusAccept = ['đã gửi', 'lưu nháp', 'đang gửi', 'Gửi tự động  '];
-  const isAutoSendAccept = ['có', 'không'];
+  // const statusAccept = ['đã gửi', 'lưu nháp', 'đang gửi', 'Gửi tự động  '];
+  // const isAutoSendAccept = ['có', 'không'];
 
   enum EColExcel {
     title = 'Tiêu đề',
@@ -38,7 +37,7 @@ const ButtonImport = () => {
 
   const saveReport = async(rest: any) => {
     try{
-      const res = await apisLesion.saveLesion(rest); 
+    await apisLesion.saveLesion(rest); 
       dispatch(lesionActions.getListLesion.fetch());
       setisImport(true);
     } catch (e) {

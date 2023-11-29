@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useColDataTable } from '../../../../pages/ScoreboardPage/hook/useColDataTable';
-import { Input, Tooltip } from 'antd';
+import {  Tooltip } from 'antd';
 import { MESSAGE, checkNumberScore } from '../../../../utils/unit';
 import { useAppDispatch } from '../../../../store/hooks';
 import scoreboardActions from '../../../../pages/ScoreboardPage/service/actions';
@@ -14,20 +13,20 @@ interface Props {
   value: any;
 }
 
-const typeIndex = [
-  {
-    key: 0,
-    type: 'talent',
-  },
-  {
-    key: 1,
-    type: 'subjectId',
-  },
-  {
-    key: 3,
-    type: 'evaluationComment'
-  }
-];
+// const typeIndex = [
+//   {
+//     key: 0,
+//     type: 'talent',
+//   },
+//   {
+//     key: 1,
+//     type: 'subjectId',
+//   },
+//   {
+//     key: 3,
+//     type: 'evaluationComment'
+//   }
+// ];
 
 
 const CellEditableTable = ({name, record, value}: Props) => {

@@ -43,17 +43,17 @@ const ActionTableStyled = styled.ul`
 
 `;
 
-const ActionTableItemStyled = styled.li<{color: string}>`
-    display: flex;
-    color: ${props => props.color};
-    flex-wrap: nowrap;
-    margin-right: 14px;
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
-    /* border-bottom: 1px solid ${props => props.color}; */
-    span:first-child {
-      margin-right: 0.5px;
-    }
-`;
+// const ActionTableItemStyled = styled.li<{color: string}>`
+//     display: flex;
+//     color: ${props => props.color};
+//     flex-wrap: nowrap;
+//     margin-right: 14px;
+//     cursor: pointer;
+//     &:hover {
+//       text-decoration: underline;
+//     }
+//     /* border-bottom: 1px solid ${props => props.color}; */
+//     span:first-child {
+//       margin-right: 0.5px;
+//     }
+// `;

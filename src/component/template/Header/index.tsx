@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 import RowH from '../../atom/Row/RowH';
 import { useCollapseSidebar } from '../../../services/hooks/useCollapseSidebar';
-import { BellOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
 import { HEIGHT_HEADER } from '../../../utils/variables/unit';
-import { Avatar, Badge, Button, List, Popover } from 'antd';
+import { Avatar, List, Popover } from 'antd';
 import Logo from '../../molecule/Logo';
 import { COLOR_WHITE } from '../../../utils/variables/colors';
 import { getBreakpointSidebar } from '../Sidebar';
@@ -11,7 +11,6 @@ import Notification from './Notification';
 import storage from '../../../utils/sessionStorage';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BORDER_STYLED } from '../../../utils/unit';
 
 
 const iconStyled: React.CSSProperties = {
@@ -59,7 +58,7 @@ const Header = ({showHamburger = true}: {showHamburger?: boolean}) => {
         <List
           itemLayout="horizontal"
           dataSource={userActions}
-          renderItem={(item, index) => (
+          renderItem={(item) => (
       
         <ListItemStyled onClick={() => {storage.set('token', ''); navigate('/auth/sign-in');
             }}>

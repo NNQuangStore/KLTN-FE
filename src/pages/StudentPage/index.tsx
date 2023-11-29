@@ -93,8 +93,6 @@ const StudentPage = () => {
   }, []);
 
   const data = StudentSelectors.getStudentList();
-  const classId = storage.get('class_id');
-  const className = storage.get('class_name');
 
   return (
     <StudentPageStyled>

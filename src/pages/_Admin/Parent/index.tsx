@@ -1,38 +1,34 @@
 import { styled } from 'styled-components';
 import Filter from '../../../component/template/Filter';
 import DataTable from '../../../component/molecule/DataTable';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import uiActions from '../../../services/UI/actions';
-import { Form, Modal, Radio, message } from 'antd';
+import { Form, Input, Modal, Radio, message } from 'antd';
 import ActionTable from '../../../component/molecule/DataTable/ActionTables';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../store/hooks';
-import { ClassType, TeacherType } from '../Class';
+import { ClassType, DrawerStyled, TeacherType } from '../Class';
 import { ColumnsType } from 'antd/es/table';
 import apisClass from '../../ClassPage/services/apis';
-import apisTeacher from './services/apis';
 import ModalButton from '../../../component/organism/ModalButton';
 import FormLayout from '../../../component/organism/FormLayout';
 import InputText from '../../../component/atom/Input/InputText';
-import InputSelect from '../../../component/atom/Input/InputSelect';
 import InputDatePicker from '../../../component/atom/Input/InputDatePicker';
-import InputTextPassword from '../../../component/atom/Input/InputPassword';
 import InputPhone from '../../../component/atom/Input/InputPhone';
 import { COLOR_YELLOW_DARK } from '../../../utils/variables/colors';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import apisParent from './services/apis';
 // import { bcryptEncode } from '../../../utils/unit';
 
 const ParentAdminPage = () => {
 
-  const navigate = useNavigate();
   const [gender, setGender] = useState<boolean>();
   const dispatch = useAppDispatch();
 
-  const [dataClass, setDataClass] = useState<ClassType[]>();
+  const [, setDataClass] = useState<ClassType[]>();
   const [dataTeacher, setDataTeacher] = useState<TeacherType[]>();
   const [detail, setDetail] = useState<TeacherType | null>();
+  const [viewDetail, setViewDetail] = useState<any>();
   const [formEdit] = Form.useForm();
 
   // const data = [
@@ -96,12 +92,12 @@ const ParentAdminPage = () => {
       render: (item) => {
         return (
           <ActionTable actions={[
-            // {
-            //   handle: () => navigate(item.Id),
-            //   icon: <EyeOutlined />,
-            //   label: 'Xem chi tiết',
-            //   color: '#1890ff'
-            // },
+            {
+              handle: () => setViewDetail(item),
+              icon: <EyeOutlined />,
+              label: 'Xem chi tiết',
+              color: '#1890ff'
+            },
             {
               handle: () => setDetail(item),
               icon: <EditOutlined />,
@@ -133,7 +129,7 @@ const ParentAdminPage = () => {
       }
 
     } catch(e) {
-      message.error('Đã có lỗi xảy ra');
+      // message.error('Đã có lỗi xảy ra');
     } finally {
       dispatch(uiActions.setLoadingPage(false));
 
@@ -168,6 +164,9 @@ const ParentAdminPage = () => {
   //   }));
   // }, [dataClass, dataTeacher]); 
 
+  console.log(viewDetail);
+
+
   return (
     <ParentAdminPageStyled>
       <h1 style={{margin: '12px 0px'}}>Phụ huynh</h1>
@@ -187,10 +186,9 @@ const ParentAdminPage = () => {
           <FormLayout<any>
               onSubmit={async (value) => {
                 dispatch(uiActions.setLoadingPage(true));
-                console.log(value);
                 
                 try {
-                  const res = await apisParent.saveParent({
+                   await apisParent.saveParent({
                     ...value,
                     Phone__c: value.Phone__c.replaceAll('-', ''),
                     Gender__c: gender ?? false,
@@ -208,7 +206,7 @@ const ParentAdminPage = () => {
                 }
               }}
             >
-            <InputText required name='UserName__c' label='Tên giáo viên'/>
+            <InputText required name='UserName__c' label='Tên phu huynh'/>
             <InputPhone required name={'Phone__c'} label='Số diện thoại'/>
             <InputText rules={[
               {required: true},
@@ -237,14 +235,16 @@ const ParentAdminPage = () => {
 
       {/* Edit */}
 
+      
+
       <ModalStyled 
-          // isOpen={open}
+        // isOpen={open}
         footer={null}
         forceRender
         centered
           onCancel={() => setDetail(null)}
           open={!!detail}
-          title={'Giáo viên'}
+          title={'Phụ huynh'}
         >
           <FormLayout<any>
               form={formEdit}
@@ -253,7 +253,7 @@ const ParentAdminPage = () => {
                 console.log(value);
                 
                 try {
-                  const res = await apisParent.saveParent({ 
+                  await apisParent.saveParent({ 
                     // ...detail,
                     // ...value,
                     Id: detail?.Id,
@@ -275,7 +275,7 @@ const ParentAdminPage = () => {
                 }
               }}
             >
-            <InputText required name='UserName__c' label='Tên giáo viên'/>
+            <InputText required name='UserName__c' label='Tên phụ huynh'/>
             <InputPhone required name={'Phone__c'} label='Số diện thoại'/>
             <InputText rules={[
               {required: true},
@@ -297,6 +297,33 @@ const ParentAdminPage = () => {
             </Form.Item> */}
           </FormLayout>
         </ModalStyled>
+
+        <DrawerStyled
+        placement='right'
+        open={!!viewDetail}
+        onClose={() => setViewDetail(undefined)}
+      >
+        <Form
+          layout='vertical'
+        >
+          <Form.Item label={'Tên Phụ huynh'}>
+            <Input disabled value={viewDetail?.Name}/>
+          </Form.Item>
+          <Form.Item label={'Ngày sinh'}>
+            <Input disabled value={viewDetail?.User.BirthDay__c}/>
+          </Form.Item>
+          <Form.Item label={'Số diện thoại'}>
+            <Input disabled value={viewDetail?.User.Phone__c}/>
+          </Form.Item>
+          <Form.Item label={'Email'}>
+            <Input disabled value={viewDetail?.User.Email__c}/>
+          </Form.Item>
+          <Form.Item label={'Giới tính'}>
+            <Input disabled value={viewDetail?.User.GioiTinh__c ? 'Nam' : 'Nữ'}/>
+          </Form.Item>
+        </Form>
+      </DrawerStyled>
+
     </ParentAdminPageStyled>
   );
 

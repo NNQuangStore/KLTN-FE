@@ -3,7 +3,7 @@ import Filter from '../../component/template/Filter';
 
 const DashboardPage = () => {
 
-  const data: any[] = [];
+  // const data: any[] = [];
 
   // const columns: ColumnDef<any>[]= [
   //   {
@@ -15,9 +15,9 @@ const DashboardPage = () => {
 
   // const table = useReactTable({data, columns}); 
 
-  const onSubmit = (values: any) => {
+  // const onSubmit = (values: any) => {
     
-  };
+  // };
 
   return (
     <>

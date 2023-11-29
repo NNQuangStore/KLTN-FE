@@ -1,6 +1,19 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
 
+interface IBodyAttendance {
+  ClassHeader__c: string;
+  Date__c: string;
+  Status__c: string;
+  Student: Student[];
+}
+
+interface Student {
+  HocSinh__c: string;
+  Status__c: string;
+  note__c: string;
+}
+
 const getListLetter = () => {
   const class_id = storage.get('class_id');
   return fetch({
@@ -23,11 +36,20 @@ const getListAttendance = () => {
     url: `/attendanceDay/classId/${class_id}`
   });
 };
+
+const saveAttendanceDay = (body: IBodyAttendance) => {
+  return fetch({
+    method: 'post',
+    url: '/attendanceDay/save',
+    body: body as any
+  });
+};
 // api here
 const apisLetterTeacher= {
   getListLetter, 
   updateLetter,
-  getListAttendance
+  getListAttendance,
+  saveAttendanceDay
 };
 
 export default apisLetterTeacher;

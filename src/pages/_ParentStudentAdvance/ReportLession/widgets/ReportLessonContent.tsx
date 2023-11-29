@@ -1,12 +1,11 @@
 import { styled } from 'styled-components';
-import FormRow from '../../../../component/organism/FormLayout/FormRow';
 import { COLOR_PRIMARY } from '../../../../utils/variables/colors';
 import { useLessonParentReportDetail } from '../../../../services/hooks/useLessonDetail';
 import { Empty } from 'antd';
 
 const ReportLessonContent = () => {
 
-  const [reportDetail, setReportDetail] = useLessonParentReportDetail([]);
+  const [reportDetail, ] = useLessonParentReportDetail([]);
 
 
   return (

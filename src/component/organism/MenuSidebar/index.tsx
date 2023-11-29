@@ -50,11 +50,13 @@ const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
     getItem('Điểm danh', 'diem_danh', <ContactsOutlined />,'/attendance'),
     getItem('Báo bài', 'báo_bai',<ReadOutlined />, '/report-lesion'),
     getItem('Thời khoá biểu', 'tkb', <ScheduleOutlined />, '/time-table'),
-    getItem('Báo cáo', '2', <FundProjectionScreenOutlined />),
+    // getItem('Báo cáo', '2', <FundProjectionScreenOutlined />),
     getItem('Quản lý học sinh','student' ,<StudentIcon/>, '' ,[
       getSubItem('Nhập điểm', 'nhap_diem', PATH_PRIVATE._STUDENT._SCOREBOARD),
       getSubItem('Danh sách', 'danh_sach', PATH_PRIVATE._STUDENT._INDEX),
     ]),
+    getItem('Thống kê', '2', <FundProjectionScreenOutlined />, '/analytic'),
+
   ];
   
   return (

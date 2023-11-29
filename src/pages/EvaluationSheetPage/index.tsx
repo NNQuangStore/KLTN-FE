@@ -1,22 +1,22 @@
 import { styled } from 'styled-components';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
-import { Button, Card, Col, Form, Input, Row, Select, SelectProps, Space, Tag } from 'antd';
+import { Card, Col, Form, Row, Select} from 'antd';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import scoreboardActions from '../ScoreboardPage/service/actions';
-import { Evalution } from '../ScoreboardPage/service/apis';
+// import { Evalution } from '../ScoreboardPage/service/apis';
 import scoreboardSelectors from '../ScoreboardPage/service/selectors';
 import { getTalentByScore } from '../../utils/unit';
 type LayoutType = Parameters<typeof Form>[0]['layout'];
-interface DataType {
-  key: number;
-  subject:string;
-  score: string;
-  comment: number;
-  talent: string;
-}
+// interface DataType {
+//   key: number;
+//   subject:string;
+//   score: string;
+//   comment: number;
+//   talent: string;
+// }
 const columns2: ColumnsType<any> = [
   {
     title: 'Năng lực',
@@ -133,8 +133,8 @@ const EvaluationSheetPage = () => {
   // const classId = storage.get('class_id');
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState<LayoutType>('inline');
-  const[dataSelect1, setDataSelect1]= useState('');
-  const[dataSelect2, setDataSelect2]= useState('');
+  // const[dataSelect1, setDataSelect1]= useState('');
+  // const[dataSelect2, ]= useState('');
   const params = scoreboardSelectors.getParams();
 
   const scoreboardDetail = scoreboardSelectors.getScoreboardDetail()?.[0];  
@@ -250,12 +250,12 @@ const EvaluationSheetPage = () => {
   const formItemLayout =
     formLayout === 'horizontal' ? { labelCol: { span: 4 }, wrapperCol: { span: 14 } } : null;
 
-  const buttonItemLayout =
-    formLayout === 'horizontal' ? { wrapperCol: { span: 14, offset: 4 } } : null;
+  // const buttonItemLayout =
+  //   formLayout === 'horizontal' ? { wrapperCol: { span: 14, offset: 4 } } : null;
 
-    const onChange = (value: string) => {
-      setDataSelect1(value);
-    };
+  //   const onChange = (value: string) => {
+  //     setDataSelect1(value);
+  //   };
 
     const onChange2 = (value: string) => {
       dispatch(scoreboardActions.getScoreboardDetail.fetch({
@@ -271,7 +271,7 @@ const EvaluationSheetPage = () => {
     const filterOption = (input: string, option?: { label: string; value: string }) =>
       (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
     // hàm xử lý Lọc
-    const onFinish = (value: string) =>{ console.log(dataSelect1+' '+dataSelect2);};
+    // const onFinish = (value: string) =>{ console.log(dataSelect1+' '+dataSelect2);};
     
   return (
     <EvaluationSheetPageStyled>

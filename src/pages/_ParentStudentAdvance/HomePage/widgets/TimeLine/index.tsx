@@ -2,14 +2,11 @@ import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import { getDayOfWeek } from '../../../../../utils/unit';
-import { Divider, Empty, Timeline, TimelineItemProps } from 'antd';
+import {  Empty, Timeline, TimelineItemProps } from 'antd';
 import { hexToRGB } from '../../../../../utils/unit';
-import { COLOR_DISABLE, COLOR_PRIMARY_LIGHT, COLOR_WHITE } from '../../../../../utils/variables/colors';
 import InputDatePicker from '../../../../../component/atom/Input/InputDatePicker';
 import apisTimetable from '../../../../TimeTablePage/services/apis';
-import { groupBy } from 'lodash';
 import { useAppDispatch } from '../../../../../store/hooks';
-import { DetailType } from '../../../../TimeTablePage/services/type/timeTable';
 import uiActions from '../../../../../services/UI/actions';
 
 const TimeTableLine = () => {

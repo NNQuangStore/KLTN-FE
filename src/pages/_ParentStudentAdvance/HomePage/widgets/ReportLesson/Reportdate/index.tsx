@@ -2,7 +2,7 @@ import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import lesionSelectors from '../../../../../ReportLesionPage/services/selectors';
-import { Button, Tooltip } from 'antd';
+import { Button, Empty, Tooltip } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { COLOR_PRIMARY } from '../../../../../../utils/variables/colors';
 
@@ -19,12 +19,7 @@ const ReportDate = () => {
   })),[dataReportLesion]);
 
   const report = useMemo(() => {
-    const tmp = dataReport.find(o => o.date === date);
-    const element: HTMLElement = document.getElementById('content') as HTMLElement;
-    if(element && tmp?.content != undefined){
-      element.innerHTML = tmp?.content;
-    }
-    return tmp;
+    return dataReport.find(o => o.date === date);
   }, [date]);
 
   return (
@@ -44,14 +39,14 @@ const ReportDate = () => {
         </div>
       </div>
 
-      <div className='contain'>
+      {report ? <div className='contain'>
         <div className='header'>
           {report?.title}
         </div>
-        <div className='content' id='content'>
-        {/* {report?.content} */}
+        <div className='content'>
+          {report?.content}
         </div>
-      </div>
+      </div> : <Empty description='Không có báo bài'/>}
 
 
 
@@ -62,7 +57,7 @@ const ReportDate = () => {
 export default ReportDate;
 
 const ReportDateStyled = styled.div`
-  padding: 0px 24px;
+  padding: 0px 2px;
     .filter {
     display: flex;
     justify-content: center;

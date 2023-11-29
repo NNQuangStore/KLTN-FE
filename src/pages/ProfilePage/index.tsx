@@ -1,15 +1,12 @@
 import { styled } from 'styled-components';
 import AvatarSidebar from '../../component/molecule/AvatarSidebar';
 import FormLayout from '../../component/organism/FormLayout';
-import InputText from '../../component/atom/Input/InputText';
-import InputPhone from '../../component/atom/Input/InputPhone';
 import { Card, Form, Input } from 'antd';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
 import FormBlock from '../../component/organism/FormLayout/FormBlock';
-import FormRow from '../../component/organism/FormLayout/FormRow';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import studentActions from '../StudentPage/services/actions';
 import StudentSelectors from '../StudentPage/services/selectors';
 import { getGender } from '../../utils/unit';

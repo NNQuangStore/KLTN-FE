@@ -15,13 +15,19 @@ import DataTable from '../../component/molecule/DataTable';
 import Table, { ColumnsType } from 'antd/es/table';
 import { render } from '@testing-library/react';
 import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
 import { ActionFormStyled } from '../../component/organism/FormLayout';
 import ButtonOutline from '../../component/atom/Button/ButtonOutline';
 import ButtonPrimary from '../../component/atom/Button/ButtonPrimary';
+import { useDispatch } from 'react-redux';
+import apisClass from '../ClassPage/services/apis';
+import apisStudent from '../StudentPage/services/apis';
+import studentActions from '../StudentPage/services/actions';
+import StudentSelectors from '../StudentPage/services/selectors';
+import { log } from '@antv/g2plot/lib/utils';
 interface DataType {
   key: string;
   startDay: string;
@@ -185,20 +191,25 @@ const data: DataType[] = [
 ];
 
 const AttendancePage = () => {
-  const [size, setSize] = useState<SizeType>('middle');
+  const [size] = useState<SizeType>('middle');
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const studentList = StudentSelectors.getStudentList();
+
+  console.log(studentList);
+  
+
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
   const showModal = () => {
     setOpen(true);
   };
-  const handleOk = () => {
-    setOpen(false);
-  };
-  const handleCancel = () => {
-    setOpen(false);
-  };
+
+  useEffect(() => {
+    dispatch(studentActions.getListStudent.fetch());
+  }, []);
+
 
   return (
     <AttendancePageStyled>

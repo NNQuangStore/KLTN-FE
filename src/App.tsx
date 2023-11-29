@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import './App.css';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AppLayout from './layout/AppLayout';
 import DashboardPage from './pages/DashboardPage';
 import store from './store';
@@ -11,19 +10,15 @@ import LoginPage from './pages/AuthPage/LoginPage';
 import AuthLayout from './layout/AuthLayout';
 import { PATH } from './utils/paths';
 import ScoreboardPage from './pages/ScoreboardPage';
-import { useToken } from './services/hooks/useToken';
 import TimeTablePage from './pages/TimeTablePage';
 import ProfilePage from './pages/ProfilePage';
 import ReportCardPage from './pages/ReportCardPage';
 import AbsencePage from './pages/AbsencePage';
 import StudentPage from './pages/StudentPage';
-import ParentLayout from './layout/ParentLayout';
-import ParentHomePage from './pages/ParentHomePage';
 import ReportLesionPage from './pages/ReportLesionPage';
 import AttendanceCheckPage from './pages/AttendanceCheckPage';
 import EvaluationSheetPage from './pages/EvaluationSheetPage';
 import AttendancePage from './pages/Attendance';
-import ParentReportSessionNewPage from './pages/ParentReportLessionNew';
 import AttendanceTodayPage from './pages/AttendanceToday';
 import ParentStudentLayout from './pages/_ParentStudentAdvance/ParentStudentLayout';
 import ParentStudentReportLessonPage from './pages/_ParentStudentAdvance/ReportLession';
@@ -39,11 +34,12 @@ import ClassPage from './pages/_Admin/Class';
 import TeacherPage from './pages/_Admin/Teacher';
 import StudentAdminPage from './pages/_Admin/Student';
 import ParentAdminPage from './pages/_Admin/Parent';
+import AnalyticPage from './pages/_TeacherNew/Analytic';
 
 // dayjs.extend(updateLocale);
 
 function AppUI() {
-  const { shield} = useToken();
+  // const { shield} = useToken();
 
 
 
@@ -62,11 +58,16 @@ function AppUI() {
           <Route path={PATH._REPORT_LESION} element={<ReportLesionPage />} />
           <Route path={PATH._ATTENDANCE_PAGE} element={<AttendanceCheckPage />}/>
           <Route path='/attendance/create-today' element={<AttendanceTodayPage />}/>
+          <Route path='/analytic' element={<AnalyticPage />}/>
+
+
+
           <Route path='/time-table' element={<TimeTablePage />}/>
           <Route path='/class' element={<ClassPage />}/>
           <Route path='/teacher' element={<TeacherPage />}/>
           <Route path='/students' element={<StudentAdminPage />}/>
           <Route path='/parent' element={<ParentAdminPage />}/>
+
         </Route>
 
         <Route path='app' element={<ParentStudentLayout />}>

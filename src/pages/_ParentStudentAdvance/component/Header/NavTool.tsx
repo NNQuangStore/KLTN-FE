@@ -1,7 +1,6 @@
 import { Avatar, List, Popover } from 'antd';
 import Notification from '../../../../component/template/Header/Notification';
 import { useNavigate } from 'react-router-dom';
-import { useCollapseSidebar } from '../../../../services/hooks/useCollapseSidebar';
 import storage from '../../../../utils/sessionStorage';
 import { useState } from 'react';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
@@ -9,15 +8,14 @@ import { styled } from 'styled-components';
 
 const NavTool = () => {
 
-  const [collapsed, setCollapsed] = useCollapseSidebar(false);
-  const className = storage.get('class_name');
+  // const [collapsed, setCollapsed] = useCollapseSidebar(false);
   const [open, setOpen] = useState<boolean>(false);
 
   // console.log(useMediaQuery(theme.breakpoints.up('sm')));
 
-  const toggleCollapsed = () => {
-    setCollapsed( !collapsed );
-  };
+  // const toggleCollapsed = () => {
+  //   setCollapsed( !collapsed );
+  // };
 
   const userActions = [
     {
@@ -36,7 +34,7 @@ const NavTool = () => {
         <List
           itemLayout='horizontal'
           dataSource={userActions}
-          renderItem={(item, index) => (
+          renderItem={(item) => (
       
           <ListItemStyled onClick={() => {storage.set('token', ''); navigate('/auth/sign-in');
             }}>

@@ -14,11 +14,6 @@ const selector = <KEY = keyof MyState>(key: KEY, defaultValue?: any) => useAppSe
 
 const getStudentList = () => selector('studentList');
 
-
-
-
-
-
 const getStudentDetail = () => selector('studentDetail');
 
 

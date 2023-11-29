@@ -2,11 +2,9 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import DataTable from '../../../../component/molecule/DataTable';
 import ActionTable from '../../../../component/molecule/DataTable/ActionTables';
 import { COLOR_RED, COLOR_YELLOW_DARK } from '../../../../utils/variables/colors';
-import { useState } from 'react';
 
 const CustomerDataTable = () => {
 
-  const [value, setValue] = useState<string>();
 
   const dataSource = [
     {

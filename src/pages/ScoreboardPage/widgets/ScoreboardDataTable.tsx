@@ -11,7 +11,7 @@ import { COLOR_BLUE } from '../../../utils/variables/colors';
 import { useAppDispatch } from '../../../store/hooks';
 import { TableScore } from '../service/types/_scoreboard';
 import { Select } from 'antd';
-import { getTalentByScore } from '../../../utils/unit';
+// import { getTalentByScore } from '../../../utils/unit';
 import { styled } from 'styled-components';
 
 
@@ -19,6 +19,17 @@ const ScoreboardDataTable = () => {
 
   const dataSource = scoreboardSelectors.getScoreboard();  
   const dispatch = useAppDispatch();
+  const mucDatDuocOption = [ {
+    value: 'Hoàn thành tốt',
+    label: 'Hoàn thành tốt'
+  },{
+    value: 'Hoàn thành',
+    label: 'Hoàn thành'
+  },{
+    value: 'Chưa hoàn thành',
+    label: 'Chưa hoàn thành'
+  } ];
+
 
   const columnAttr: ColumnType<any> = {
     align: 'center',
@@ -44,7 +55,7 @@ const ScoreboardDataTable = () => {
   
   
   const getChildrenColumn = (title: (keyof typeof ELesions)[], dataIndex: string) => {
-      const childrenList: ColumnType<any>[] = title.map((s , index) => {
+      const childrenList: ColumnType<any>[] = title.map((s ,) => {
       return {
         title: ELesions[s],
         // dataIndex: dataIndex,
@@ -67,11 +78,17 @@ const ScoreboardDataTable = () => {
             title: 'Mức đạt được',
             dataIndex: `${dataIndex}-${s}-0`,
             key: `${dataIndex}-${s}-0`,
-            render: (value: any, record: TableScore) => {
-              //@ts-ignore
-              return getTalentByScore(Number(record[`${dataIndex}-${s}-1`]));
-            }
+            render: (text: string,) => {                 
+              return (
+                <SelectColStyled options={mucDatDuocOption} value={text} onChange={() => {
+
+                }} />);
+            // render: (value: any, record: TableScore) => {
+            //   //@ts-ignore
+            //   return getTalentByScore(Number(record[`${dataIndex}-${s}-1`]));
+            // }
           },
+        },
         ],
     };});
 
@@ -90,20 +107,6 @@ const ScoreboardDataTable = () => {
         render: (text: string, record: TableScore) => {                 
           return (
             <SelectColStyled value={text} onChange={(value) => {
-
-
-
-  // {
-//   "subjectType": "SUBJECT",
-//   "subjectId": "NANG_LUC_1",
-//   "evaluationType": "TALENT",
-//   "talent": "Tốt"
-// },
-// {
-//   "subjectType": "GROUP",
-//   "subjectGroupId": "NANG_LUC",
-//   "evaluationComment": "Có đạo đức tốt"
-// }
 
               const data: TableScore = {};
               // @ts-ignore
@@ -142,6 +145,7 @@ const ScoreboardDataTable = () => {
       label: 'Cần cố gắng'
     },
   ];
+
 
 
  

@@ -2,9 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { NAME_REDUCER } from './constants';
 import { IState } from './types/reducer';
 import actions from './actions';
-import { roundNumber } from '../../../utils/unit';
-import { Evalution } from './apis';
-import { Datum, Score } from './types/scoreboard';
+import { Datum } from './types/scoreboard';
 
 const initialState: IState = {
   scoreboard: null,
@@ -15,12 +13,12 @@ const initialState: IState = {
   }
 };
 
-const col = [
-  {
-    index: 1,
-    name: ''
-  }
-];
+// const col = [
+//   {
+//     index: 1,
+//     name: ''
+//   }
+// ];
 
 export const Slice = createSlice({
   name: NAME_REDUCER,

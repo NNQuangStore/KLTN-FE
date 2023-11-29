@@ -1,4 +1,4 @@
-import { Button, Card, Col, DatePicker, Empty, List, Row, Space, Tooltip, message } from 'antd';
+import { Button, Card, Col, DatePicker, Row, Space, Tooltip, message } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
@@ -35,7 +35,7 @@ const ParentReportSessionNewPage = () => {
     setDate(getWeekDate(moment(value?.format())));
   };
   const [date, setDate] = useState<Moment[]>(getWeekDate(moment()));
-  const [week, setWeek] = useState<[]>();
+  // const [week, setWeek] = useState<[]>();
 
   function getMonday(d:any) {
     d = new Date(d);

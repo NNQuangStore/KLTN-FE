@@ -1,32 +1,32 @@
 import { styled } from 'styled-components';
 import { EyeOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 
-import { ColumnType, ColumnsType } from 'antd/es/table';
+import { ColumnsType } from 'antd/es/table';
 import { useAppDispatch } from '../../../store/hooks';
 import { getGender } from '../../../utils/unit';
 import ActionTable from '../../../component/molecule/DataTable/ActionTables';
-import studentActions from '../../StudentPage/services/actions';
-import StudentSelectors from '../../StudentPage/services/selectors';
-import storage from '../../../utils/sessionStorage';
 import Filter from '../../../component/template/Filter';
 import InputSearchText from '../../../component/atom/Input/InputSearch';
 import DataTable from '../../../component/molecule/DataTable';
-import { ClassType } from '../Class';
+import { ClassType, DrawerStyled } from '../Class';
 import uiActions from '../../../services/UI/actions';
 import apisClass from '../../ClassPage/services/apis';
-import { message } from 'antd';
+import { Form, Input } from 'antd';
 import InputSelect from '../../../component/atom/Input/InputSelect';
 import apisStudent from '../../StudentPage/services/apis';
+import { range } from 'lodash';
+import moment from 'moment';
 
 const StudentAdminPage = () => {
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [dataClass, setDataClass] = useState<ClassType[]>();
   const [dataStudent, setDataStudent] = useState<any[]>();
   const [classFilter, setClassFilter] = useState<string>();
+  const [yearFilter, setYearFilter] = useState<string>();
+
+  const [detail, setDetail] = useState<any>();
 
   // const data = [
   //   {
@@ -74,12 +74,18 @@ const StudentAdminPage = () => {
       // }
 
     } catch(e) {
-      message.error('Đã có lỗi xảy ra');
+      // message.error('Đã có lỗi xảy ra');
     } finally {
       dispatch(uiActions.setLoadingPage(false));
 
     }
   };
+
+  const yearNow = moment().year();
+  const yearOption = range(0,50).map(o => ({
+    value: yearNow - o,
+    label: (yearNow - o).toString()
+  }));
 
   const classOption = useMemo(() => {
     return dataClass?.map(o => ({
@@ -118,11 +124,13 @@ const StudentAdminPage = () => {
     },
     {
       title: ' ',
-      render: (item) => {
+      render: (item, record) => {
         return (
           <ActionTable actions={[
             {
-              handle: () => navigate(item.Id),
+              handle: () => {
+                setDetail(record);
+              },
               icon: <EyeOutlined />,
               label: 'Xem chi tiết',
               color: '#1890ff'
@@ -133,17 +141,19 @@ const StudentAdminPage = () => {
     },
   ];
 
+  console.log(detail);
+  
 
   const fetchStudent = async () => {
     try{
       dispatch(uiActions.setLoadingPage(true));
 
-      const res = await apisStudent.getListStudentByClass(classFilter ?? classOption?.[0]?.value ?? '');
+      const res = await apisStudent.getListStudentByClass(classFilter ?? 'a075j00000AkxZjAAJ' ?? '', yearFilter?.toString() ?? yearNow.toString());
 
       // const resTeacher = await apisTeacher.getListTeacher();
 
       if(res?.data?.data) {
-        setDataStudent(res.data.data.Student);
+        setDataStudent(res.data.data?.[0]?.Student);
       }
 
       // if(resTeacher?.data?.data) {
@@ -151,7 +161,7 @@ const StudentAdminPage = () => {
       // }
 
     } catch(e) {
-      message.error('Đã có lỗi xảy ra');
+      // message.error('Đã có lỗi xảy ra');
     } finally {
       dispatch(uiActions.setLoadingPage(false));
 
@@ -159,29 +169,55 @@ const StudentAdminPage = () => {
   };
 
   useEffect(() => {
-    if(!classOption || !classFilter) return;
     fetchStudent();
-  }, [classFilter, classOption]);
+  }, []);
 
-  const data = StudentSelectors.getStudentList();
-  const classId = storage.get('class_id');
-  const className = storage.get('class_name');
+  useEffect(() => {
+    fetchStudent();
+  }, [classFilter, yearFilter]);
 
   return (
     <StudentAdminPageStyled>
       <h1 style={{margin: '12px 0px'}}>Học sinh</h1>
-
       <Filter>
+      <Form.Item name={'yearFilter'}>
+        <InputSelect defaultValue={moment().year()} onChange={value => setYearFilter(value)} options={yearOption}/>
+      </Form.Item>
+      <Form.Item name={'classFilter'}>
+        <InputSelect defaultValue={'1A'} onChange={value => setClassFilter(value)} options={classOption}/>
+      </Form.Item>
+
+      <InputSearchText />
         {/* <InputSelect value={classId} options={[{
           value: classId,
           label: className,
         }]} /> */}
-        <InputSearchText />
-        <InputSelect defaultValue={classOption?.[0].value} onChange={value => setClassFilter(value)} options={classOption}/>
       </Filter>
       <div style={{margin: '12px'}}></div>
 
       <DataTable bordered={false} columns={columns} dataSource={dataStudent}/>
+      <DrawerStyled
+        placement='right'
+        open={!!detail}
+        onClose={() => setDetail(undefined)}
+      >
+        <Form
+          layout='vertical'
+        >
+          <Form.Item label={'Mã Học sinh'}>
+            <Input disabled  value={detail?.Ma_Hoc_Sinh__c}/>
+          </Form.Item>
+          <Form.Item label={'Tên Học sinh'}>
+            <Input disabled value={detail?.Name}/>
+          </Form.Item>
+          <Form.Item label={'Ngày sinh'}>
+            <Input disabled value={detail?.NgaySinh__c}/>
+          </Form.Item>
+          <Form.Item label={'Giới tính'}>
+            <Input disabled value={detail?.GioiTinh__c ? 'Nam' : 'Nữ'}/>
+          </Form.Item>
+        </Form>
+      </DrawerStyled>
     </StudentAdminPageStyled>
   );
 };

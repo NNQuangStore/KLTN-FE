@@ -1,4 +1,4 @@
-import { Card, Typography, DatePicker, Form, List, Input, Empty } from 'antd';
+import { Card, DatePicker, Form, Input } from 'antd';
 import { styled } from 'styled-components';
 import FormLayout, { ActionFormStyled } from '../../../../component/organism/FormLayout';
 import FormBlock from '../../../../component/organism/FormLayout/FormBlock';
@@ -20,7 +20,7 @@ const { TextArea } = Input;
 const LeaveOfAbsence = () => {
 
   const [form] = useForm();
-  const [listLesion, setListLesion] = useState<Dayjs[]>([]);
+  const [, setListLesion] = useState<Dayjs[]>([]);
   const dispatch = useAppDispatch();
 
   // useEffect(() => {    

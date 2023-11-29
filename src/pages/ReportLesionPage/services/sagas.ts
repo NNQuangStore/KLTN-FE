@@ -1,9 +1,8 @@
 import { AxiosResponse } from 'axios';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import actions from './actions';
-import { default as apis, default as apisStudent } from './apis';
+import { default as apis } from './apis';
 import uiActions from '../../../services/UI/actions';
-import { message } from 'antd';
 
 const getListLesion = function* () {
   yield put(uiActions.setLoadingPage(true));
@@ -17,7 +16,7 @@ const getListLesion = function* () {
       throw 'fail';
     }
   } catch (error) {
-    message.error('Đã có lỗi xảy ra');
+    // message.error('Đã có lỗi xảy ra');
     yield put(actions.getListLesion.fail({}));
   } finally {
   yield put(uiActions.setLoadingPage(false));

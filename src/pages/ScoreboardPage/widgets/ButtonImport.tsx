@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import uiActions from '../../../services/UI/actions';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import Upload, { DraggerProps, RcFile } from 'antd/es/upload';
 import { read, utils } from 'xlsx';
-import { ArrowDownOutlined, CheckOutlined, CloseOutlined, DropboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Modal, Tooltip } from 'antd';
+import {  DropboxOutlined, UploadOutlined } from '@ant-design/icons';
+import { Button, Modal } from 'antd';
 import ButtonExportTemplateScore from './ButtonExportTemplateScore';
 import { useAppDispatch } from '../../../store/hooks';
 import storage from '../../../utils/sessionStorage';
@@ -64,13 +64,13 @@ const ButtonImportScore = () => {
     const dispatch = useAppDispatch();
     const params = scoreboardSelectors.getParams();
   
-    enum EColExcel {
-      title = 'Tiêu đề',
-      date = 'Ngày gửi',
-      // status = 'Trạng thái',
-      content = 'Nội dung',
-      isAutoSend = 'Tự động gửi'
-    }
+    // enum EColExcel {
+    //   title = 'Tiêu đề',
+    //   date = 'Ngày gửi',
+    //   // status = 'Trạng thái',
+    //   content = 'Nội dung',
+    //   isAutoSend = 'Tự động gửi'
+    // }
   
     const saveReport = async(rest: any) => {
       await apisScoreboard.importScoreboard(rest); 
@@ -300,23 +300,23 @@ const ButtonImportScore = () => {
   export default ButtonImportScore;
   
   
-  const CardSuccessStyled = styled.div`
-    margin-top: 12px;
-    width: 97%;
-    padding: 10px;
-    border-radius: 4px;
-    color: #135200;
-    background-color: #b7eb8f;
-  `;
+  // const CardSuccessStyled = styled.div`
+  //   margin-top: 12px;
+  //   width: 97%;
+  //   padding: 10px;
+  //   border-radius: 4px;
+  //   color: #135200;
+  //   background-color: #b7eb8f;
+  // `;
   
-  const CardErrorStyled = styled.div`
-    margin-top: 12px;
-    width: 97%;
-    padding: 10px;
-    border-radius: 4px;
-    color: #a8071a;
-    background-color: #ffa39e;
-  `;
+  // const CardErrorStyled = styled.div`
+  //   margin-top: 12px;
+  //   width: 97%;
+  //   padding: 10px;
+  //   border-radius: 4px;
+  //   color: #a8071a;
+  //   background-color: #ffa39e;
+  // `;
   
   const ModalStyled = styled(Modal)`
   

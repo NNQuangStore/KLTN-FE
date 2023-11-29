@@ -1,63 +1,58 @@
 
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { useRef } from 'react';
-import { DownloadTableExcel } from 'react-export-table-to-excel';
 // @ts-ignore
 import template from '../../../asset/excel/template_nhap_diem.xlsx';
-import { read, readFile, utils, write } from 'xlsx';
-import { TEMPLATE_NHAP_DIEM_X64 } from '../../../asset/excel/template_nhap_diem';
-import * as FileSaver from 'file-saver';
 
 const ButtonExportTemplateScore = () => {
 
-  const exportTableRef = useRef<any>();
+  // const exportTableRef = useRef<any>();
 
 
-  const handleDownTemplate = () => {
-
-    
-    const workbook = read(TEMPLATE_NHAP_DIEM_X64, {type: 'base64'});
-    const base64 = write(workbook, { bookType: 'xlsx', type: 'binary' });
+  // const handleDownTemplate = () => {
 
     
+  //   const workbook = read(TEMPLATE_NHAP_DIEM_X64, {type: 'base64'});
+  //   const base64 = write(workbook, { bookType: 'xlsx', type: 'binary' });
 
-    // const workbook = readFile(template);
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-
-    // const workbook = XLSX.read(bufferExcel, { type: 'buffer' });
-
-    // const ws = utils.sheet_to_json(worksheet);
-    // const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-    // const excelBuffer = write(wb, { bookType: 'xlsx', type: 'array' });
-    // const data = new Blob([TEMPLATE_NHAP_DIEM_X64], {type: fileType});
-    // FileSaver.saveAs(data, 'file' + fileExtension);
-
-    const sliceSize = 1024;
-    const byteCharacters = atob(base64);
-    const bytesLength = byteCharacters.length;
-    const slicesCount = Math.ceil(bytesLength / sliceSize);
-    const byteArrays = new Array(slicesCount);
     
-    for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-      const begin = sliceIndex * sliceSize;
-      const end = Math.min(begin + sliceSize, bytesLength);
-      const bytes = new Array(end - begin);
-      for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
-        bytes[i] = byteCharacters[offset].charCodeAt(0);
-      }
-      byteArrays[sliceIndex] = new Uint8Array(bytes);
-    }
-    
-    FileSaver.saveAs(
-      new Blob(byteArrays, { type: 'application/vnd.ms-excel' }),
-      'my-excel.xlsx'
-    );
 
-    // console.log(json);
+  //   // const workbook = readFile(template);
+  //   const sheetName = workbook.SheetNames[0];
+  //   const worksheet = workbook.Sheets[sheetName];
+
+  //   // const workbook = XLSX.read(bufferExcel, { type: 'buffer' });
+
+  //   // const ws = utils.sheet_to_json(worksheet);
+  //   // const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+  //   // const excelBuffer = write(wb, { bookType: 'xlsx', type: 'array' });
+  //   // const data = new Blob([TEMPLATE_NHAP_DIEM_X64], {type: fileType});
+  //   // FileSaver.saveAs(data, 'file' + fileExtension);
+
+  //   const sliceSize = 1024;
+  //   const byteCharacters = atob(base64);
+  //   const bytesLength = byteCharacters.length;
+  //   const slicesCount = Math.ceil(bytesLength / sliceSize);
+  //   const byteArrays = new Array(slicesCount);
     
-  };
+  //   for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+  //     const begin = sliceIndex * sliceSize;
+  //     const end = Math.min(begin + sliceSize, bytesLength);
+  //     const bytes = new Array(end - begin);
+  //     for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+  //       bytes[i] = byteCharacters[offset].charCodeAt(0);
+  //     }
+  //     byteArrays[sliceIndex] = new Uint8Array(bytes);
+  //   }
+    
+  //   FileSaver.saveAs(
+  //     new Blob(byteArrays, { type: 'application/vnd.ms-excel' }),
+  //     'my-excel.xlsx'
+  //   );
+
+  //   // console.log(json);
+    
+  // };
 
   return (
     <>

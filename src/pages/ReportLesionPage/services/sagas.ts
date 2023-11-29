@@ -1,9 +1,8 @@
 import { AxiosResponse } from 'axios';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import actions from './actions';
-import { default as apis, default as apisStudent } from './apis';
+import { default as apis } from './apis';
 import uiActions from '../../../services/UI/actions';
-import { message } from 'antd';
 
 const getListLesion = function* () {
   yield put(uiActions.setLoadingPage(true));

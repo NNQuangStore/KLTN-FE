@@ -1,22 +1,18 @@
 import { styled } from 'styled-components';
 import { EyeOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 
-import { ColumnType, ColumnsType } from 'antd/es/table';
+import { ColumnsType } from 'antd/es/table';
 import { useAppDispatch } from '../../../store/hooks';
 import { getGender } from '../../../utils/unit';
 import ActionTable from '../../../component/molecule/DataTable/ActionTables';
-import studentActions from '../../StudentPage/services/actions';
-import StudentSelectors from '../../StudentPage/services/selectors';
-import storage from '../../../utils/sessionStorage';
 import Filter from '../../../component/template/Filter';
 import InputSearchText from '../../../component/atom/Input/InputSearch';
 import DataTable from '../../../component/molecule/DataTable';
-import { ClassType } from '../Class';
+import { ClassType, DrawerStyled } from '../Class';
 import uiActions from '../../../services/UI/actions';
 import apisClass from '../../ClassPage/services/apis';
-import { Form, message } from 'antd';
+import { Form, Input } from 'antd';
 import InputSelect from '../../../component/atom/Input/InputSelect';
 import apisStudent from '../../StudentPage/services/apis';
 import { range } from 'lodash';
@@ -24,12 +20,13 @@ import moment from 'moment';
 
 const StudentAdminPage = () => {
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [dataClass, setDataClass] = useState<ClassType[]>();
   const [dataStudent, setDataStudent] = useState<any[]>();
   const [classFilter, setClassFilter] = useState<string>();
   const [yearFilter, setYearFilter] = useState<string>();
+
+  const [detail, setDetail] = useState<any>();
 
   // const data = [
   //   {
@@ -127,11 +124,13 @@ const StudentAdminPage = () => {
     },
     {
       title: ' ',
-      render: (item) => {
+      render: (item, record) => {
         return (
           <ActionTable actions={[
             {
-              handle: () => navigate(item.Id),
+              handle: () => {
+                setDetail(record);
+              },
               icon: <EyeOutlined />,
               label: 'Xem chi tiết',
               color: '#1890ff'
@@ -142,6 +141,8 @@ const StudentAdminPage = () => {
     },
   ];
 
+  console.log(detail);
+  
 
   const fetchStudent = async () => {
     try{
@@ -195,6 +196,28 @@ const StudentAdminPage = () => {
       <div style={{margin: '12px'}}></div>
 
       <DataTable bordered={false} columns={columns} dataSource={dataStudent}/>
+      <DrawerStyled
+        placement='right'
+        open={!!detail}
+        onClose={() => setDetail(undefined)}
+      >
+        <Form
+          layout='vertical'
+        >
+          <Form.Item label={'Mã Học sinh'}>
+            <Input disabled  value={detail?.Ma_Hoc_Sinh__c}/>
+          </Form.Item>
+          <Form.Item label={'Tên Học sinh'}>
+            <Input disabled value={detail?.Name}/>
+          </Form.Item>
+          <Form.Item label={'Ngày sinh'}>
+            <Input disabled value={detail?.NgaySinh__c}/>
+          </Form.Item>
+          <Form.Item label={'Giới tính'}>
+            <Input disabled value={detail?.GioiTinh__c ? 'Nam' : 'Nữ'}/>
+          </Form.Item>
+        </Form>
+      </DrawerStyled>
     </StudentAdminPageStyled>
   );
 };

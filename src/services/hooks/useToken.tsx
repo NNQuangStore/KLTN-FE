@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
-import { Navigate, redirect, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import storage from '../../utils/sessionStorage';
 import authSelectors from '../../pages/AuthPage/service/selectors';
 import { useAppDispatch } from '../../store/hooks';
 import authActions from '../../pages/AuthPage/service/actions';
-import { delay } from 'lodash';
 
-type ShieldComponent = ((props: any) => JSX.Element) | React.LazyExoticComponent<(props: any) => JSX.Element>;
+type ShieldComponent = ((props: any) => JSX.Element) | React.LazyExoticComponent<() => JSX.Element>;
 
 export const useToken = () => {
   const token = storage.get('token');

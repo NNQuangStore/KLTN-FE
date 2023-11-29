@@ -1,8 +1,5 @@
-import { Pie } from '@ant-design/charts';
-import { justify } from '@antv/g2plot/lib/plots/sankey/sankey';
-import { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
 interface PieChartData {
   type: string;
@@ -10,14 +7,14 @@ interface PieChartData {
 }
 
 const ChartServices = ({ revenueServices }: { revenueServices: any }) => {
-  const colors = ['#3B82F6', '#22C55E', '#EAB308', '#F97316'];
+  // const colors = ['#3B82F6', '#22C55E', '#EAB308', '#F97316'];
 
 
   const pieChartData: PieChartData[] = revenueServices?.map((o: any) => ({
     type: o.service_name,
     value: o.percent
   }));
-  const prices = revenueServices?.map((o: any) => (`${o?.total_amount ?? 0}`));
+  // const prices = revenueServices?.map((o: any) => (`${o?.total_amount ?? 0}`));
 
   // const config = {
   //   appendPadding: 10,
@@ -72,10 +69,10 @@ const ChartServices = ({ revenueServices }: { revenueServices: any }) => {
     },
     labels: pieChartData.map(o => (o.type)) as string[],
     responsive: [{
-      breakpoint: 480,
+      breakpoint: 580,
       options: {
         chart: {
-          width: 200
+          width: 300
         },
       }
     }]
@@ -121,55 +118,55 @@ const ChartServices = ({ revenueServices }: { revenueServices: any }) => {
 
 export default ChartServices;
 
-const ListItemsStyled = styled.div`
-  .list-items {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #363565;
-  }
-  .item-type {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    position: relative;
-    &:after {
-      content: '';
-      display: block;
-      width: 12px;
-      height: 12px;
-      position: absolute;
-      background: inherit;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      opacity: 0.3;
-    }
-  }
-  .item-label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .item-value {
-    display: inline-flex;
-    align-items: center;
-    color: #3b82f6;
-    gap: 4px;
-  }
-  .value-icon {
-    display: inline-flex;
-    align-items: center;
-  }
-  .item-price {
-    text-align: right;
-    margin-left: auto;
-  }
-`;
+// const ListItemsStyled = styled.div`
+//   .list-items {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 10px;
+//   }
+//   .item {
+//     display: flex;
+//     align-items: center;
+//     gap: 8px;
+//     font-size: 14px;
+//     color: #363565;
+//   }
+//   .item-type {
+//     width: 6px;
+//     height: 6px;
+//     border-radius: 50%;
+//     position: relative;
+//     &:after {
+//       content: '';
+//       display: block;
+//       width: 12px;
+//       height: 12px;
+//       position: absolute;
+//       background: inherit;
+//       left: 50%;
+//       top: 50%;
+//       transform: translate(-50%, -50%);
+//       border-radius: 50%;
+//       opacity: 0.3;
+//     }
+//   }
+//   .item-label {
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//   }
+//   .item-value {
+//     display: inline-flex;
+//     align-items: center;
+//     color: #3b82f6;
+//     gap: 4px;
+//   }
+//   .value-icon {
+//     display: inline-flex;
+//     align-items: center;
+//   }
+//   .item-price {
+//     text-align: right;
+//     margin-left: auto;
+//   }
+// `;

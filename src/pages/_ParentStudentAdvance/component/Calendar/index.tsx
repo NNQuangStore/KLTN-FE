@@ -1,15 +1,10 @@
-import dayjs from 'dayjs';
 import moment, { Moment } from 'moment';
 import { styled } from 'styled-components';
-import { BORDER_STYLED } from '../../../../utils/unit';
-import { COLOR_PRIMARY, COLOR_PRIMARY_LIGHT } from '../../../../utils/variables/colors';
+import { COLOR_PRIMARY} from '../../../../utils/variables/colors';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { omit } from 'lodash';
-import { Button, Tag, Tooltip, message } from 'antd';
+import { Button, Tag, Tooltip} from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useAppDispatch } from '../../../../store/hooks';
-import uiActions from '../../../../services/UI/actions';
-import apisLessonParent from '../../../ParentReportLessionNew/service/apis';
 import lesionSelectors from '../../../ReportLesionPage/services/selectors';
 import lesionActions from '../../../ReportLesionPage/services/actions';
 import { useLessonParentReportDetail } from '../../../../services/hooks/useLessonDetail';
@@ -151,7 +146,7 @@ const CalendarDays = () => {
     return {dayOfWeek: dayWeek, dayOfMonth: currentMonthDates};
   };
 
-  const {dayOfWeek, dayOfMonth} = useMemo(() => {    
+  const {dayOfWeek} = useMemo(() => {    
     return getDaysOfWeek();
   }, [dateSelected]);
 

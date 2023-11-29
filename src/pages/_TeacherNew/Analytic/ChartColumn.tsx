@@ -49,7 +49,7 @@ const ChartColumn = ({data, HK} : {data?: AnalyticType, HK: string}) => {
   };
 
   return (
-    <ReactApexChart options={options} series={series} type="bar" height={350} />
+    <ReactApexChart options={options} series={series} type="bar" height={450} />
     
   );
 };

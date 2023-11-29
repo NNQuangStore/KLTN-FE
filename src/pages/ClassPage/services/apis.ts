@@ -1,5 +1,4 @@
 import fetch from '../../../services/request';
-import storage from '../../../utils/sessionStorage';
 
 const getListClass = (params?: {year: number}) => {
 

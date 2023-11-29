@@ -1,4 +1,4 @@
-import { Button, Card, Empty, List, Modal } from 'antd';
+import { Card, Empty, Modal } from 'antd';
 import { styled } from 'styled-components';
 import { useAppDispatch } from '../../store/hooks';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -9,7 +9,7 @@ import apisLessonParent from './service/apis';
 const ParentReportSessionPage = () => {
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
-  const [reportData, setReportData] =useState([
+  const [reportData, ] =useState([
     {
       start: '2023-10-04',
       title: 'Làm bài tập 1 sgk trang 50'
@@ -88,15 +88,15 @@ const ParentReportSessionPage = () => {
   const handleCancelDetail = () => {
     setOpenDetail(false);
   };
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   
 
   const calendarRef = useRef<HTMLDivElement>(null);
 
-  const getLesson = async () => {
-    const res = await apisLessonParent.getListLessonParent();
-  };
+  // const getLesson = async () => {
+  //   const res = await apisLessonParent.getListLessonParent();
+  // };
 
   useEffect(() => {
       if (calendarRef.current) {

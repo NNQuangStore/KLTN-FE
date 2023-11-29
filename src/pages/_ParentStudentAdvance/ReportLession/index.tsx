@@ -1,4 +1,3 @@
-import { Calendar, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import { styled } from 'styled-components';
 import updateLocale from 'dayjs/plugin/updateLocale';

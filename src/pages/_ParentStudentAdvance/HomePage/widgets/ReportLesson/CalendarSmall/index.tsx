@@ -1,46 +1,37 @@
-import dayjs from 'dayjs';
 import moment, { Moment } from 'moment';
 import { styled } from 'styled-components';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { omit } from 'lodash';
-import { Button, Tag, Tooltip, message } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
+import { Button, Popover, Tooltip } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { EMonth, TDate, days } from '../../../../component/Calendar';
 import { COLOR_PRIMARY } from '../../../../../../utils/variables/colors';
-import { useAppDispatch } from '../../../../../../store/hooks';
 import lesionSelectors from '../../../../../ReportLesionPage/services/selectors';
-import lesionActions from '../../../../../ReportLesionPage/services/actions';
 import { useNavigate } from 'react-router-dom';
 
 
 
 const CalendarSmallDays = () => {
 
-  const getWeekDate = (date: Moment) => {
-    return [date.clone().startOf('isoWeek'), date.clone().endOf('isoWeek')];
-  };
+  // const getWeekDate = (date: Moment) => {
+  //   return [date.clone().startOf('isoWeek'), date.clone().endOf('isoWeek')];
+  // };
 
-  const [lessonRes, setLessonRes] = useState();
+  // const [lessonRes, setLessonRes] = useState();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const [dateSelected, setDateSelected] = useState<string>(moment().format());
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const [dayOfWeek, setDayOfWeek] = useState<TDate[][]>([]);
-
-
-  useEffect(() => {
-    dispatch(lesionActions.getListLesion.fetch());
-  }, []);
 
   const dataReportLesion = lesionSelectors.getLesionList();
 
 
-  const dataReport = useMemo(() =>  (dataReportLesion ?? [])?.map(o => ({
+  const dataReport = useMemo(() => (dataReportLesion ?? [])?.map(o => ({
     title: o.Title__c,
     date: moment(o.SentDay__c).format('DD/MM/YYYY'),
     content: o.Content__c
-  })),[dataReportLesion]) ;
+  })),[dataReportLesion]);
 
   // const dataReport = [
   //   {
@@ -114,7 +105,7 @@ const CalendarSmallDays = () => {
     return {dayOfWeek: dayWeek, dayOfMonth: currentMonthDates};
   };
 
-  const {dayOfWeek, dayOfMonth} = useMemo(() => {    
+  const {dayOfWeek} = useMemo(() => {    
     return getDaysOfWeek();
   }, [dateSelected]);
 
@@ -169,12 +160,17 @@ const CalendarSmallDays = () => {
               <tr key={index}>
                 {days.map((e, indexDay) => {
                   const date = o.find(d => d.key === e.value);
-                  return <td onClick={() => navigate('/app/report-session', { state: { date: date?.date } })} style={{pointerEvents: date?.date ? undefined : 'none'}} className={` col ${ isCurrentDate(date?.date) ? 'current' : ''}`} key={indexDay}> 
-                    {date?.date ? 
-                      <div className={`${ (date?.data?.length ?? 0) > 0 ? 'report' : ''}`}>
-                        <p className={` ${ isCurrentDate(date?.date) ? 'current' : ''}`}>{moment(date?.date).date()}</p> 
-                      </div>
-                      : <></>}  </td>;
+                  return (
+                    <Popover key={index} placement="right" title={date?.data?.[0].title} content={date?.data?.[0].content} trigger={'click'}>
+                      <td style={{pointerEvents: date?.date ? undefined : 'none'}} className={` col ${ isCurrentDate(date?.date) ? 'current' : ''}`} key={indexDay}> 
+                        {date?.date ? 
+                          <div className={`${ (date?.data?.length ?? 0) > 0 ? 'report' : ''}`}>
+                            <p className={` ${ isCurrentDate(date?.date) ? 'current' : ''}`}>{moment(date?.date).date()}</p> 
+                          </div>
+                          : <></>}  </td>
+                    </Popover>
+                  );
+
                 })}
               </tr>
             ))}

@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../../store/hooks';
 import apisClass from '../../ClassPage/services/apis';
 import LoadingPage from '../../../services/UI/LoadingPage';
 import uiActions from '../../../services/UI/actions';
-import { Form, message } from 'antd';
+import { Drawer, Form, Input, message } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import userEvent from '@testing-library/user-event';
 import { ColumnsType } from 'antd/es/table';
@@ -18,6 +18,7 @@ import FormLayout from '../../../component/organism/FormLayout';
 import InputText from '../../../component/atom/Input/InputText';
 import InputSearchText from '../../../component/atom/Input/InputSearch';
 import InputSelect from '../../../component/atom/Input/InputSelect';
+import moment from 'moment';
 
 
 export type ClassType = {
@@ -59,6 +60,7 @@ const ClassPage= () => {
 
   const [dataClass, setDataClass] = useState<ClassType[]>();
   const [dataTeacher, setDataTeacher] = useState<TeacherType[]>();
+  const [detail, setDetail] = useState<any>();
 
   const teacherOption = useMemo(() => dataTeacher?.map(teacher => ({
     label: teacher.Name,
@@ -91,11 +93,13 @@ const ClassPage= () => {
     // },
     {
       title: 'Hành động',
-      render: (item) => {
+      render: (item, record) => {
         return (
           <ActionTable actions={[
             {
-              handle: () => navigate(item.Id),
+              handle: () => {
+                setDetail(record);
+              },
               icon: <EyeOutlined />,
               label: 'Xem chi tiết',
               color: '#1890ff'
@@ -131,6 +135,8 @@ const ClassPage= () => {
 
     }
   };
+  console.log(detail);
+  
 
   useEffect(() => {
     fetchData();
@@ -163,7 +169,7 @@ const ClassPage= () => {
                 
               }}
             >
-            <InputText label='Tên lớp học'/>
+            <InputText />
             <Form.Item label='Giáo viên chủ nhiệm'>
               <InputSelect options={teacherOption} />
             </Form.Item>
@@ -172,6 +178,36 @@ const ClassPage= () => {
       </Filter>
       <div style={{margin: '12px'}}></div>
       <DataTable bordered={false} columns={columns} dataSource={dataTable}/>
+
+      <DrawerStyled
+        placement='right'
+        open={!!detail}
+        onClose={() => setDetail(undefined)}
+      >
+        <Form
+          layout='vertical'
+        >
+          <Form.Item label={'Tên lớp học'}>
+            <Input disabled value={detail?.Name}/>
+          </Form.Item>
+          <Form.Item label={'Sỉ số lớp'}>
+            <Input disabled  value={detail?.NumOfStudent__c}/>
+          </Form.Item>
+          
+          <Form.Item label={'Giáo viên chủ nhiệm'}>
+            <Input disabled value={detail?.TeacherName__c}/>
+          </Form.Item>
+          <Form.Item label={'Năm học'}>
+            <Input disabled value={moment(detail?.SchoolYear__c, 'YYYY').subtract(1, 'year').format('YYYY') + ' - ' + detail?.SchoolYear__c}/>
+          </Form.Item>
+          <Form.Item label={'Trạng thái'}>
+            <Input disabled value={detail?.Status__c === 'Active' ? 'Đang hoạt động' : 'Ngưng hoạt động'}/>
+          </Form.Item>
+          {/* <Form.Item label={'Giới tính'}>
+            <Input disabled value={detail?.}/>
+          </Form.Item> */}
+        </Form>
+      </DrawerStyled>
     </ClassPageStyled>
   );
 };
@@ -179,5 +215,13 @@ const ClassPage= () => {
 export default ClassPage;
 
 const ClassPageStyled = styled.div`
+  .ant-input {
+    color: black
+  }
+`;
 
+export const DrawerStyled = styled(Drawer)`
+  .ant-input {
+    color: black
+  }
 `;

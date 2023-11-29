@@ -2,11 +2,11 @@ import { Card } from 'antd';
 import { styled } from 'styled-components';
 import { COLOR_PRIMARY } from '../../utils/variables/colors';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import storage from '../../utils/sessionStorage';
 
 const ParentHomePage = () => {
-  const classId = storage.get('class_id');
+  // const classId = storage.get('class_id');
 
 
   const navTop = [

@@ -2,7 +2,7 @@ import { get } from 'lodash';
 import { RootState } from '../../../store';
 import { useAppSelector } from '../../../store/hooks';
 // import { calculateAverage } from '../../../utils/unit';
-import { Datum, Score, TableScoreRes } from './types/scoreboard';
+import { Datum, TableScoreRes } from './types/scoreboard';
 import { IState } from './types/reducer';
 import { TableScore } from './types/_scoreboard';
 

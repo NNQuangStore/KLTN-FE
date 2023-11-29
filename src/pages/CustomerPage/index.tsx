@@ -1,59 +1,59 @@
-import DataTable from '../../component/molecule/DataTable';
+// import DataTable from '../../component/molecule/DataTable';
 import ModalButton from '../../component/organism/ModalButton';
 import Filter from '../../component/template/Filter';
 import ButtonPrimary from '../../component/atom/Button/ButtonPrimary';
 import CustomerForm from './widgets/CustomerForm';
-import CustomerDataTable from './widgets/CustomerDataTable';
+// import CustomerDataTable from './widgets/CustomerDataTable';
 import InputSearchText from '../../component/atom/Input/InputSearch';
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 
 const CustomerPage = () => {
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   // const file = event.target.files?.[0];
 
-    if (file) {
-      const reader = new FileReader();
+  //   // if (file) {
+  //   //   const reader = new FileReader();
 
-      reader.onload = (e) => {
-        const data = e.target?.result;
-        const workbook = XLSX.read(data, { type: 'binary' });
+  //   //   reader.onload = (e) => {
+  //   //     const data = e.target?.result;
+  //   //     // const workbook = XLSX.read(data, { type: 'binary' });
 
-        const sheetName = workbook.SheetNames[0]; // Assuming there's only one sheet
-        const sheet = workbook.Sheets[sheetName];
+  //   //     // const sheetName = workbook.SheetNames[0]; // Assuming there's only one sheet
+  //   //     // const sheet = workbook.Sheets[sheetName];
 
-        // Convert the sheet data to JSON
-        const jsonResult = sheetToJsonWithMergedCells(sheet);
-      };
+  //   //     // Convert the sheet data to JSON
+  //   //     // const jsonResult = sheetToJsonWithMergedCells(sheet);
+  //   //   };
 
-      reader.readAsBinaryString(file);
-    }
-  };
+  //   //   reader.readAsBinaryString(file);
+  //   // }
+  // };
 
-  const sheetToJsonWithMergedCells = (sheet: XLSX.WorkSheet) => {
-    // Parse the sheet and detect merged cells
-    const jsonResult = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+  // const sheetToJsonWithMergedCells = (sheet: XLSX.WorkSheet) => {
+  //   // Parse the sheet and detect merged cells
+  //   const jsonResult = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-    // Handle merged cells
-    const mergedCells = sheet['!merges'] || [];
+  //   // Handle merged cells
+  //   const mergedCells = sheet['!merges'] || [];
 
-    for (const merge of mergedCells) {
-      // const [startRow, endRow, startCol, endCol] = merge;
+  //   for (const merge of mergedCells) {
+  //     // const [startRow, endRow, startCol, endCol] = merge;
 
-      // // Merge the data in JSON
-      // for (let row = startRow; row <= endRow; row++) {
-      //   for (let col = startCol; col <= endCol; col++) {
-      //     // Skip the cell where merging started
-      //     if (row === startRow && col === startCol) continue;
+  //     // // Merge the data in JSON
+  //     // for (let row = startRow; row <= endRow; row++) {
+  //     //   for (let col = startCol; col <= endCol; col++) {
+  //     //     // Skip the cell where merging started
+  //     //     if (row === startRow && col === startCol) continue;
 
-      //     // Set the merged cell data to the same as the starting cell
-      //     jsonResult[row][col] = jsonResult[startRow][startCol];
-      //   }
-      // }
-    }
+  //     //     // Set the merged cell data to the same as the starting cell
+  //     //     jsonResult[row][col] = jsonResult[startRow][startCol];
+  //     //   }
+  //     // }
+  //   }
 
-    return jsonResult;
-  };
+  //   return jsonResult;
+  // };
 
 
   return (
@@ -63,7 +63,7 @@ const CustomerPage = () => {
             <CustomerForm/>
           </ModalButton>
           <InputSearchText/>
-          <input type="file" onChange={handleFileUpload} />
+          <input type="file" onChange={() => undefined} />
         </Filter>
       {/* <CustomerDataTable /> */}
     </>

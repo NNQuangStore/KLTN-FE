@@ -1,11 +1,12 @@
 import { styled } from 'styled-components';
 import ChartServices from './ChartServices';
-import styles from './index.module.scss';
 import ChartColumn from './ChartColumn';
 import apisAnalytic from './services/apis';
 import { useEffect, useMemo, useState } from 'react';
-import { message } from 'antd';
-import { log } from '@antv/g2plot/lib/utils';
+import { Form, Spin, message } from 'antd';
+import InputSelect from '../../../component/atom/Input/InputSelect';
+import { useDispatch } from 'react-redux';
+import uiActions from '../../../services/UI/actions';
 
 export interface AnalyticType {
   total: number;
@@ -66,6 +67,7 @@ type MyDivProps = React.HTMLProps<HTMLDivElement> & {
 const AnalyticPage = () => {
 
   const [analyticData, setAnalyticData] = useState<AnalyticType>();
+  const [filter, setFilter] = useState<string>('GIUA_HK_1');
 
 
   // const dataCardSummary: ISummary[] = [
@@ -110,14 +112,15 @@ const AnalyticPage = () => {
   //     </li>
   //   );
   // };
-
+  const dispatch = useDispatch();
 
   const fetchApi = async () => {
+    dispatch(uiActions.setLoadingPage(true));
     try {
 
       const res = await apisAnalytic.getAnalytic({
         eva_class_id : 'a075j00000AkxZjAAJ',
-        eva_type : 'CUOI_HK_1'
+        eva_type : filter
       });
       console.log('///');
       console.log(res);
@@ -131,15 +134,15 @@ const AnalyticPage = () => {
       console.log(err);
       message.error('Có lỗi xảy ra');
       
+    } finally {
+      dispatch(uiActions.setLoadingPage(false));
+
     }
   };
 
-  console.log(analyticData);
-  
-
   useEffect(() => {
     fetchApi();
-  }, []);
+  }, [filter]);
 
   const getPercent = (value: number) => {
     return value /(analyticData?.total ?? 1) * 100;
@@ -181,67 +184,77 @@ const AnalyticPage = () => {
     },
   };
 
+  if(!analyticData) return <Spin spinning={true}></Spin>;
+
   return(
     <AnalyticPageStyled>
+
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+
+        <p className='title'>Thống kê</p>
+
+        <Form.Item>
+
+          <InputSelect defaultValue={'GIUA_HK_1'} options={[
+            {
+              value: 'GIUA_HK_1',
+              label: 'Giữa HK 1'
+            },
+            {
+              value: 'CUOI_HK_1',
+              label: 'Cuối HK 1'
+            },
+            {
+              value: 'GIUA_HK_2',
+              label: 'Giữa HK 2'
+            },
+            {
+              value: 'CUOI_HK_2',
+              label: 'Giữa HK 2'
+            }
+          ]} onChange={(value) => setFilter(value)} />
+        </Form.Item>
+      </div>
+
+
       <section className={'section_analytics'}>
         <div className={'analytics_right'}>
-              <div
-                className={`${'analytics_services'} ${'analytics_card'}`}
-              >
-                <div className={'analytics_label'}>Học lục</div>
-                <ChartServices revenueServices={phanLoaiHS} />
-              </div>
+            <div className='left_inner'>
+              
               <div
                 className={`${'analytics_services'} ${'analytics_card'}`}
               >
                 <div className={'analytics_label'}>Điểm số</div>
                 <ChartColumn data={analyticData} HK={'CUOI_HK_1'} />
               </div>
-              
-              <div
-                className={`${'analytics_bookings'} ${'analytics_card'}`}
-              >
-                <div className={'analytics_label'}>Số lượng nghỉ</div>
-                <div className='pie-wrapper is-red'>
-                  <div className='pie animate' {...bookingProps}></div>
-                  <div className='pie-content'>
-                    <span>Total</span>
-                    <p>{nghiPhep.khongPhep + nghiPhep.nghiPhep}</p>
-                  </div>
-                </div>
-                <ul className={'pie_detail'}>
-                  <li>
-                    <span>Có phép</span>
-                    <span>{ nghiPhep.nghiPhep }</span>
-                  </li>
-                  <li>
-                    <span>Không phép</span>
-                    <span>{nghiPhep.khongPhep}</span>
-                  </li>
-                </ul>
+
+              <div className={`${'analytics_bookings'} ${'analytics_card'}`}>
+                <div className={'analytics_label'}>Học lực</div>
+                <ChartServices revenueServices={phanLoaiHS} />
               </div>
-              {/* <div
-                className={`${analytics_cancel} ${analytics_card}`}
-              >
-                <div className={analytics_label}>Cancelled Bookings</div>
-                <div className='pie-wrapper is-red'>
-                  <div className='pie animate' {...cancelledProps}></div>
-                  <div className='pie-content'>
-                    <span>Total</span>
-                    <p>{cancelledBooking?.total ?? 0}</p>
-                  </div>
-                </div>
-                <ul className={`${pie_detail} ${is_red}`}>
-                  <li>
-                    <span>Cancel & Refund</span>
-                    <span>{cancelledBooking?.booking_cancel ?? 0}</span>
-                  </li>
-                  <li>
-                    <span>No-show</span>
-                    <span>{cancelledBooking?.booking_no_show ?? 0}</span>
-                  </li>
-                </ul>
-              </div> */}
+            </div>
+        </div>
+        <div className={'analytics_left'}>
+        <div className={`${'analytics_bookings'} ${'analytics_card'}`}>
+            <div className={'analytics_label'}>Số lượng nghỉ</div>
+            <div className='pie-wrapper is-red'>
+              <div className='pie animate' {...bookingProps}></div>
+              <div className='pie-content'>
+                <span>Total</span>
+                <p>{nghiPhep.khongPhep + nghiPhep.nghiPhep}</p>
+              </div>
+            </div>
+            <ul className={'pie_detail'}>
+              <li>
+                <span>Có phép</span>
+                <span>{ nghiPhep.nghiPhep }</span>
+              </li>
+              <li>
+                <span>Không phép</span>
+                <span>{nghiPhep.khongPhep}</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
     </AnalyticPageStyled>
@@ -250,17 +263,22 @@ const AnalyticPage = () => {
 };
 
 const AnalyticPageStyled = styled.div`
+  .title { 
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
   .section_analytics {
-  display: flex;
-  gap: 20px;
-  padding-bottom: 50px;
-  @include tablet {
-    flex-direction: column;
+    display: flex;
+    gap: 20px;
+    padding-bottom: 50px;
+    @include tablet {
+      flex-direction: column;
+    }
+    @include mobile {
+      flex-direction: column;
+    }
   }
-  @include mobile {
-    flex-direction: column;
-  }
-}
 
 .analytics_left {
   flex: 1;

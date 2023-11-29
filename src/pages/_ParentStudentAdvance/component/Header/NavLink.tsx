@@ -31,7 +31,7 @@ const navItem = [
     link: '/app/leave-of-absence'
   },
   {
-    label: 'Giáo viên'
+    // label: 'Giáo viên'
   }
 ];
 
@@ -108,81 +108,7 @@ const NavLink = () => {
           // onFinish={onFinish}
           autoComplete='off'
         >
-          <Row gutter={200}>
-            <Col span={100}>
-              <Form.Item label='Từ ngày'>
-                <Space.Compact>
-                  <Form.Item
-                    name={'startDay'}
-                    noStyle
-                    rules={[
-                      { required: true, message: 'Province is required' },
-                    ]}
-                  >
-                    <Input style={{marginLeft:29}} type='date'/>
-
-                    <Input
-                      style={{ marginLeft: 10 }}
-                      type='time'
-                      placeholder='Input street'
-                    />
-                  </Form.Item>
-                </Space.Compact>
-              </Form.Item>
-              <Form.Item label='Đến ngày'>
-                <Space.Compact>
-                  <Form.Item
-                    name={'endDay'}
-                    noStyle
-                  >
-                    <Input style={{marginLeft:23}} type='date' />
-
-                    <Input
-                      style={{ marginLeft: 10 }}
-                      type='time'
-                      placeholder='Input street'
-                    />
-                  </Form.Item>
-                </Space.Compact>
-              </Form.Item>
-              <Form.Item label='Số ngày nghỉ'>
-                <Form.Item
-                  name={'numberDayOff'}
-                  noStyle
-                >
-                  <Input type='number'  />
-                </Form.Item>
-              </Form.Item>
-              
-            </Col>
-            <Col span={120}>
-              <Form.Item label='Lý do nghỉ'>
-                <Form.Item
-                  name={'content'}
-                  noStyle
-                >
-                  <Input style={{marginLeft:22,width:270}} type='text' />
-                </Form.Item>
-              </Form.Item>
-              <Form.Item label='Người duyệt'>
-                <Form.Item
-                  name={'man'}
-                  noStyle
-                >
-                  <Input style={{marginLeft:10,width:270}} type='text' />
-                </Form.Item>
-              </Form.Item>
-              <Form.Item label='Ghi chú'>
-                <Form.Item
-                  name={'note'}
-                  noStyle 
-                >
-                  <Input.TextArea rows={1} style={{marginLeft:37,width:270}}/>
-                </Form.Item>
-              </Form.Item>
-              
-            </Col>
-          </Row>
+        
         </Form>
       </Modal>
     </>

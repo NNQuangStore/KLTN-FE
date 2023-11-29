@@ -87,6 +87,9 @@ const LoginPage = () => {
     }
   };
 
+  // 0375767857(Phụ huynh) - 0333007630(Giáo Viên)
+  // ksvchainamtest
+
   return (
     <LoginPageStyled>
       <h3>Welcome back!</h3>
@@ -94,8 +97,8 @@ const LoginPage = () => {
         onSubmit={onSubmit}
         renderButton={<ButtonLoginStyled htmlType='submit' label='Login'/>}>
 
-        <InputText defaultValue='0375767857(Phụ huynh) - 0333007630(Giáo Viên)' value='0375767857' name='phone' label={'Số điện thoại'}/>
-        <InputTextPassword defaultValue='ksvchainamtest' value='ksvchainamtest' name='password' label={'Mật Khẩu'} />
+        <InputText name='phone' label={'Số điện thoại'}/>
+        <InputTextPassword name='password' label={'Mật Khẩu'} />
 
         </FormLayout>
     </LoginPageStyled>

@@ -1,7 +1,5 @@
 import { get } from 'lodash';
 import { RootState } from '../../../store';
-import uiSelector from '../../../services/UI/selectors';
-import { PATH_LOADING } from './constants';
 import { useAppSelector } from '../../../store/hooks';
 
 

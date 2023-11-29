@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import actions from './actions';
 import { default as apis, default as apisStudent } from './apis';
 import { PATH_LOADING } from './constants';
@@ -7,32 +7,32 @@ import { setLoading } from '../../../services/UI/sagas';
 import { ISagaFunc } from '../../../services/actionConfigs';
 import uiActions from '../../../services/UI/actions';
 
-const data = [
-  {
-    MaHocSinh__c: '123',
-    Name: 'Nhật Nam',
-    birth__c: '2021/12/23',
-    gender__c: true,
-  },
-  {
-    MaHocSinh__c: '123',
-    Name: 'Nhật Nam',
-    birth__c: '2021/12/23',
-    gender__c: true,
-  },
-  {
-    MaHocSinh__c: '123',
-    Name: 'Nhật Nam',
-    birth__c: '2021/12/23',
-    gender__c: true,
-  },
-  {
-    MaHocSinh__c: '123',
-    Name: 'Nhật Nam',
-    birth__c: '2021/12/23',
-    gender__c: true,
-  }
-];
+// const data = [
+//   {
+//     MaHocSinh__c: '123',
+//     Name: 'Nhật Nam',
+//     birth__c: '2021/12/23',
+//     gender__c: true,
+//   },
+//   {
+//     MaHocSinh__c: '123',
+//     Name: 'Nhật Nam',
+//     birth__c: '2021/12/23',
+//     gender__c: true,
+//   },
+//   {
+//     MaHocSinh__c: '123',
+//     Name: 'Nhật Nam',
+//     birth__c: '2021/12/23',
+//     gender__c: true,
+//   },
+//   {
+//     MaHocSinh__c: '123',
+//     Name: 'Nhật Nam',
+//     birth__c: '2021/12/23',
+//     gender__c: true,
+//   }
+// ];
 
 const getListStudents = function* () {
   yield put(uiActions.setLoadingPage(true));

@@ -3,20 +3,16 @@ import DataTable from '../../../component/molecule/DataTable';
 import Filter from '../../../component/template/Filter';
 import ActionTable from '../../../component/molecule/DataTable/ActionTables';
 import { EyeOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../store/hooks';
 import apisClass from '../../ClassPage/services/apis';
-import LoadingPage from '../../../services/UI/LoadingPage';
 import uiActions from '../../../services/UI/actions';
-import { Drawer, Form, Input, message } from 'antd';
+import { Drawer, Form, Input } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import userEvent from '@testing-library/user-event';
 import { ColumnsType } from 'antd/es/table';
 import apisTeacher from '../Teacher/services/apis';
 import ModalButton from '../../../component/organism/ModalButton';
 import FormLayout from '../../../component/organism/FormLayout';
 import InputText from '../../../component/atom/Input/InputText';
-import InputSearchText from '../../../component/atom/Input/InputSearch';
 import InputSelect from '../../../component/atom/Input/InputSelect';
 import moment from 'moment';
 
@@ -55,7 +51,7 @@ export type UserType = {
 
 const ClassPage= () => {
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const [dataClass, setDataClass] = useState<ClassType[]>();

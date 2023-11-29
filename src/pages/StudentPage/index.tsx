@@ -8,12 +8,9 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import studentActions from './services/actions';
 import StudentSelectors from './services/selectors';
-import { ColumnType, ColumnsType } from 'antd/es/table';
+import {  ColumnsType } from 'antd/es/table';
 import { getGender } from '../../utils/unit';
-import InputText from '../../component/atom/Input/InputText';
 import InputSearchText from '../../component/atom/Input/InputSearch';
-import InputSelect from '../../component/atom/Input/InputSelect';
-import storage from '../../utils/sessionStorage';
 
 const StudentPage = () => {
 

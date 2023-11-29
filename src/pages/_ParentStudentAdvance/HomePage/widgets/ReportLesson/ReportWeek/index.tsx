@@ -22,9 +22,9 @@ const ReportWeek = () => {
     content: o.Content__c
   })),[dataReportLesion]);
 
-  const report = useMemo(() => {
-    return dataReport.find(o => o.date === date);
-  }, [date]);
+  // const report = useMemo(() => {
+  //   return dataReport.find(o => o.date === date);
+  // }, [date]);
 
 
   const weeks = useMemo (() => {

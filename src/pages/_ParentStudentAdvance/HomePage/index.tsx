@@ -1,24 +1,21 @@
 import { styled } from 'styled-components';
 import TimeTableLine from './widgets/TimeLine';
 import ParentStudentReportLesson from './widgets/ReportLesson';
-import { Avatar, Button, Divider } from 'antd';
+import {  Divider } from 'antd';
 import { COLOR_PRIMARY } from '../../../utils/variables/colors';
-import ParentStudentNotification from './widgets/ParentStudentNotification';
 import { BORDER_STYLED } from '../../../utils/unit';
-import { FileTextOutlined, UserOutlined } from '@ant-design/icons';
-import AvatarSidebar from '../../../component/molecule/AvatarSidebar';
 import storage from '../../../utils/sessionStorage';
 
 const ParentStudentHomePage = () => {
 
-  const RowInfo = ( {label, value}:{label: string, value: string}) => {
-    return (
-      <div style={{display: 'flex', gap: '8px', fontSize: '16px'}}>
-        <h5 style={{fontWeight: 400, fontSize: '16px'}}>{label}: </h5>
-        <p style={{fontWeight: 600, fontSize: '16px'}}>{value}</p>
-      </div>
-    );
-  };
+  // const RowInfo = ( {label, value}:{label: string, value: string}) => {
+  //   return (
+  //     <div style={{display: 'flex', gap: '8px', fontSize: '16px'}}>
+  //       <h5 style={{fontWeight: 400, fontSize: '16px'}}>{label}: </h5>
+  //       <p style={{fontWeight: 600, fontSize: '16px'}}>{value}</p>
+  //     </div>
+  //   );
+  // };
 
   return (
     <ParentStudentHomePageStyled>
@@ -157,13 +154,13 @@ const ParentStudentHomePageStyled = styled.div`
 
 `;
 
-const CardButton = styled.div`
-  border: ${BORDER_STYLED};
-  border-radius: 12px;
-  box-shadow: 3px 3px 10px lightgray;
-  background-color: #a8071a;
-  color: white;
-  width: 370px;
-  margin-top: 46px;
+// const CardButton = styled.div`
+//   border: ${BORDER_STYLED};
+//   border-radius: 12px;
+//   box-shadow: 3px 3px 10px lightgray;
+//   background-color: #a8071a;
+//   color: white;
+//   width: 370px;
+//   margin-top: 46px;
 
-`;
+// `;

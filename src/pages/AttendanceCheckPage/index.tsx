@@ -1,20 +1,17 @@
-import { AuditOutlined, CheckCircleOutlined, CloseCircleOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import {  CheckCircleOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import DataTable from '../../component/molecule/DataTable';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
-import Filter from '../../component/template/Filter';
 import { styled } from 'styled-components';
-import { Button, Card, Col, DatePicker, Input, Radio, RadioChangeEvent, Row, Select, Space, Table, Tag, message } from 'antd';
+import { Button, Card, Col, DatePicker, Radio, RadioChangeEvent, Row, Select, Space, Table, Tag, message } from 'antd';
 import { useNavigate } from 'react-router';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
 import { useEffect, useMemo, useState } from 'react';
-import { formatDate } from '@fullcalendar/core';
 import dayjs from 'dayjs';
 import { ColumnsType } from 'antd/es/table';
 import { useAppDispatch } from '../../store/hooks';
 import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from './service/apis';
 import InputDatePicker from '../../component/atom/Input/InputDatePicker';
-import { log } from '@antv/g2plot/lib/utils';
 
 interface DataType {
   ClassHeader__c: string;
@@ -47,8 +44,8 @@ interface IAttandance {
 }
 
 const AttendanceCheckPage = () => {
-  const [size, setSize] = useState<SizeType>('middle');
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [size,] = useState<SizeType>('middle');
+  const [, setSelectedDate] = useState<string | null>(null);
   const navigate = useNavigate();
   const [tab, setTab] = useState('DIEMDANH');
   const [dataDonXinNghi, setDataDonXinNghi] = useState<DataType[]>([]);
@@ -184,7 +181,7 @@ const AttendanceCheckPage = () => {
   const updateLetter = async (id : string) => {
     try {
       await dispatch(uiActions.setLoadingPage(true));
-      const res = await apisLetterTeacher.updateLetter(
+     await apisLetterTeacher.updateLetter(
         {
           TrangThai__c: 'ACCEPT',
           Id: id

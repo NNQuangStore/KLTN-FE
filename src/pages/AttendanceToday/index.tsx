@@ -1,29 +1,21 @@
 import { styled } from 'styled-components';
-import ActionTable from '../../component/molecule/DataTable/ActionTables';
-import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Divider, Input, Radio, Select, Space, Table, Tag, message } from 'antd';
+import {  Checkbox, Input, Select, Space} from 'antd';
 import DataTable from '../../component/molecule/DataTable';
-import { SizeType } from 'antd/es/config-provider/SizeContext';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import { ActionFormStyled } from '../../component/organism/FormLayout';
 import ButtonOutline from '../../component/atom/Button/ButtonOutline';
 import ButtonPrimary from '../../component/atom/Button/ButtonPrimary';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useAppDispatch } from '../../store/hooks';
 import attendanceActions from '../Attendance/service/actions';
 import attendanceSelectors from '../Attendance/service/selectors';
 import StudentSelectors from '../StudentPage/services/selectors';
-import { log } from '@antv/g2plot/lib/utils';
 import studentActions from '../StudentPage/services/actions';
 import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from '../AttendanceCheckPage/service/apis';
-import dayjs from 'dayjs';
 import moment from 'moment';
-import { values } from 'lodash';
 import storage from '../../utils/sessionStorage';
-import uiSelector from '../../services/UI/selectors';
 function formatDate(dateString: string): string {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const formattedDate: string = new Date(dateString).toLocaleDateString('vi-Vi', options);
@@ -148,9 +140,9 @@ const AttendanceTodayPage = () => {
   const navigate = useNavigate();
   const dateStr: string = new Date().toISOString();
   const formattedDate: string = formatDate(dateStr);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  // const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState<DataType[] | null>(null);
+  const [, setFilteredData] = useState<DataType[] | null>(null);
   const studentList = StudentSelectors.getStudentList() as IStudent[];
 
   const [dataStudentAbsent, setDataStudentAbsent] = useState<any[]>([]);
@@ -232,7 +224,7 @@ const AttendanceTodayPage = () => {
     return (
       <Checkbox
         checked={dataStudentAbsent.find(o => o.maHS === record.maHS).vang}
-        onChange={(value) => {
+        onChange={() => {
           const idx = dataStudentAbsent.findIndex(o => o.maHS === record.maHS);
           if(idx === -1) return;
           const isChecked = !dataStudentAbsent[idx].vang;
@@ -257,13 +249,13 @@ const AttendanceTodayPage = () => {
 
   const attendanceDetail = attendanceSelectors.getAttendanceDetail();
 
-  const handleRowSelection = (key: string) => {
-    const newSelectedRowKeys = selectedRowKeys.includes(key)
-      ? selectedRowKeys.filter((k) => k !== key)
-      : [...selectedRowKeys, key];
-    setSelectedRowKeys(newSelectedRowKeys);
-    console.log(newSelectedRowKeys);
-  };
+  // const handleRowSelection = (key: string) => {
+  //   const newSelectedRowKeys = selectedRowKeys.includes(key)
+  //     ? selectedRowKeys.filter((k) => k !== key)
+  //     : [...selectedRowKeys, key];
+  //   setSelectedRowKeys(newSelectedRowKeys);
+  //   console.log(newSelectedRowKeys);
+  // };
 
 
   const handleSave = async () => {
@@ -294,7 +286,7 @@ const AttendanceTodayPage = () => {
     }
   };
 
-  const DropDownCell = ({record, show}: {dataStudentAbsent: any, record: any, show: boolean}) => {
+  const DropDownCell = ({record}: {dataStudentAbsent: any, record: any, show: boolean}) => {
 
     const [, setValue] = useState<boolean>(false);
 
@@ -316,7 +308,7 @@ const AttendanceTodayPage = () => {
           border: 'none',
           outline: 'none',
         }}
-        disabled={!dataStudentAbsent.find((o: any) => o.maHS === record.maHS)?.vang}
+        disabled={dataStudentAbsent.find((o: any) => o.maHS === record.maHS)?.vang}
         value={dataStudentAbsent?.find((o: any) => o.maHS === record.maHS)?.coPhep}
         options={options}
         onChange={(value) => {
@@ -385,7 +377,7 @@ const AttendanceTodayPage = () => {
       rowSpan: 4,
       dataIndex: 'note',
       fixed: true,
-      render: (val, record) => {
+      render: (val) => {
         return (
           <p>{val}</p>
         );

@@ -9,7 +9,7 @@ import { COLOR_PRIMARY } from '../../../../utils/variables/colors';
 
 const NavTool = () => {
 
-  const [collapsed, setCollapsed] = useCollapseSidebar(false);
+  // const [collapsed, setCollapsed] = useCollapseSidebar(false);
   const studentName = storage.get('student_name');
   const [open, setOpen] = useState<boolean>(false);
 
@@ -36,7 +36,7 @@ const NavTool = () => {
           <List
             itemLayout='horizontal'
             dataSource={userActions}
-            renderItem={(item, index) => (
+            renderItem={(item) => (
         
             <ListItemStyled onClick={() => {storage.set('token', ''); navigate('/auth/sign-in');
               }}>

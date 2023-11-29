@@ -1,14 +1,11 @@
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { useRef } from 'react';
-import { DownloadTableExcel } from 'react-export-table-to-excel';
 
 //@ts-ignore
 import template from '../../../asset/excel/template_bao_bai.xls';
 
 const ButtonExportTemplate = () => {
 
-  const exportTableRef = useRef<any>();
 
   return (
     <>

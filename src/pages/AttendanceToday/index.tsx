@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import {  Checkbox, Input, Select, Space} from 'antd';
+import {  Checkbox, Select, Space} from 'antd';
 import DataTable from '../../component/molecule/DataTable';
 import { useEffect, useMemo, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
@@ -141,8 +141,8 @@ const AttendanceTodayPage = () => {
   const dateStr: string = new Date().toISOString();
   const formattedDate: string = formatDate(dateStr);
   // const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const [searchText, setSearchText] = useState('');
-  const [, setFilteredData] = useState<DataType[] | null>(null);
+  // const [, setSearchText] = useState('');
+  // const [, setFilteredData] = useState<DataType[] | null>(null);
   const studentList = StudentSelectors.getStudentList() as IStudent[];
 
   const [dataStudentAbsent, setDataStudentAbsent] = useState<any[]>([]);
@@ -385,20 +385,20 @@ const AttendanceTodayPage = () => {
     },
   ], [dataStudentAbsent]);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = e.target.value;
-    setSearchText(searchText);
+  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const searchText = e.target.value;
+  //   setSearchText(searchText);
 
-    if (!searchText) {
-      setFilteredData(null);
-      return;
-    }
+  //   if (!searchText) {
+  //     setFilteredData(null);
+  //     return;
+  //   }
 
-    const filtered = data.filter((item) =>
-      item.name.includes(searchText)
-    );
-    setFilteredData(filtered);
-  };
+  //   const filtered = data.filter((item) =>
+  //     item.name.includes(searchText)
+  //   );
+  //   setFilteredData(filtered);
+  // };
 
   return (
     <AttendanceTodayStyled  style={{ maxHeight: '600px' }}>

@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { COLOR_PRIMARY } from '../../../../utils/variables/colors';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Col, Form, Input, Modal, Row, Space } from 'antd';
+import { Form, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import uiActions from '../../../../services/UI/actions';

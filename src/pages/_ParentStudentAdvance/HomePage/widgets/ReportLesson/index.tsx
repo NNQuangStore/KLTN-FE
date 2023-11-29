@@ -36,8 +36,8 @@ const ParentStudentReportLesson = () => {
     <ReportLessonStyled>
       <div className='header'>
         <div className='title'>
-          <h3>Báo bài trong tháng</h3>
-          <p>01.10.2023 - 31.10.2023</p>
+          <h3>Báo bài trong {mode === 'day' ? 'ngày' : 'tuần'}</h3>
+          {/* <p>01.10.2023 - 31.10.2023</p> */}
         </div>
         <div>
         <Radio.Group onChange={handleModeChange} value={mode} style={{ marginBottom: 8 }}>

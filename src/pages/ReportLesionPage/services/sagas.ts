@@ -17,7 +17,7 @@ const getListLesion = function* () {
       throw 'fail';
     }
   } catch (error) {
-    message.error('Đã có lỗi xảy ra');
+    // message.error('Đã có lỗi xảy ra');
     yield put(actions.getListLesion.fail({}));
   } finally {
   yield put(uiActions.setLoadingPage(false));

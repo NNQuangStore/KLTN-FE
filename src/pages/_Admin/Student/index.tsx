@@ -16,9 +16,11 @@ import DataTable from '../../../component/molecule/DataTable';
 import { ClassType } from '../Class';
 import uiActions from '../../../services/UI/actions';
 import apisClass from '../../ClassPage/services/apis';
-import { message } from 'antd';
+import { Form, message } from 'antd';
 import InputSelect from '../../../component/atom/Input/InputSelect';
 import apisStudent from '../../StudentPage/services/apis';
+import { range } from 'lodash';
+import moment from 'moment';
 
 const StudentAdminPage = () => {
 
@@ -27,6 +29,7 @@ const StudentAdminPage = () => {
   const [dataClass, setDataClass] = useState<ClassType[]>();
   const [dataStudent, setDataStudent] = useState<any[]>();
   const [classFilter, setClassFilter] = useState<string>();
+  const [yearFilter, setYearFilter] = useState<string>();
 
   // const data = [
   //   {
@@ -74,12 +77,18 @@ const StudentAdminPage = () => {
       // }
 
     } catch(e) {
-      message.error('Đã có lỗi xảy ra');
+      // message.error('Đã có lỗi xảy ra');
     } finally {
       dispatch(uiActions.setLoadingPage(false));
 
     }
   };
+
+  const yearNow = moment().year();
+  const yearOption = range(0,50).map(o => ({
+    value: yearNow - o,
+    label: (yearNow - o).toString()
+  }));
 
   const classOption = useMemo(() => {
     return dataClass?.map(o => ({
@@ -138,12 +147,12 @@ const StudentAdminPage = () => {
     try{
       dispatch(uiActions.setLoadingPage(true));
 
-      const res = await apisStudent.getListStudentByClass(classFilter ?? classOption?.[0]?.value ?? '');
+      const res = await apisStudent.getListStudentByClass(classFilter ?? 'a075j00000AkxZjAAJ' ?? '', yearFilter?.toString() ?? yearNow.toString());
 
       // const resTeacher = await apisTeacher.getListTeacher();
 
       if(res?.data?.data) {
-        setDataStudent(res.data.data.Student);
+        setDataStudent(res.data.data?.[0]?.Student);
       }
 
       // if(resTeacher?.data?.data) {
@@ -151,7 +160,7 @@ const StudentAdminPage = () => {
       // }
 
     } catch(e) {
-      message.error('Đã có lỗi xảy ra');
+      // message.error('Đã có lỗi xảy ra');
     } finally {
       dispatch(uiActions.setLoadingPage(false));
 
@@ -159,25 +168,29 @@ const StudentAdminPage = () => {
   };
 
   useEffect(() => {
-    if(!classOption || !classFilter) return;
     fetchStudent();
-  }, [classFilter, classOption]);
+  }, []);
 
-  const data = StudentSelectors.getStudentList();
-  const classId = storage.get('class_id');
-  const className = storage.get('class_name');
+  useEffect(() => {
+    fetchStudent();
+  }, [classFilter, yearFilter]);
 
   return (
     <StudentAdminPageStyled>
       <h1 style={{margin: '12px 0px'}}>Học sinh</h1>
-
       <Filter>
+      <Form.Item name={'yearFilter'}>
+        <InputSelect defaultValue={moment().year()} onChange={value => setYearFilter(value)} options={yearOption}/>
+      </Form.Item>
+      <Form.Item name={'classFilter'}>
+        <InputSelect defaultValue={'1A'} onChange={value => setClassFilter(value)} options={classOption}/>
+      </Form.Item>
+
+      <InputSearchText />
         {/* <InputSelect value={classId} options={[{
           value: classId,
           label: className,
         }]} /> */}
-        <InputSearchText />
-        <InputSelect defaultValue={classOption?.[0].value} onChange={value => setClassFilter(value)} options={classOption}/>
       </Filter>
       <div style={{margin: '12px'}}></div>
 

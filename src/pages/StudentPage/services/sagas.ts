@@ -40,6 +40,8 @@ const getListStudents = function* () {
   try {
     yield setLoading(PATH_LOADING.getListStudents, true);
     const res: AxiosResponse<{ data: any[] }> = yield call(apis.getListStudent);
+    console.log(res);
+    
     if (res?.data?.data) {
       const studentList = res?.data?.data[0].Student;
       yield put(actions.getListStudent.success(studentList));

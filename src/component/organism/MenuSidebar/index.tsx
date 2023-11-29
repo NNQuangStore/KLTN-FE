@@ -5,6 +5,7 @@ import StudentIcon from '../../../asset/svg/StudentIcon';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../../utils/paths';
 import storage from '../../../utils/sessionStorage';
+import AnalyticPage from '../../../pages/_TeacherNew/Analytic';
 
 
 interface IMenuItem {
@@ -55,6 +56,8 @@ const MenuSidebar = ({collapsed} : {collapsed: boolean}) => {
       getSubItem('Nhập điểm', 'nhap_diem', PATH_PRIVATE._STUDENT._SCOREBOARD),
       getSubItem('Danh sách', 'danh_sach', PATH_PRIVATE._STUDENT._INDEX),
     ]),
+    getItem('Thống kê', '2', <FundProjectionScreenOutlined />, '/analytic'),
+
   ];
   
   return (

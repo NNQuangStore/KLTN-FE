@@ -1,5 +1,5 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, Tabs, Tooltip } from 'antd';
+import { Button, Empty, Tabs, Tooltip } from 'antd';
 import moment from 'moment';
 import { styled } from 'styled-components';
 import lesionSelectors from '../../../../../ReportLesionPage/services/selectors';
@@ -38,10 +38,6 @@ const ReportWeek = () => {
     return weekDate;
   }, [date]);
 
-  console.log(weeks);
-  
-
-
   return (
     <ReportWeekStyled>
       <div className='filter'>
@@ -56,7 +52,7 @@ const ReportWeek = () => {
         <Tooltip title="Tuần sau">
           <Button icon={<RightOutlined />} size='large' type='text' shape='circle' onClick={() => setDate(moment(date, formateDate).add(1, 'week').format(formateDate))}></Button>
         </Tooltip>
-      </div>
+        </div>
       </div>
 
       <Tabs
@@ -67,16 +63,18 @@ const ReportWeek = () => {
           return {
             label: `${getDayOfWeek(moment(value.format()))} ${value.format('DD.MM')}`,
             key: id,
-            children: (
-              <div className='contain'>
-                <div className='header'>
-                  {dataReport.find(o => o.date === value.format(formateDate))?.title}
+            children: dataReport.some(o => o.date === value.format(formateDate)) ? (
+              <>
+                <div className='contain'>
+                  <div className='header'>
+                    {dataReport.find(o => o.date === value.format(formateDate))?.title}
+                  </div>
+                  <div className='content'>
+                    <div dangerouslySetInnerHTML={{__html: dataReport.find(o => o.date === value.format(formateDate))?.content ?? ''}}></div>
+                  </div>
                 </div>
-                <div className='content'>
-                {dataReport.find(o => o.date === value.format(formateDate))?.content}
-                </div>
-              </div>
-            ),
+              </> 
+            ) : <Empty description='Không có báo bài'/>,
           };
         })}
       />
@@ -96,6 +94,9 @@ const ReportWeekStyled =styled.div`
       .current {
         font-size: 18px;
       }
+
+      border-bottom: 1px solid black;
+      padding-bottom: 12px;
 
       .month{
         display: flex;

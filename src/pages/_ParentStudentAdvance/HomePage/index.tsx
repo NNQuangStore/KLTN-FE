@@ -27,7 +27,7 @@ const ParentStudentHomePage = () => {
         fontSize: '18px',
         fontWeight: 800,
         color: 'gray',
-      }}>Xin chào, <span style={{color: COLOR_PRIMARY}}>{storage.get('student_name')}</span>!</h2>
+      }}>Xin chào phụ huynh em <span style={{color: COLOR_PRIMARY}}>{storage.get('student_name')}</span>!</h2>
       <div className='container-header'>
         {/* <div className='info'>
           <h3>Thông tin học sinh</h3>

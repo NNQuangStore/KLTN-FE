@@ -3,10 +3,10 @@ import DataTable from '../../component/molecule/DataTable';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import Filter from '../../component/template/Filter';
 import { styled } from 'styled-components';
-import { Button, Card, Col, DatePicker, Input, Radio, RadioChangeEvent, Row, Select, Space, Table, Tag } from 'antd';
+import { Button, Card, Col, DatePicker, Input, Radio, RadioChangeEvent, Row, Select, Space, Table, Tag, message } from 'antd';
 import { useNavigate } from 'react-router';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { formatDate } from '@fullcalendar/core';
 import dayjs from 'dayjs';
 import { ColumnsType } from 'antd/es/table';
@@ -14,6 +14,7 @@ import { useAppDispatch } from '../../store/hooks';
 import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from './service/apis';
 import InputDatePicker from '../../component/atom/Input/InputDatePicker';
+import { log } from '@antv/g2plot/lib/utils';
 
 interface DataType {
   ClassHeader__c: string;
@@ -32,6 +33,19 @@ interface DataType {
   studentName: string;
 }
 
+interface IAttandance {
+  Id: string;
+  Name: string;
+  CreatedDate: string;
+  LastModifiedDate: string;
+  ClassHeader__c: string;
+  Date__c: string;
+  Status__c: string;
+  SL_DI_HOC__c: number;
+  SL_PHEP__c: number;
+  SL_KHONG_PHEP__c: number;
+}
+
 const AttendanceCheckPage = () => {
   const [size, setSize] = useState<SizeType>('middle');
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -43,6 +57,8 @@ const AttendanceCheckPage = () => {
   const [cntTotalAccept, setCntTotalAccept] = useState<number>(0);
   const [cntTotalPending, setCntTotalPending] = useState<number>(0);
   const [cbxStatus, setcbxStatus] = useState<String>('PENDING');
+
+  const [dataAttendance, setDataAttendance] = useState<IAttandance[]>();
   const dispatch = useAppDispatch();
   const handleChange = (value: string) => {
     setcbxStatus(value);
@@ -51,28 +67,42 @@ const AttendanceCheckPage = () => {
   const onChangeTab = ({ target: { value } }: RadioChangeEvent) => {
     setTab(value);
   };
-  const dataSource = [
-    {
-      date: '2023-12-19',
-      present: 23,
-      absent:23,
-    },
-    {
-      date: '2023-12-19',
-      present: 23,
-      absent:23,
-    },
-    {
-      date: '2023-12-19',
-      present: 23,
-      absent:23,
-    },
-    {
-      date: '2023-12-19',
-      present: 23,
-      absent:23,
-    },
-  ];
+
+  const fetchApi = async () => {
+
+    try {
+      dispatch(uiActions.setLoadingPage(true));
+      const res = await apisLetterTeacher.getListAttendance();
+
+      if(res?.data?.data) {
+        setDataAttendance(res?.data.data);
+      }
+    } catch(err) {
+      console.log(err);
+      message.error('Đã có lỗi xảy ra');
+    } finally {
+      dispatch(uiActions.setLoadingPage(false));
+    }
+  };
+
+  useEffect(() => {
+    fetchApi();
+  }, []);
+
+  console.log(dataAttendance);
+  
+
+  const dataSource = useMemo(() => {
+
+    if(!dataAttendance) return [];
+
+    return dataAttendance?.map(o => ({
+      date: o.Date__c,
+      present: o.SL_DI_HOC__c,
+      absent: o.SL_PHEP__c,
+      noAbsent: o.SL_KHONG_PHEP__c
+    }));
+  }, [dataAttendance]) ;
 
   const columns = [
     {
@@ -86,8 +116,13 @@ const AttendanceCheckPage = () => {
       key: 'present',
     },
     {
-      title: 'Vắng mặt',
+      title: 'Nghỉ có phép',
       dataIndex: 'absent',
+      key: 'absent',
+    },
+    {
+      title: 'Nghỉ không phép',
+      dataIndex: 'noAbsent',
       key: 'absent',
     },
     {

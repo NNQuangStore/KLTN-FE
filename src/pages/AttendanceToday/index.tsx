@@ -1,10 +1,10 @@
 import { styled } from 'styled-components';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Divider, Input, Radio, Space, Table, Tag } from 'antd';
+import { Button, Checkbox, Divider, Input, Radio, Select, Space, Table, Tag, message } from 'antd';
 import DataTable from '../../component/molecule/DataTable';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import { ActionFormStyled } from '../../component/organism/FormLayout';
 import ButtonOutline from '../../component/atom/Button/ButtonOutline';
@@ -14,6 +14,16 @@ import { useDispatch } from 'react-redux';
 import { useAppDispatch } from '../../store/hooks';
 import attendanceActions from '../Attendance/service/actions';
 import attendanceSelectors from '../Attendance/service/selectors';
+import StudentSelectors from '../StudentPage/services/selectors';
+import { log } from '@antv/g2plot/lib/utils';
+import studentActions from '../StudentPage/services/actions';
+import uiActions from '../../services/UI/actions';
+import apisLetterTeacher from '../AttendanceCheckPage/service/apis';
+import dayjs from 'dayjs';
+import moment from 'moment';
+import { values } from 'lodash';
+import storage from '../../utils/sessionStorage';
+import uiSelector from '../../services/UI/selectors';
 function formatDate(dateString: string): string {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const formattedDate: string = new Date(dateString).toLocaleDateString('vi-Vi', options);
@@ -27,6 +37,7 @@ interface DataType {
   name: string;
   vang: boolean;
   coPhep: boolean;
+  disabled?: boolean;
 }
 
 
@@ -125,6 +136,14 @@ interface DataType {
   
 // ];
 
+interface IStudent {
+  Id: string;
+  Ma_Hoc_Sinh__c: string;
+  Name: string;
+  NgaySinh__c?: any;
+  GioiTinh__c: boolean;
+}
+
 const AttendanceTodayPage = () => {
   const navigate = useNavigate();
   const dateStr: string = new Date().toISOString();
@@ -132,11 +151,108 @@ const AttendanceTodayPage = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState<DataType[] | null>(null);
+  const studentList = StudentSelectors.getStudentList() as IStudent[];
+
+  const [dataStudentAbsent, setDataStudentAbsent] = useState<any[]>([]);
+
+  const [studentNP, setStudentNP] = useState<any[]>([]);
+  // const dataStudent = useMemo(() => {
+  //   console.log(studentList);
+    
+  //   return studentList.map((o: any) => ({
+  //     coPhep: false,
+  //     maHS: o.Ma_Hoc_Sinh__c,
+  //     name: o.Name,
+  //     vang: false
+  //   }));
+  // }, [studentList]);
+
+
+  const getLetter = async () => {
+    try {
+      await dispatch(uiActions.setLoadingPage(true));
+      const res = await apisLetterTeacher.getListLetter();
+      console.log(res);
+      
+      if(res?.data?.data){
+        const data = res.data.data;
+        
+        const listData = data?.filter((o: any) => {
+          const ngayNghi = moment(o.NgayNghi__c, 'YYYY-MM-DD').subtract(1, 'day');
+          const ngayKT = moment(o.NgayNghi__c, 'YYYY-MM-DD').add(o.SoNgayNghi__c, 'day');
+
+          // console.log(moment().format('YYYY-MM-DD'), ngayNghi.subtract(1, 'day').format('YYYY-MM-DD'), ngayNghi.add(o.SoNgayNghi__c + 1, 'day').format('YYYY-MM-DD'));
+          // console.log(moment().isBefore(ngayNghi) && moment().isAfter(ngayNghi.add(o.SoNgayNghi__c, 'day')));
+          
+          // console.log(moment().format('YYYY-MM-DD'), ngayNghi.subtract(1, 'day').format('YYYY-MM-DD'), moment().isAfter(ngayNghi.subtract(1, 'day'), 'date'));
+          // console.log(moment().isAfter(ngayNghi.add(o.SoNgayNghi__c + 2, 'day'), 'date'));
+          
+          
+          return moment().isAfter(ngayNghi) && moment().isBefore(ngayKT) && o.TrangThai__c === 'ACCEPT';
+        });
+        setStudentNP(listData);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      dispatch(uiActions.setLoadingPage(false));
+    }
+  };
+  
+  useEffect(() => {
+
+    if(!studentList || !studentNP) return;
+
+    const data = studentList.map(o => ({
+      ...o,
+      disabled: studentNP.some((stu: any) => stu.HocSinh__c === o.Id),
+      coPhep: studentNP.some((stu: any) => stu.HocSinh__c === o.Id),
+      maHS: o.Ma_Hoc_Sinh__c,
+      name: o.Name,
+      vang: studentNP.some((stu: any) => stu.HocSinh__c === o.Id),
+      note: studentNP.find((stu: any) => stu.HocSinh__c === o.Id)?.LyDo__c
+    }));
+
+    setDataStudentAbsent(data);
+  }, [studentList, studentNP]);
+
+
+
+  console.log(dataStudentAbsent);
+  
+
+  useEffect(() => {
+    getLetter();
+  }, []);  
+
+  const CheckBoxVang = ({dataStudentAbsent, record}: {dataStudentAbsent: any[], record: any, setDataStudentAbsent: (data:any) => void}) => {
+
+    // const [, setValue] = useState<boolean>(dataStudentAbsent.find(o => o.maHS === record.maHS).vang);
+
+    return (
+      <Checkbox
+        checked={dataStudentAbsent.find(o => o.maHS === record.maHS).vang}
+        onChange={(value) => {
+          const idx = dataStudentAbsent.findIndex(o => o.maHS === record.maHS);
+          if(idx === -1) return;
+          const isChecked = !dataStudentAbsent[idx].vang;
+
+          dataStudentAbsent[idx].vang = isChecked;
+          setDataStudentAbsent([...dataStudentAbsent]);
+          // setValue(isChecked);
+        }}
+        // onChange={() => handleRowSelection(record.maHS)}
+        // checked={selectedRowKeys.includes(record.maHS)}
+      />
+    );
+  };
+
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(attendanceActions.getAttendanceDetail.fetch({}));
+    dispatch(studentActions.getListStudent.fetch());
   }, []);
 
   const attendanceDetail = attendanceSelectors.getAttendanceDetail();
@@ -149,6 +265,72 @@ const AttendanceTodayPage = () => {
     console.log(newSelectedRowKeys);
   };
 
+
+  const handleSave = async () => {
+  const class_id = storage.get('class_id');
+
+    try {
+      dispatch(uiActions.setLoadingPage(true));
+      const res  = await apisLetterTeacher.saveAttendanceDay({
+        ClassHeader__c: class_id ?? '',
+        Date__c: moment().format('YYYY-MM-DD'),
+        Status__c: 'SUCCESS',
+        Student: dataStudentAbsent.map(o => ({
+          HocSinh__c: o.Id,
+          Status__c: !o.vang ? 'DI_HOC' : (o.coPhep ? 'PHEP' : 'KHONG_PHEP'),
+          note__c: o.note ?? ''
+        }))
+      });
+      if(res) {
+        navigate(-1);
+      }
+    } catch(err) {
+      console.log(err);
+      // message.error('Đã ')
+      
+    } finally {
+      dispatch(uiActions.setLoadingPage(false));
+
+    }
+  };
+
+  const DropDownCell = ({record, show}: {dataStudentAbsent: any, record: any, show: boolean}) => {
+
+    const [, setValue] = useState<boolean>(false);
+
+    const options = [
+      {
+        value: true,
+        label: 'Có phép'
+      },
+      {
+        value: false,
+        label: 'Không phép'
+      }
+    ];
+
+    return  (
+      <Select 
+        style={{
+          width: '100%',
+          border: 'none',
+          outline: 'none',
+        }}
+        disabled={!dataStudentAbsent.find((o: any) => o.maHS === record.maHS)?.vang}
+        value={dataStudentAbsent?.find((o: any) => o.maHS === record.maHS)?.coPhep}
+        options={options}
+        onChange={(value) => {
+          const idx = dataStudentAbsent.findIndex((o: any) => o.maHS === record.maHS);
+          if(idx === -1) return;
+          console.log(dataStudentAbsent[idx].coPhep);
+          
+          dataStudentAbsent[idx].coPhep = value;
+          setValue(value);
+        }}
+      />
+    );
+  };
+
   const data: DataType[] = attendanceDetail.map(o => ({
     coPhep: o.CoPhep__c,
     maHS: o.MaHocSinh__c,
@@ -156,37 +338,28 @@ const AttendanceTodayPage = () => {
     vang: o.VangMat__c
   }));
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<DataType> = useMemo(() => [
     
     {
       title: 'Mã HS',
+      dataIndex: 'maHS',
+      key: 'msHS',
+    },
+    {
+      title: 'Tên HS',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Tên HS',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
       title: 'Vắng',
-      dataIndex: 'select',
-      key: 'select',
+      dataIndex: 'vang',
+      key: 'vang',
       render: (val, record) => {
-        // Check if the status is not null before rendering the checkbox
-        // if (record.coPhep === null) {
+        if(record.vang) console.log(record.vang, record.name);
+          console.log(dataStudentAbsent);
+          
           return (
-            <Checkbox
-              defaultChecked={val}
-              onChange={(value) => {
-                dispatch(attendanceActions.checkAttendance({
-                  isCheck: value.target.checked,
-                  studentId: record.maHS
-                }));
-              }}
-              // onChange={() => handleRowSelection(record.maHS)}
-              // checked={selectedRowKeys.includes(record.maHS)}
-            />
+            <CheckBoxVang setDataStudentAbsent={setDataStudentAbsent} record={record} dataStudentAbsent={dataStudentAbsent}/>
           );
         // } 
         // else {
@@ -200,10 +373,25 @@ const AttendanceTodayPage = () => {
       title: 'Trạng thái',
       rowSpan: 4,
       dataIndex: 'status',
-      fixed: true,
-      width: 300,
+      render: (val, record) => {
+
+        return (
+          <DropDownCell dataStudentAbsent={dataStudentAbsent} record={record} show={dataStudentAbsent?.find((o: any) => o.maHS === record.maHS)?.vang ?? true} />
+        );
+      }
     },
-  ];
+    {
+      title: 'Lí do',
+      rowSpan: 4,
+      dataIndex: 'note',
+      fixed: true,
+      render: (val, record) => {
+        return (
+          <p>{val}</p>
+        );
+      }
+    },
+  ], [dataStudentAbsent]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = e.target.value;
@@ -234,16 +422,22 @@ const AttendanceTodayPage = () => {
         </Space>
         
         <DataTable  style={{ height: '480px' }}  scroll={{ x: 300 }} 
-      dataSource={filteredData || data}
+      dataSource={ dataStudentAbsent || data }
       columns={columns}
+      rowClassName={record => record.disabled ? 'disabled-row' : ''}
     />
       </div>
       <br />
-      <ActionFormStyled justify={'end'} >
-              <ButtonOutline style={{color:'gray'}} label='Hủy' onClick={()=> navigate('/attendance')}/>
-              <ButtonOutline style={{marginRight:10}}  label='Lưu Nháp'/>
-              <ButtonPrimary htmlType='submit' label={'Lưu và gửi PH'}/>
-            </ActionFormStyled>
+      <ActionFormStyled style={{
+        marginTop: '100px'
+      }} justify={'end'} >
+        <ButtonOutline style={{color:'gray'}} label='Hủy' onClick={()=> navigate('/attendance')}/>
+        {/* <ButtonOutline style={{marginRight:10}}  label='Lưu Nháp'/> */}
+        <ButtonPrimary onClick={handleSave} label={'Lưu'}/>
+      </ActionFormStyled>
+      <div style={{
+        height: '20px'
+      }}></div>
     </AttendanceTodayStyled>
   );
 };
@@ -251,5 +445,35 @@ const AttendanceTodayPage = () => {
 export default AttendanceTodayPage;
 
 const AttendanceTodayStyled = styled.div`
-  
+  .disabled-row {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 `;
+
+
+
+
+
+// const TextField = ({dataStudentAbsent, record}: {dataStudentAbsent: any[], record: any}) => {
+
+//   const [, setValue] = useState<boolean>(dataStudentAbsent.find(o => o.maHS === record.maHS).vang);
+
+//   return (
+//     <Checkbox
+//       checked={dataStudentAbsent.find(o => o.maHS === record.maHS).vang}
+//       onChange={(value) => {
+//         const idx = dataStudentAbsent.findIndex(o => o.maHS === record.maHS);
+//         if(idx === -1) return;
+//         console.log(dataStudentAbsent[idx].vang);
+        
+//         const isChecked = !dataStudentAbsent[idx].vang;
+
+//         dataStudentAbsent[idx].vang = isChecked;
+//         setValue(isChecked);
+//       }}
+//       // onChange={() => handleRowSelection(record.maHS)}
+//       // checked={selectedRowKeys.includes(record.maHS)}
+//     />
+//   );
+// };

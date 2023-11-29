@@ -125,7 +125,7 @@ const ClassPage= () => {
       }
 
     } catch(e) {
-      message.error('Đã có lỗi xảy ra');
+      // message.error('Đã có lỗi xảy ra');
     } finally {
       dispatch(uiActions.setLoadingPage(false));
 

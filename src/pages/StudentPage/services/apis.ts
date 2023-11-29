@@ -12,11 +12,14 @@ const getListStudent = () => {
   });
 };
 
-const getListStudentByClass = (class_id: string) => {
+const getListStudentByClass = (class_id: string, year: string) => {
+
+  console.log(class_id);
+  
 
   return fetch({
     method: 'get',
-    url: `class/${class_id}`
+    url: `class/${class_id ?? 'a075j00000AkxZjAAJ'}?year=${year}`
     // params: { ...params, per_page: 100 },
   });
 };

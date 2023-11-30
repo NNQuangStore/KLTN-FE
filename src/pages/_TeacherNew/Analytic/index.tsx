@@ -7,6 +7,7 @@ import { Form, Spin, message } from 'antd';
 import InputSelect from '../../../component/atom/Input/InputSelect';
 import { useDispatch } from 'react-redux';
 import uiActions from '../../../services/UI/actions';
+import storage from '../../../utils/sessionStorage';
 
 export interface AnalyticType {
   total: number;
@@ -117,9 +118,9 @@ const AnalyticPage = () => {
   const fetchApi = async () => {
     dispatch(uiActions.setLoadingPage(true));
     try {
-
+      const class_id = storage.get('class_id');
       const res = await apisAnalytic.getAnalytic({
-        eva_class_id : 'a075j00000AkxZjAAJ',
+        eva_class_id : class_id ?? '',
         eva_type : filter
       });
       console.log('///');
@@ -184,7 +185,10 @@ const AnalyticPage = () => {
     },
   };
 
-  if(!analyticData) return <Spin spinning={true}></Spin>;
+  if(!analyticData || !nghiPhep) return <Spin spinning={true}></Spin>;
+
+  console.log(filter);
+  
 
   return(
     <AnalyticPageStyled>

@@ -92,13 +92,13 @@ const LoginPage = () => {
 
   return (
     <LoginPageStyled>
-      <h3>Welcome back!</h3>
+      <h3>Xin chào!</h3>
       <FormLayout<AuthForm>
         onSubmit={onSubmit}
         renderButton={<ButtonLoginStyled htmlType='submit' label='Login'/>}>
 
-        <InputText name='phone' label={'Số điện thoại'}/>
-        <InputTextPassword name='password' label={'Mật Khẩu'} />
+        <InputText name='phone' placeholder='Nhập số điện thoại' label={'Số điện thoại'}/>
+        <InputTextPassword name='password' placeholder='Nhập mật khẩu' label={'Mật Khẩu'} />
 
         </FormLayout>
     </LoginPageStyled>

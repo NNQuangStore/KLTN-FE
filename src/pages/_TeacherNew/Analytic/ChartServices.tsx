@@ -14,7 +14,7 @@ const ChartServices = ({ revenueServices }: { revenueServices: any }) => {
     type: o.service_name,
     value: o.percent
   }));
-  // const prices = revenueServices?.map((o: any) => (`${o?.total_amount ?? 0}`));
+  // const prices = revenueServices??.map((o: any) => (`${o?.total_amount ?? 0}`));
 
   // const config = {
   //   appendPadding: 10,
@@ -67,7 +67,7 @@ const ChartServices = ({ revenueServices }: { revenueServices: any }) => {
     legend: {
       position: 'bottom'
     },
-    labels: pieChartData.map(o => (o.type)) as string[],
+    labels: pieChartData?.map(o => (o.type)) as string[],
     responsive: [{
       breakpoint: 580,
       options: {
@@ -84,12 +84,12 @@ const ChartServices = ({ revenueServices }: { revenueServices: any }) => {
         display: 'flex',
         justifyContent: 'center'
       }}>
-        <ReactApexChart options={option} series={pieChartData.map(o => (o.value))} type='donut' width={500} />
+        <ReactApexChart options={option} series={pieChartData?.map(o => (o.value)) ?? []} type='donut' width={500} />
       </div>
     
       {/* <ListItemsStyled>
         <ul className='list-items'>
-          {pieChartData.map((pie, index) => {
+          {pieChartData?.map((pie, index) => {
             const { value, type } = pie;
             if (value === 0) {
               return null;

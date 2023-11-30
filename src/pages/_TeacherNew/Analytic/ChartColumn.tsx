@@ -5,7 +5,7 @@ const ChartColumn = ({data, HK} : {data?: AnalyticType, HK: string}) => {
 
   const series: ApexAxisChartSeries | ApexNonAxisChartSeries = [{
     name: HK.replaceAll('_', ' '),
-    data: (data?.avg_score ?? []).map(o => Number(o.avg))
+    data: (data?.avg_score ?? [])?.map(o => Number(o.avg))
   }];
 
   const options: ApexCharts.ApexOptions = {
@@ -29,7 +29,7 @@ const ChartColumn = ({data, HK} : {data?: AnalyticType, HK: string}) => {
       colors: ['transparent']
     },
     xaxis: {
-      categories: data?.avg_score.map(o => o.Name),
+      categories: data?.avg_score?.map(o => o.Name),
     },
     yaxis: {
       title: {
@@ -49,7 +49,7 @@ const ChartColumn = ({data, HK} : {data?: AnalyticType, HK: string}) => {
   };
 
   return (
-    <ReactApexChart options={options} series={series} type="bar" height={450} />
+    <ReactApexChart options={options} series={series ?? []} type="bar" height={450} />
     
   );
 };

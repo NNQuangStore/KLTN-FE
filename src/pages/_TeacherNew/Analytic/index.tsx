@@ -3,12 +3,15 @@ import ChartServices from './ChartServices';
 import ChartColumn from './ChartColumn';
 import apisAnalytic from './services/apis';
 import { useEffect, useMemo, useState } from 'react';
-import { Form, Spin, message } from 'antd';
+import { DatePicker, Form, Spin, message } from 'antd';
 import InputSelect from '../../../component/atom/Input/InputSelect';
 import { useDispatch } from 'react-redux';
 import uiActions from '../../../services/UI/actions';
 import storage from '../../../utils/sessionStorage';
+import dayjs from 'dayjs';
+import fetch from '../../../services/request';
 
+const { RangePicker } = DatePicker;
 export interface AnalyticType {
   total: number;
   numHTSX: number;
@@ -115,6 +118,7 @@ const AnalyticPage = () => {
   // };
   const dispatch = useDispatch();
 
+
   const fetchApi = async () => {
     dispatch(uiActions.setLoadingPage(true));
     try {
@@ -173,21 +177,47 @@ const AnalyticPage = () => {
     ];
   }, [analyticData]);
 
-  const nghiPhep = {
-    nghiPhep: 4,
-    khongPhep: 6
-};
+  const [nghiPhep, setNghiPhep] = useState<any>({nghiPhep: 0,
+    khongPhep: 0});
+
+  useEffect(() => {
+    () => {
+      fetch({
+        method: 'post',
+        url: 'thongke/attendance',
+        body: {
+          from: dayjs().format('YYYY-MM-DD'),
+          to: dayjs().format('YYYY-MM-DD')
+        }
+      }).then((res) => {
+        console.log(res);
+        
+        return{
+          nghiPhep: res?.data?.numPhep ?? 0,
+          khongPhep: res?.data?.numKhongPhep ?? 0
+        };
+      });
+  
+    };
+  }, []);
 
 
   const bookingProps: MyDivProps = {
     style: {
-      '--p': nghiPhep.nghiPhep * 100 / (nghiPhep.khongPhep + nghiPhep.nghiPhep),
+      '--p': nghiPhep?.nghiPhep * 100 / (nghiPhep?.khongPhep + nghiPhep?.nghiPhep),
     },
   };
+
+
+  console.log(nghiPhep);
+  
 
   if(!analyticData || !nghiPhep) return <Spin spinning={true}></Spin>;
 
   console.log(filter);
+
+  console.log(analyticData);
+  
   
 
   return(
@@ -196,7 +226,7 @@ const AnalyticPage = () => {
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
 
         <p className='title'>Thống kê</p>
-
+{/* 
         <Form.Item>
 
           <InputSelect defaultValue={'GIUA_HK_1'} options={[
@@ -217,7 +247,7 @@ const AnalyticPage = () => {
               label: 'Giữa HK 2'
             }
           ]} onChange={(value) => setFilter(value)} />
-        </Form.Item>
+        </Form.Item> */}
       </div>
 
 
@@ -228,34 +258,81 @@ const AnalyticPage = () => {
               <div
                 className={`${'analytics_services'} ${'analytics_card'}`}
               >
+                <div>
+                  <Form.Item>
+
+                    <InputSelect defaultValue={'GIUA_HK_1'} options={[
+                      {
+                        value: 'GIUA_HK_1',
+                        label: 'Giữa HK 1'
+                      },
+                      {
+                        value: 'CUOI_HK_1',
+                        label: 'Cuối HK 1'
+                      },
+                      {
+                        value: 'GIUA_HK_2',
+                        label: 'Giữa HK 2'
+                      },
+                      {
+                        value: 'CUOI_HK_2',
+                        label: 'Giữa HK 2'
+                      }
+                    ]} onChange={(value) => setFilter(value)} />
+                  </Form.Item>
+                </div>
                 <div className={'analytics_label'}>Điểm số</div>
-                <ChartColumn data={analyticData} HK={'CUOI_HK_1'} />
+                <ChartColumn data={analyticData ?? []} HK={'CUOI_HK_1'} />
+
+                <div style={{margin: '12px 0px'}} className={'analytics_label'}>Học lực</div>
+                <ChartServices revenueServices={phanLoaiHS ?? []} />
               </div>
 
-              <div className={`${'analytics_bookings'} ${'analytics_card'}`}>
-                <div className={'analytics_label'}>Học lực</div>
-                <ChartServices revenueServices={phanLoaiHS} />
-              </div>
+              {/* <div className={`${'analytics_bookings'} ${'analytics_card'}`}>
+                
+              </div> */}
             </div>
         </div>
         <div className={'analytics_left'}>
         <div className={`${'analytics_bookings'} ${'analytics_card'}`}>
+            <RangePicker style={{marginBottom: '16px'}} size='large' onChange={async (value) => {
+              dispatch(uiActions.setLoadingPage(true));
+              const res = await fetch({
+                method: 'post',
+                url: 'thongke/attendance',
+                body: {
+                  from: value?.[0]?.format('YYYY-MM-DD'),
+                  to: value?.[1]?.format('YYYY-MM-DD')
+                }
+              });
+
+              console.log(res?.data);
+              
+
+              setNghiPhep({
+                nghiPhep: res?.data?.numPhep ?? 0,
+                khongPhep: res?.data?.numKhongPhep ?? 0
+              });
+
+              dispatch(uiActions.setLoadingPage(false));
+
+            }} defaultValue={[dayjs(), dayjs()]} />
             <div className={'analytics_label'}>Số lượng nghỉ</div>
             <div className='pie-wrapper is-red'>
               <div className='pie animate' {...bookingProps}></div>
               <div className='pie-content'>
                 <span>Total</span>
-                <p>{nghiPhep.khongPhep + nghiPhep.nghiPhep}</p>
+                <p>{nghiPhep?.khongPhep + nghiPhep?.nghiPhep}</p>
               </div>
             </div>
             <ul className={'pie_detail'}>
               <li>
                 <span>Có phép</span>
-                <span>{ nghiPhep.nghiPhep }</span>
+                <span>{ nghiPhep?.nghiPhep }</span>
               </li>
               <li>
                 <span>Không phép</span>
-                <span>{nghiPhep.khongPhep}</span>
+                <span>{nghiPhep?.khongPhep}</span>
               </li>
             </ul>
           </div>

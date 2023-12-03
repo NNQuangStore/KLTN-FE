@@ -8,12 +8,9 @@ import ReportWeek from './ReportWeek';
 
 const ParentStudentReportLesson = () => {
 
-  const dispatch = useDispatch();
 
   const [mode, setMode] = useState<'day' | 'week'>('day');
-  useEffect(() => {
-    dispatch(lesionActions.getListLesion.fetch());
-  }, []);
+
 
   const handleModeChange = (e: RadioChangeEvent) => {
     setMode(e.target.value);

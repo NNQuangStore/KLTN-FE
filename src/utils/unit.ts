@@ -97,7 +97,41 @@ export const getTalentByScore = (value: any) => {
   }
 };
 
+export function timeoutPromise(ms: number, promise: any) {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error('promise timeout'));
+    }, ms);
+    promise.then(
+      (res: any) => {
+        clearTimeout(timeoutId);
+        resolve(res);
+      },
+      (err: any) => {
+        clearTimeout(timeoutId);
+        reject(err);
+      }
+    );
+  });
+}
+export function fetchApiTimeout(url: string, timeout: number) {
+  const controller = new AbortController();
+  return Promise.race([fetch(url, {
+    signal: controller.signal
+  }), new Promise(resolve => {
+    setTimeout(() => {
+      resolve('request was not fulfilled in time');
+      controller.abort();
+      fetchApiTimeout(url, timeout);
+    }, timeout);
+  })]);
+}
+
 // export const bcryptEncode = (text: string) => {
 //   // const salt = bcrypt.genSaltSync(KEY_BCRYPT);
 //   return bcrypt.hash(text, KEY_BCRYPT);
 // };
+
+export const configTimeout = {
+  timeout: 3000
+};

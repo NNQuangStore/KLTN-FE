@@ -6,6 +6,11 @@ const getListClass = (params?: {year: number}) => {
     method: 'get',
     url: 'class',
     params: params as any,
+    configs:{
+      timeout: 2000
+    }
+  }).catch(() => {
+    getListClass(params);    
   });
 };
 

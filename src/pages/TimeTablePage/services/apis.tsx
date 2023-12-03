@@ -7,15 +7,25 @@ const getTimeTable = (params: {
 }) => {
 
   const class_id = storage.get('class_id');
+ try{
 
-  return fetch({
+   return fetch({
     method: 'get',
     url: 'schedule',
     params: {
       ...params,
       idClass: class_id
     } as any,
+    configs:{
+      timeout: 2000
+    }
+  }).catch(() => {
+    getTimeTable(params);    
   });
+
+ } catch(err) {
+    getTimeTable(params);
+ }
 };
 
 const saveTimeTable = (body: any) => {

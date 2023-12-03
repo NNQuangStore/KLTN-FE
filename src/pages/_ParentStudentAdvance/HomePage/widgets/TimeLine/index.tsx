@@ -1,13 +1,14 @@
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
-import { getDayOfWeek } from '../../../../../utils/unit';
+import { fetchApiTimeout, getDayOfWeek, timeoutPromise } from '../../../../../utils/unit';
 import {  Empty, Timeline, TimelineItemProps } from 'antd';
 import { hexToRGB } from '../../../../../utils/unit';
 import InputDatePicker from '../../../../../component/atom/Input/InputDatePicker';
 import apisTimetable from '../../../../TimeTablePage/services/apis';
 import { useAppDispatch } from '../../../../../store/hooks';
 import uiActions from '../../../../../services/UI/actions';
+import lesionActions from '../../../../ReportLesionPage/services/actions';
 
 const TimeTableLine = () => {
 
@@ -26,16 +27,24 @@ const TimeTableLine = () => {
         date: date.format('YYYY-MM-DD'),
         day: date.format('dddd') as any
       });
-      setDataTimeTable(res?.data?.Schedule?.detail ?? []);
+        setDataTimeTable(res?.data?.Schedule?.detail ?? []);
     } catch (error) {
       console.log(error);
+      // const res = await apisTimetable.getTimeTable({
+      //   date: date.format('YYYY-MM-DD'),
+      //   day: date.format('dddd') as any
+      // });
     }
   };
+
+  console.log(dataTimeTable);
+  
 
   useEffect(() => {
     dispatch(uiActions.setLoadingPage(true));
     try {
 
+      fetchApi();
       fetchApi();
     } finally{
       dispatch(uiActions.setLoadingPage(false));

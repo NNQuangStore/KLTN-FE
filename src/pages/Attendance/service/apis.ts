@@ -1,5 +1,6 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
+import { configTimeout } from '../../../utils/unit';
 
 const importScoreboard = (body: any) => {
   return fetch({
@@ -29,6 +30,11 @@ const getScoreboard = (body: TScoreboardParamReq) => {
         classId: classId,
         ...body
     },
+    configs: {
+      ...configTimeout
+    }
+  }).catch(() => {
+    getScoreboard(body);
   });
 };
 
@@ -41,6 +47,11 @@ const getScoreboardDetail = (body: TScoreboardParamReq) => {
       studentId: studentId,
         ...body
     },
+    configs: {
+      ...configTimeout
+    }
+  }).catch (() => {
+    getScoreboardDetail(body);
   });
 };
 

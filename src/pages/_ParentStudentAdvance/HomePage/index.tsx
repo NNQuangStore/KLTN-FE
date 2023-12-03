@@ -5,8 +5,13 @@ import {  Divider } from 'antd';
 import { COLOR_PRIMARY } from '../../../utils/variables/colors';
 import { BORDER_STYLED } from '../../../utils/unit';
 import storage from '../../../utils/sessionStorage';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import lesionActions from '../../ReportLesionPage/services/actions';
 
 const ParentStudentHomePage = () => {
+
+  const dispatch = useDispatch();
 
   // const RowInfo = ( {label, value}:{label: string, value: string}) => {
   //   return (
@@ -16,6 +21,10 @@ const ParentStudentHomePage = () => {
   //     </div>
   //   );
   // };
+
+  useEffect(() => {
+    dispatch(lesionActions.getListLesion.fetch());
+  }, []);
 
   return (
     <ParentStudentHomePageStyled>

@@ -1,11 +1,17 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
+import { configTimeout } from '../../../utils/unit';
 
 const importScoreboard = (body: any) => {
   return fetch({
     method: 'post',
     url: '/score/import',
     body: body,
+    configs: {
+      ...configTimeout
+    }
+  }).catch(() => {
+    importScoreboard(body);
   });
 };
 
@@ -29,6 +35,9 @@ const getScoreboard = (body: TScoreboardParamReq) => {
         classId: classId,
         ...body
     },
+    configs: {
+      ...configTimeout
+    }
   });
 };
 
@@ -41,6 +50,8 @@ const getScoreboardDetail = (body: TScoreboardParamReq) => {
       studentId: studentId,
         ...body
     },
+  }).catch(() => {
+    importScoreboard(body);
   });
 };
 

@@ -1,5 +1,6 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
+import { configTimeout } from '../../../utils/unit';
 
 const getListStudent = () => {
 
@@ -7,20 +8,27 @@ const getListStudent = () => {
 
   return fetch({
     method: 'get',
-    url: `class/${class_id}`
+    url: `class/${class_id}`,
+    configs: {
+      ...configTimeout
+    }
     // params: { ...params, per_page: 100 },
+  }).catch(() => {
+    getListStudent();
   });
 };
 
 const getListStudentByClass = (class_id: string, year: string) => {
 
-  console.log(class_id);
-  
-
   return fetch({
     method: 'get',
-    url: `class/${class_id ?? 'a075j00000AkxZjAAJ'}?year=${year}`
+    url: `class/${class_id ?? 'a075j00000AkxZjAAJ'}?year=${year}`,
     // params: { ...params, per_page: 100 },
+    configs: {
+      ...configTimeout
+    }
+  }).catch(() => {
+    getListStudentByClass(class_id, year);
   });
 };
 

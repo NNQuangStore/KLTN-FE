@@ -1,5 +1,6 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
+import { configTimeout } from '../../../utils/unit';
 
 const getListLesion = () => {
 
@@ -7,8 +8,13 @@ const getListLesion = () => {
 
   return fetch({
     method: 'get',
-    url: `lesson/${class_id}`
+    url: `lesson/${class_id}`,
+    configs: {
+      ...configTimeout
+    }
     // params: { ...params, per_page: 100 },
+  }).catch(() => {
+    getListLesion();
   });
 };
 

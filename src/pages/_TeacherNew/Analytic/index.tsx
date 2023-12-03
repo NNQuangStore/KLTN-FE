@@ -10,7 +10,6 @@ import uiActions from '../../../services/UI/actions';
 import storage from '../../../utils/sessionStorage';
 import dayjs from 'dayjs';
 import fetch from '../../../services/request';
-import uiSelector from '../../../services/UI/selectors';
 
 const { RangePicker } = DatePicker;
 export interface AnalyticType {
@@ -183,7 +182,7 @@ const AnalyticPage = () => {
 
   useEffect(() => {
     () => {
-      const res = fetch({
+      fetch({
         method: 'post',
         url: 'thongke/attendance',
         body: {

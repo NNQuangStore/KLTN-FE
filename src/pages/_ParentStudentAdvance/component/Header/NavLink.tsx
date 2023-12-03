@@ -1,13 +1,14 @@
 import { styled } from 'styled-components';
 import { COLOR_PRIMARY } from '../../../../utils/variables/colors';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Form, Modal } from 'antd';
+import { Form, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import uiActions from '../../../../services/UI/actions';
 import apisTeacher from '../../../_Admin/Teacher/services/apis';
 import apisClass from '../../../ClassPage/services/apis';
 import storage from '../../../../utils/sessionStorage';
+import { DrawerStyled } from '../../../_Admin/Class';
 
 const navItem = [
   {
@@ -31,7 +32,7 @@ const navItem = [
     link: '/app/leave-of-absence'
   },
   {
-    // label: 'Giáo viên'
+    label: 'Giáo viên'
   }
 ];
 
@@ -40,27 +41,37 @@ const NavLink = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [dataTeacher, setDataTeacher] = useState();
+  const [dataTeacher, setDataTeacher] = useState<any>();
 
   const [open, setOpen] = useState<boolean>();
   
+  console.log(dataTeacher);
+  
+
   const fetchData = async () => {
     try{
       dispatch(uiActions.setLoadingPage(true));
 
-      await apisClass.getListClass({
+      const resClass = await apisClass.getListClass({
         year: 2023,
       });
 
       const resTeacher = await apisTeacher.getListTeacher();
       const user_id = storage.get('user_id');
 
+      console.log(resClass);
+      
+
       if(resTeacher?.data?.data) {
         console.log(resTeacher?.data?.data);
         console.log(user_id);
+        const class_id = storage.get('class_id');
         
+        const classData = resClass?.data?.data?.find((o: any) => o.Id  === class_id);
         
-        setDataTeacher(resTeacher?.data?.data.find((o: any) => o.Users__c === user_id));
+        console.log(classData);
+        
+        setDataTeacher(resTeacher?.data?.data.find((o: any) => o.Id === classData.GiaoVien__c));
       }
 
     } catch(e) {
@@ -73,7 +84,9 @@ const NavLink = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData().catch(() => {
+      fetchData();
+    });
   }, []);
 
   console.log(dataTeacher);
@@ -92,25 +105,27 @@ const NavLink = () => {
             </div>
           ))}
       </NavLinkStyled>
-      <Modal
+      <DrawerStyled
         // title='Thêm đơn xin nghỉ'
-        centered
-        footer={false}
-        open={open}
-        onOk={() => setOpen(false)}
-        onCancel={() => setOpen(false)}
-        width={1000}
+        open={!!open}
+        onClose={() => setOpen(false)}
+          
       >
         <h4>Thông tin giáo viên</h4>
         <Form
-          name='basic'
-          initialValues={{ remember: true }}
-          // onFinish={onFinish}
-          autoComplete='off'
+          layout='vertical'
         >
-        
+          <Form.Item label={'Tên giáo viên'}>
+            <Input disabled value={dataTeacher?.Name}/>
+          </Form.Item>
+          <Form.Item label={'Số điện thoại'}>
+            <Input disabled  value={dataTeacher?.User.Phone__c}/>
+          </Form.Item>
+          <Form.Item label={'Email'}>
+            <Input disabled value={dataTeacher?.User?.Email__c}/>
+          </Form.Item>
         </Form>
-      </Modal>
+      </DrawerStyled>
     </>
   );
 };

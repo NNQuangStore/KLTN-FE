@@ -7,9 +7,11 @@ const getListClass = (params?: {year: number}) => {
     url: 'class',
     params: params as any,
     configs:{
-      timeout: 2000
+      timeout: 5000
     }
   }).catch(() => {
+    console.log('???');
+    
     getListClass(params);    
   });
 };

@@ -1,8 +1,8 @@
-import {  CheckCircleOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import {  CheckCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import DataTable from '../../component/molecule/DataTable';
 import ActionTable from '../../component/molecule/DataTable/ActionTables';
 import { styled } from 'styled-components';
-import { Button, Card, Col, DatePicker, Radio, RadioChangeEvent, Row, Select, Space, Table, Tag, message } from 'antd';
+import { Button, Card, Col, Radio, RadioChangeEvent, Row, Select, Space, Table, Tag, message } from 'antd';
 import { useNavigate } from 'react-router';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
 import { useEffect, useMemo, useState } from 'react';
@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../store/hooks';
 import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from './service/apis';
 import InputDatePicker from '../../component/atom/Input/InputDatePicker';
+import { DrawerStyled } from '../_Admin/Class';
 
 interface DataType {
   ClassHeader__c: string;
@@ -45,7 +46,7 @@ interface IAttandance {
 
 const AttendanceCheckPage = () => {
   const [size,] = useState<SizeType>('middle');
-  const [, setSelectedDate] = useState<string | null>(null);
+  // const [, setSelectedDate] = useState<string | null>(null);
   const navigate = useNavigate();
   const [tab, setTab] = useState('DIEMDANH');
   const [dataDonXinNghi, setDataDonXinNghi] = useState<DataType[]>([]);
@@ -57,6 +58,9 @@ const AttendanceCheckPage = () => {
 
   const [dataAttendance, setDataAttendance] = useState<IAttandance[]>();
   const dispatch = useAppDispatch();
+
+  // const [detail, setDetail] = useState();
+
   const handleChange = (value: string) => {
     setcbxStatus(value);
   };
@@ -122,28 +126,28 @@ const AttendanceCheckPage = () => {
       dataIndex: 'noAbsent',
       key: 'absent',
     },
-    {
-      title: 'Thao tác',
-      dataIndex: 'actions',
-      key: 'actions',
-      render: () => {
-        return (
-          <ActionTable actions={[
-            {
-              handle: () => undefined,
-              icon: <EyeOutlined />,
-              label: 'Xem chi tiết',
-              color: '#2f54eb'
-            },
-          ]}/>
-        );
-      },
-    },
+    // {
+    //   title: 'Thao tác',
+    //   dataIndex: 'actions',
+    //   key: 'actions',
+    //   render: () => {
+    //     return (
+    //       <ActionTable actions={[
+    //         {
+    //           handle: () => undefined,
+    //           icon: <EyeOutlined />,
+    //           label: 'Xem chi tiết',
+    //           color: '#2f54eb'
+    //         },
+    //       ]}/>
+    //     );
+    //   },
+    // },
   ];
 
-  const handleDateChange = (date: any, dateString: string) => {
-    setSelectedDate(dateString);
-  };
+  // const handleDateChange = (date: any, dateString: string) => {
+  //   setSelectedDate(dateString);
+  // };
 
   const getLetter = async () => {
     try {
@@ -303,7 +307,7 @@ const AttendanceCheckPage = () => {
       </div>
       {tab === 'DIEMDANH' ? (
         <>
-          <div style={{ position: 'relative'}}>
+          <div style={{ position: 'relative', margin: '12px 0px'}}>
             <Space>
               <span
                 className='mock-block'
@@ -320,7 +324,7 @@ const AttendanceCheckPage = () => {
               </span>
             </Space>
           </div>
-          <div style={{ position: 'relative', padding: '1rem 0px'}}>
+          {/* <div style={{ position: 'relative', padding: '1rem 0px'}}>
             <Space>
               <h4>Từ ngày</h4>
               <DatePicker
@@ -337,7 +341,7 @@ const AttendanceCheckPage = () => {
               defaultValue={dayjs()}
               placeholder="Chọn ngày"/>
             </Space>
-          </div>
+          </div> */}
           <DataTable bordered={false} columns={columns} dataSource={dataSource} />
         </>
       ) : (
@@ -395,9 +399,13 @@ const AttendanceCheckPage = () => {
               pagination={false}
             />
           </Card>
+
+
         </>
       )}
+      <DrawerStyled>
 
+      </DrawerStyled>
     </AttendanceCheckPageStyled>
   );
 };

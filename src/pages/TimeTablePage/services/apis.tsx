@@ -1,5 +1,6 @@
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
+import { configTimeout } from '../../../utils/unit';
 
 const getTimeTable = (params: {
   day?: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
@@ -17,7 +18,7 @@ const getTimeTable = (params: {
       idClass: class_id
     } as any,
     configs:{
-      timeout: 2000
+      ...configTimeout
     }
   }).catch(() => {
     getTimeTable(params);    

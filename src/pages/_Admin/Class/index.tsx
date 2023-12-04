@@ -165,7 +165,8 @@ const ClassPage= () => {
                 
               }}
             >
-            <InputText />
+            {/* <h2>Lớp học</h2> */}
+            <InputText label={'Tên lớp học'} />
             <Form.Item label='Giáo viên chủ nhiệm'>
               <InputSelect options={teacherOption} />
             </Form.Item>

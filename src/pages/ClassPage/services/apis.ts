@@ -1,4 +1,5 @@
 import fetch from '../../../services/request';
+import { configTimeout } from '../../../utils/unit';
 
 const getListClass = (params?: {year: number}) => {
 
@@ -7,7 +8,7 @@ const getListClass = (params?: {year: number}) => {
     url: 'class',
     params: params as any,
     configs:{
-      timeout: 5000
+      ...configTimeout
     }
   }).catch(() => {
     console.log('???');

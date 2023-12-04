@@ -41,8 +41,6 @@ const CalendarSmallDays = () => {
   //   }
   // ];
 
-  console.log(dataReport);
-  
 
   const getDaysOfWeek = () => {
 

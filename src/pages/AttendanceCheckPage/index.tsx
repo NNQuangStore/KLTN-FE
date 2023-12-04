@@ -13,6 +13,9 @@ import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from './service/apis';
 import InputDatePicker from '../../component/atom/Input/InputDatePicker';
 import { DrawerStyled } from '../_Admin/Class';
+import fetch from '../../services/request';
+import { configTimeout } from '../../utils/unit';
+import storage from '../../utils/sessionStorage';
 
 interface DataType {
   ClassHeader__c: string;
@@ -73,25 +76,51 @@ const AttendanceCheckPage = () => {
 
     try {
       dispatch(uiActions.setLoadingPage(true));
-      const res = await apisLetterTeacher.getListAttendance();
+      // const res: any= await apisLetterTeacher.getListAttendance().then(value => {
+        
+      //   setDataAttendance(value?.data.data);
+      // });
 
-      if(res?.data?.data) {
+
+      const class_id = storage.get('class_id');
+      const res = await fetch({
+        method: 'get',
+        url: `/attendanceDay/classId/${class_id}`,
+        configs: {
+          ...configTimeout
+        }
+      }).catch(() => {
+        fetchApi();
+      }).then((res) => {
         setDataAttendance(res?.data.data);
-      }
+      });
+      
+      
+
+      // if(res?.data?.data) {
+        
+      // } else {
+      //   setDataAttendance(undefined);
+      // }
     } catch(err) {
-      console.log(err);
       message.error('Đã có lỗi xảy ra');
     } finally {
       dispatch(uiActions.setLoadingPage(false));
     }
   };
 
-  useEffect(() => {
-    fetchApi();
-  }, []);
-
   console.log(dataAttendance);
   
+
+  useEffect(() => {
+    if(dataAttendance) return;
+    try {
+      fetchApi();
+    } catch(err) {
+      fetchApi();
+
+    }
+  }, [dataAttendance]);
 
   const dataSource = useMemo(() => {
 
@@ -154,7 +183,6 @@ const AttendanceCheckPage = () => {
       await dispatch(uiActions.setLoadingPage(true));
       const res = await apisLetterTeacher.getListLetter();
       if(res?.data?.data){
-        console.log(res?.data?.data);
         const data = res.data.data;
         let cntPending = 0;
         let cntAccept = 0;

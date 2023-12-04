@@ -40,9 +40,6 @@ export const roundNumber = (number: number) => {
 // };
 
 export const getDatesBetween = (from: Dayjs, to: Dayjs) => {
-  console.log('??/');
-  console.log(from, to);
-  
   if(!from || !to) return [];
   
   
@@ -54,9 +51,6 @@ export const getDatesBetween = (from: Dayjs, to: Dayjs) => {
     dates.push(date);
   }
   while (date.isBefore(to));
-
-  console.log(dates);
-  
 
   return dates;
 };
@@ -133,5 +127,5 @@ export function fetchApiTimeout(url: string, timeout: number) {
 // };
 
 export const configTimeout = {
-  timeout: 20000
+  timeout: 10000
 };

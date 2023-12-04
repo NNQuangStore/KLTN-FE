@@ -11,8 +11,6 @@ const getListClass = (params?: {year: number}) => {
       ...configTimeout
     }
   }).catch(() => {
-    console.log('???');
-    
     getListClass(params);    
   });
 };

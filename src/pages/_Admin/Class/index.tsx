@@ -131,8 +131,6 @@ const ClassPage= () => {
 
     }
   };
-  console.log(detail);
-  
 
   useEffect(() => {
     fetchData();

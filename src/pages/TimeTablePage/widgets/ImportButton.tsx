@@ -246,8 +246,6 @@ const ButtonImport = () => {
                 for(const key of keys) {
                   dataLesson.push({Name: o[key]});
                 }
-                console.log(classes);
-                
                 timeTable.push({
                   ...dataLesson
                 });
@@ -255,10 +253,7 @@ const ButtonImport = () => {
 
             }
 
-            console.log({
-              ClassHeader__c: classes?.find(clss => clss.Name === workbook.SheetNames[i])?.Id,
-              detail: timeTable
-            });
+      
             
 
             // classes.map(o => o.Name)

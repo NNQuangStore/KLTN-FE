@@ -45,9 +45,6 @@ const NavLink = () => {
 
   const [open, setOpen] = useState<boolean>();
   
-  console.log(dataTeacher);
-  
-
   const fetchData = async () => {
     try{
       dispatch(uiActions.setLoadingPage(true));
@@ -59,24 +56,16 @@ const NavLink = () => {
       const resTeacher = await apisTeacher.getListTeacher();
       const user_id = storage.get('user_id');
 
-      console.log(resClass);
-      
 
       if(resTeacher?.data?.data) {
-        console.log(resTeacher?.data?.data);
-        console.log(user_id);
         const class_id = storage.get('class_id');
         
         const classData = resClass?.data?.data?.find((o: any) => o.Id  === class_id);
-        
-        console.log(classData);
         
         setDataTeacher(resTeacher?.data?.data.find((o: any) => o.Id === classData.GiaoVien__c));
       }
 
     } catch(e) {
-      console.log(e);
-      
     } finally {
       dispatch(uiActions.setLoadingPage(false));
 

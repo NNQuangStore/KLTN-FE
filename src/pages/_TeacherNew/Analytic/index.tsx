@@ -127,16 +127,12 @@ const AnalyticPage = () => {
         eva_class_id : class_id ?? '',
         eva_type : filter
       });
-      console.log('///');
-      console.log(res);
-      
 
       if(res?.data) {
         setAnalyticData(res?.data);
       }
 
     } catch (err) {
-      console.log(err);
       message.error('Có lỗi xảy ra');
       
     } finally {
@@ -190,7 +186,6 @@ const AnalyticPage = () => {
           to: dayjs().format('YYYY-MM-DD')
         }
       }).then((res) => {
-        console.log(res);
         
         return{
           nghiPhep: res?.data?.numPhep ?? 0,
@@ -209,16 +204,7 @@ const AnalyticPage = () => {
   };
 
 
-  console.log(nghiPhep);
-  
-
   if(!analyticData || !nghiPhep) return <Spin spinning={true}></Spin>;
-
-  console.log(filter);
-
-  console.log(analyticData);
-  
-  
 
   return(
     <AnalyticPageStyled>
@@ -305,9 +291,6 @@ const AnalyticPage = () => {
                   to: value?.[1]?.format('YYYY-MM-DD')
                 }
               });
-
-              console.log(res?.data);
-              
 
               setNghiPhep({
                 nghiPhep: res?.data?.numPhep ?? 0,

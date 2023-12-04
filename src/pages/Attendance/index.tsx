@@ -188,13 +188,11 @@ const AttendancePage = () => {
   const [size] = useState<SizeType>('middle');
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const studentList = StudentSelectors.getStudentList();
+  // const studentList = StudentSelectors.getStudentList();
 
-  console.log(studentList);
-  
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
   };
   const showModal = () => {
     setOpen(true);

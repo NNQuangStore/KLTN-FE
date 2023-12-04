@@ -164,8 +164,6 @@ const AttendanceTodayPage = () => {
     try {
       await dispatch(uiActions.setLoadingPage(true));
       const res = await apisLetterTeacher.getListLetter();
-      console.log(res);
-      
       if(res?.data?.data){
         const data = res.data.data;
         
@@ -209,9 +207,6 @@ const AttendanceTodayPage = () => {
   }, [studentList, studentNP]);
 
 
-
-  console.log(dataStudentAbsent);
-  
 
   useEffect(() => {
     getLetter();

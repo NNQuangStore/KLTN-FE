@@ -50,9 +50,7 @@ const LoginPage = () => {
       });
       if(res.status === 200){
         const resData = res?.data as (IApiLoginResData | null);
-        console.log(resData);
         if (!resData) throw 'fail';
-        console.log('???');
         
         storage.set('token', resData?.token);
         storage.set('user_name', resData?.UserName__c);
@@ -63,9 +61,6 @@ const LoginPage = () => {
         storage.set('student_id', resData?.Student?.Id);
         storage.set('student_name', resData?.Student?.Name);
 
-
-        console.log(resData.Role.Title__c);
-        
 
         if(resData.Role.Title__c === 'PARENT'){
           navigate('/app/home');

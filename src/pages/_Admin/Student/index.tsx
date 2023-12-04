@@ -141,8 +141,6 @@ const StudentAdminPage = () => {
     },
   ];
 
-  console.log(detail);
-  
 
   const fetchStudent = async () => {
     try{

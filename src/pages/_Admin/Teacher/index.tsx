@@ -142,7 +142,6 @@ const TeacherPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log(detail);
     
     formEdit.setFieldsValue({
       UserName__c: detail?.User.UserName__c,
@@ -185,7 +184,6 @@ const TeacherPage = () => {
           <FormLayout<any>
               onSubmit={async (value) => {
                 dispatch(uiActions.setLoadingPage(true));
-                console.log(value);
                 
                 try {
                   await apisTeacher.saveTeacher({
@@ -248,7 +246,6 @@ const TeacherPage = () => {
               form={formEdit}
               onSubmit={async (value) => {
                 dispatch(uiActions.setLoadingPage(true));
-                console.log(value);
                 
                 try {
                   await apisTeacher.saveTeacher({

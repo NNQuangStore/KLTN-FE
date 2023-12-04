@@ -141,7 +141,6 @@ const ParentAdminPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log(detail);
     
     formEdit.setFieldsValue({
       UserName__c: detail?.User.UserName__c,
@@ -163,8 +162,6 @@ const ParentAdminPage = () => {
   //     TeacherName__c: dataTeacher?.find(teacher => teacher.Id === o.GiaoVien__c)?.Name
   //   }));
   // }, [dataClass, dataTeacher]); 
-
-  console.log(viewDetail);
 
 
   return (
@@ -250,8 +247,6 @@ const ParentAdminPage = () => {
               form={formEdit}
               onSubmit={async (value) => {
                 dispatch(uiActions.setLoadingPage(true));
-                console.log(value);
-                
                 try {
                   await apisParent.saveParent({ 
                     // ...detail,

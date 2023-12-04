@@ -1,4 +1,3 @@
-import { config } from 'process';
 import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
 import { configTimeout } from '../../../utils/unit';

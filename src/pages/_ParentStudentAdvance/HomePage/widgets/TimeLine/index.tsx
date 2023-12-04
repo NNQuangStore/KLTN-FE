@@ -1,14 +1,13 @@
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
-import { fetchApiTimeout, getDayOfWeek, timeoutPromise } from '../../../../../utils/unit';
+import { getDayOfWeek } from '../../../../../utils/unit';
 import {  Empty, Timeline, TimelineItemProps } from 'antd';
 import { hexToRGB } from '../../../../../utils/unit';
 import InputDatePicker from '../../../../../component/atom/Input/InputDatePicker';
 import apisTimetable from '../../../../TimeTablePage/services/apis';
 import { useAppDispatch } from '../../../../../store/hooks';
 import uiActions from '../../../../../services/UI/actions';
-import lesionActions from '../../../../ReportLesionPage/services/actions';
 
 const TimeTableLine = () => {
 

@@ -91,7 +91,7 @@ const ReportLesionPage = () => {
       title: 'Hành động',
       align: 'right',
       render: (item) => 
-     (<ActionTable  actions={!isAccepted(item) ? [
+     (<ActionTable  actions={[
           {
             handle: () => {setFormData(item); setOpen(true);},
             icon: <EditOutlined />,
@@ -107,13 +107,7 @@ const ReportLesionPage = () => {
             label: 'Xoá',
             color: '#f5222d'
           }
-        ] : [
-          {
-            handle: () => {setFormData(item); setOpen(true); setErrContent('');},
-            icon: <EditOutlined />,
-            label: 'Chỉnh sửa',
-            color: '#faad14'
-          }]}/>)
+        ]}/>)
     }
   ];
 
@@ -230,7 +224,7 @@ const ReportLesionPage = () => {
             setErrContent('');
             setTimeActive(false);
             setOpen(true);
-            }} label='Thêm bài học'/>
+            }} label='Thêm báo bài'/>
         </div>
         {/* <div style={{height: '12px'}}></div> */}
 

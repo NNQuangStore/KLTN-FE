@@ -83,9 +83,6 @@ const CalendarDays = () => {
   const {state} = useLocation();
 
 
-  console.log(state?.date);
-  
-
   const [dateSelected, setDateSelected] = useState<string>(state?.date ? moment(state?.date, 'YYYY/MM/DD').format() : moment().format());
   const [, setReportDetail] = useLessonParentReportDetail([]);
 
@@ -97,8 +94,6 @@ const CalendarDays = () => {
     }, []);
   const dataReportLesion = lesionSelectors.getLesionList();
 
-    console.log(state?.date);
-    
   
   // const dataReport = [
   //   {

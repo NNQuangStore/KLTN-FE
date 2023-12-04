@@ -23,7 +23,6 @@ const ParentLayout = () => {
 
   useEffect(() => {
     socket.on('success-connect', (data) => {
-      console.log(data);
     });
   },[socket]);
 

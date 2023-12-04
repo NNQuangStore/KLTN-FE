@@ -139,9 +139,6 @@ const ParentReportSessionPage = () => {
                         const originalDateEnd = new Date(endDate);
                         const formattedDate = (originalDate.getMonth() + 1).toString().padStart(2, '0') + '/' + originalDate.getDate().toString().padStart(2, '0') + '/' + originalDate.getFullYear();
                         const formattedDateEnd = (originalDateEnd.getMonth() + 1).toString().padStart(2, '0') + '/' + (originalDateEnd.getDate() - 1).toString().padStart(2, '0') + '/' + originalDateEnd.getFullYear();
-                        console.log(formattedDate);
-                        console.log('Lay ngay ket thuc: ',formattedDateEnd);
-                        console.log('Lay ngay bat dau: ',formattedDate);
                       } else {
                        
                       }

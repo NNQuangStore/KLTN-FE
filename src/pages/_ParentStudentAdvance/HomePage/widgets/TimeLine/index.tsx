@@ -16,8 +16,6 @@ const TimeTableLine = () => {
 
   const [dataTimeTable, setDataTimeTable] = useState<any[]>();
 
-  console.log(date.format('dddd'));
-  
   // console.log(dataTimeTable);
   
   const fetchApi = async () => {
@@ -28,7 +26,6 @@ const TimeTableLine = () => {
       });
         setDataTimeTable(res?.data?.Schedule?.detail ?? []);
     } catch (error) {
-      console.log(error);
       // const res = await apisTimetable.getTimeTable({
       //   date: date.format('YYYY-MM-DD'),
       //   day: date.format('dddd') as any
@@ -36,8 +33,6 @@ const TimeTableLine = () => {
     }
   };
 
-  console.log(dataTimeTable);
-  
 
   useEffect(() => {
     dispatch(uiActions.setLoadingPage(true));

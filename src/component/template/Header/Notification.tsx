@@ -27,12 +27,10 @@ const Notification = () => {
   },[]);
 
   useEffect(() => {
-    console.log('notification: %o', notification);
   },[notification]);
 
   useEffect(() => {
     socket.on('notify-new-lesson', (data) => {
-      console.log(data);
       const newNotification = {
         Name: 'GVCN đã gửi báo bài ' + (data.dataLesson ? 'ngày ' + dayjs(data.dataLesson.SentDay__c ).format('DD/MM/YYYY') : 'mới'),
         Message__c: '',

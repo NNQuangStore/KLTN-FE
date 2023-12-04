@@ -65,8 +65,6 @@ const ListAbsence = ({isAccept = false}: {isAccept?: boolean}) => {
     {
       title: 'Hành động',
       render: ( record: any) => {
-        console.log(record);
-        
         return (
           <ActionTable actions={[
             {

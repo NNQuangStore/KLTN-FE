@@ -23,7 +23,7 @@ const ParentStudentHomePage = () => {
   // };
 
   useEffect(() => {
-    dispatch(lesionActions.getListLesion.fetch());
+    dispatch(lesionActions.getListLesion.fetch(true));
   }, []);
 
   return (

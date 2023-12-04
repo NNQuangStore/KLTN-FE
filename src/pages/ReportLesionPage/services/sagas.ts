@@ -3,12 +3,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import actions from './actions';
 import { default as apis } from './apis';
 import uiActions from '../../../services/UI/actions';
+import { ISagaFunc } from '../../../services/actionConfigs';
 
-const getListLesion = function* () {
+const getListLesion: ISagaFunc<boolean> = function* ({payload}) {
   yield put(uiActions.setLoadingPage(true));
   
   try {
-    const res: AxiosResponse<{ data: any[] }> = yield call(apis.getListLesion);
+    const res: AxiosResponse<{ data: any[] }> = yield call(apis.getListLesion, payload ?? false);
     if (res?.data?.data) {      
       const studentList = res?.data?.data;
       yield put(actions.getListLesion.success(studentList));

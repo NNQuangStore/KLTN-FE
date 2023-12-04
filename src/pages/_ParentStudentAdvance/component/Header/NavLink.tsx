@@ -54,7 +54,7 @@ const NavLink = () => {
       });
 
       const resTeacher = await apisTeacher.getListTeacher();
-      const user_id = storage.get('user_id');
+      // const user_id = storage.get('user_id');
 
 
       if(resTeacher?.data?.data) {
@@ -78,8 +78,6 @@ const NavLink = () => {
     });
   }, []);
 
-  console.log(dataTeacher);
-  
 
 
   return (

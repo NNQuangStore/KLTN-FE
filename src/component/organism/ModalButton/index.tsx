@@ -8,6 +8,7 @@ interface Props extends ModalProps {
   children: React.ReactNode;
   buttonRender?: React.ReactElement;
   label?:string
+  state?: any
   // isOpen?:boolean;
 } 
 
@@ -15,10 +16,11 @@ const ModalButton = ({
   children, 
   buttonRender,
   label,
+  state,
   // isOpen,
   ...props
 }: Props) => {
-  const [open, setOpen] = useShowModal(false);
+  const [open, setOpen] = state ?? useShowModal(false);
 
   const onCancel = () => {
     setOpen(false);

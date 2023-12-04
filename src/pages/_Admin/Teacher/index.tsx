@@ -30,6 +30,7 @@ const TeacherPage = () => {
   const [detail, setDetail] = useState<TeacherType | null>();
   const [viewDetail, setViewDetail] = useState<any>();
   const [formEdit] = Form.useForm();
+  const [open, setOpen] = useState(false);
 
   // const data = [
   //   {
@@ -163,8 +164,6 @@ const TeacherPage = () => {
   //     TeacherName__c: dataTeacher?.find(teacher => teacher.Id === o.GiaoVien__c)?.Name
   //   }));
   // }, [dataClass, dataTeacher]); 
-
-  console.log(viewDetail);
   
 
   return (
@@ -178,6 +177,7 @@ const TeacherPage = () => {
         {/* <InputSearchText /> */}
 
         <ModalButton 
+          state={[open, setOpen]}
           // isOpen={open}
           title={'Giáo viên'}
           label='Thêm giáo viên'
@@ -195,7 +195,8 @@ const TeacherPage = () => {
                     BirthDay__c: value.BirthDay__c.format('YYYY-MM-DD'),
                     Password__c: value.Phone__c.replaceAll('-', '')
                   });
-                  window.location.reload();
+                  fetchData();
+                  setOpen(false);
 
                 } catch (e) {
                   message.error('Số điện thoại hoặc emil bị trùng. Xin vui lòng nhập lại');

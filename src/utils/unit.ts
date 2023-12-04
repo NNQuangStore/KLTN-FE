@@ -133,5 +133,5 @@ export function fetchApiTimeout(url: string, timeout: number) {
 // };
 
 export const configTimeout = {
-  timeout: 30000
+  timeout: 10000
 };

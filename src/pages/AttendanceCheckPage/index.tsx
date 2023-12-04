@@ -83,7 +83,7 @@ const AttendanceCheckPage = () => {
 
 
       const class_id = storage.get('class_id');
-      const res = await fetch({
+      await fetch({
         method: 'get',
         url: `/attendanceDay/classId/${class_id}`,
         configs: {

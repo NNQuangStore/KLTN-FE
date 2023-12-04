@@ -23,7 +23,7 @@ const AppLayout = () => {
   },[]);
 
   useEffect(() => {
-    socket.on('success-connect', (data) => {
+    socket.on('success-connect', () => {
     });
   },[socket]);
 

@@ -21,7 +21,6 @@ import ButtonOutline from '../../component/atom/Button/ButtonOutline';
 import ButtonPrimary from '../../component/atom/Button/ButtonPrimary';
 import { useDispatch } from 'react-redux';
 import studentActions from '../StudentPage/services/actions';
-import StudentSelectors from '../StudentPage/services/selectors';
 interface DataType {
   key: string;
   startDay: string;
@@ -191,7 +190,7 @@ const AttendancePage = () => {
   // const studentList = StudentSelectors.getStudentList();
 
 
-  const handleChange = (value: string) => {
+  const handleChange = () => {
     // console.log(`selected ${value}`);
   };
   const showModal = () => {

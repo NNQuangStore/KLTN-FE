@@ -16,6 +16,9 @@ import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from '../AttendanceCheckPage/service/apis';
 import moment from 'moment';
 import storage from '../../utils/sessionStorage';
+import fetch from '../../services/request';
+import { configTimeout } from '../../utils/unit';
+import { delay } from 'lodash';
 function formatDate(dateString: string): string {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const formattedDate: string = new Date(dateString).toLocaleDateString('vi-Vi', options);
@@ -143,7 +146,9 @@ const AttendanceTodayPage = () => {
   // const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   // const [, setSearchText] = useState('');
   // const [, setFilteredData] = useState<DataType[] | null>(null);
-  const studentList = StudentSelectors.getStudentList() as IStudent[];
+  // const studentList = StudentSelectors.getStudentList() as IStudent[];
+
+  const [studentList, setStudentList] = useState<any[]>();
 
   const [dataStudentAbsent, setDataStudentAbsent] = useState<any[]>([]);
 
@@ -160,28 +165,72 @@ const AttendanceTodayPage = () => {
   // }, [studentList]);
 
 
+  const getStudentList = async () => {
+    const class_id = storage.get('class_id');
+
+    return fetch({
+      method: 'get',
+      url: `class/${class_id}`,
+      configs: {
+        ...configTimeout
+      }
+      // params: { ...params, per_page: 100 },
+    }).catch(() => {
+      getStudentList();
+    }).then((res) => {
+      const studentList = res?.data?.data[0].Student;
+      setStudentList(studentList);
+    });
+  };
+
   const getLetter = async () => {
     try {
       await dispatch(uiActions.setLoadingPage(true));
-      const res = await apisLetterTeacher.getListLetter();
-      if(res?.data?.data){
-        const data = res.data.data;
-        
-        const listData = data?.filter((o: any) => {
-          const ngayNghi = moment(o.NgayNghi__c, 'YYYY-MM-DD').subtract(1, 'day');
-          const ngayKT = moment(o.NgayNghi__c, 'YYYY-MM-DD').add(o.SoNgayNghi__c, 'day');
+       const class_id = storage.get('class_id');
+       await fetch({
+          method: 'get',
+          url: `letter/${class_id}`,
+          configs: {
+            ...configTimeout
+          }
+        }).catch(() => {
+          getLetter();
+        }).then(res => {
 
-          // console.log(moment().format('YYYY-MM-DD'), ngayNghi.subtract(1, 'day').format('YYYY-MM-DD'), ngayNghi.add(o.SoNgayNghi__c + 1, 'day').format('YYYY-MM-DD'));
-          // console.log(moment().isBefore(ngayNghi) && moment().isAfter(ngayNghi.add(o.SoNgayNghi__c, 'day')));
-          
-          // console.log(moment().format('YYYY-MM-DD'), ngayNghi.subtract(1, 'day').format('YYYY-MM-DD'), moment().isAfter(ngayNghi.subtract(1, 'day'), 'date'));
-          // console.log(moment().isAfter(ngayNghi.add(o.SoNgayNghi__c + 2, 'day'), 'date'));
-          
-          
-          return moment().isAfter(ngayNghi) && moment().isBefore(ngayKT) && o.TrangThai__c === 'ACCEPT';
+          if(res?.data?.data){
+            const data = res.data.data;
+            
+            const listData = data?.filter((o: any) => {
+              const ngayNghi = moment(o.NgayNghi__c, 'YYYY-MM-DD').subtract(1, 'day');
+              const ngayKT = moment(o.NgayNghi__c, 'YYYY-MM-DD').add(o.SoNgayNghi__c, 'day');
+    
+              // console.log(moment().format('YYYY-MM-DD'), ngayNghi.subtract(1, 'day').format('YYYY-MM-DD'), ngayNghi.add(o.SoNgayNghi__c + 1, 'day').format('YYYY-MM-DD'));
+              // console.log(moment().isBefore(ngayNghi) && moment().isAfter(ngayNghi.add(o.SoNgayNghi__c, 'day')));
+              
+              // console.log(moment().format('YYYY-MM-DD'), ngayNghi.subtract(1, 'day').format('YYYY-MM-DD'), moment().isAfter(ngayNghi.subtract(1, 'day'), 'date'));
+              // console.log(moment().isAfter(ngayNghi.add(o.SoNgayNghi__c + 2, 'day'), 'date'));
+              
+              
+              return moment().isAfter(ngayNghi) && moment().isBefore(ngayKT) && o.TrangThai__c === 'ACCEPT';
+            });
+            setStudentNP(listData);
+          }
         });
-        setStudentNP(listData);
-      }
+
+
+        return fetch({
+          method: 'get',
+          url: `class/${class_id}`,
+          configs: {
+            timeout: 50000
+          }
+          // params: { ...params, per_page: 100 },
+        }).catch(() => {
+          getStudentList();
+        }).then((res) => {
+          const studentList = res?.data?.data[0].Student;
+          setStudentList(studentList);
+        });
     } catch (err) {
       console.log(err);
     } finally {
@@ -193,7 +242,7 @@ const AttendanceTodayPage = () => {
 
     if(!studentList || !studentNP) return;
 
-    const data = studentList.map(o => ({
+    const data = studentList.map((o: any) => ({
       ...o,
       disabled: studentNP.some((stu: any) => stu.HocSinh__c === o.Id),
       coPhep: studentNP.some((stu: any) => stu.HocSinh__c === o.Id),
@@ -210,6 +259,8 @@ const AttendanceTodayPage = () => {
 
   useEffect(() => {
     getLetter();
+    // delay(100);
+    // getStudentList();
   }, []);  
 
   const CheckBoxVang = ({dataStudentAbsent, record}: {dataStudentAbsent: any[], record: any, setDataStudentAbsent: (data:any) => void}) => {

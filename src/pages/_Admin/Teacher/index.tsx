@@ -231,7 +231,7 @@ const TeacherPage = () => {
 
       </Filter>
       <div style={{margin: '12px'}}></div>
-      <DataTable bordered={false} columns={columns} dataSource={dataTeacher}/>
+      <DataTable bordered={false} columns={columns} dataSource={dataTeacher?.sort((o1, o2) => o2.MaGiaoVien__c.localeCompare(o1.MaGiaoVien__c))}/>
 
       {/* Edit */}
 

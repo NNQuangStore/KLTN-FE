@@ -2,19 +2,19 @@ import fetch from '../../../services/request';
 import storage from '../../../utils/sessionStorage';
 import { configTimeout } from '../../../utils/unit';
 
-const getListLesion = () => {
+const getListLesion = (isParent: boolean) => {
 
   const class_id = storage.get('class_id');
 
   return fetch({
     method: 'get',
-    url: `lesson/${class_id}`,
+    url: isParent ? `lesson/parent/${class_id}` : `lesson/${class_id}`,
     configs: {
       ...configTimeout
     }
     // params: { ...params, per_page: 100 },
   }).catch(() => {
-    getListLesion();
+    getListLesion(isParent);
   });
 };
 

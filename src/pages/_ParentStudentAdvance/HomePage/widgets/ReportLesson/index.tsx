@@ -1,8 +1,7 @@
 import { styled } from 'styled-components';
 import ReportDate from './Reportdate';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import lesionActions from '../../../../ReportLesionPage/services/actions';
+import { useState } from 'react';
+
 import { Radio, RadioChangeEvent } from 'antd';
 import ReportWeek from './ReportWeek';
 

@@ -10,15 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import attendanceActions from '../Attendance/service/actions';
 import attendanceSelectors from '../Attendance/service/selectors';
-import StudentSelectors from '../StudentPage/services/selectors';
-import studentActions from '../StudentPage/services/actions';
+
 import uiActions from '../../services/UI/actions';
 import apisLetterTeacher from '../AttendanceCheckPage/service/apis';
 import moment from 'moment';
 import storage from '../../utils/sessionStorage';
 import fetch from '../../services/request';
 import { configTimeout } from '../../utils/unit';
-import { delay } from 'lodash';
 function formatDate(dateString: string): string {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const formattedDate: string = new Date(dateString).toLocaleDateString('vi-Vi', options);
@@ -131,13 +129,13 @@ interface DataType {
   
 // ];
 
-interface IStudent {
-  Id: string;
-  Ma_Hoc_Sinh__c: string;
-  Name: string;
-  NgaySinh__c?: any;
-  GioiTinh__c: boolean;
-}
+// interface IStudent {
+//   Id: string;
+//   Ma_Hoc_Sinh__c: string;
+//   Name: string;
+//   NgaySinh__c?: any;
+//   GioiTinh__c: boolean;
+// }
 
 const AttendanceTodayPage = () => {
   const navigate = useNavigate();
@@ -168,11 +166,11 @@ const AttendanceTodayPage = () => {
   const getStudentList = async () => {
     const class_id = storage.get('class_id');
 
-    return fetch({
+    await fetch({
       method: 'get',
       url: `class/${class_id}`,
       configs: {
-        ...configTimeout
+        timeout: 2500
       }
       // params: { ...params, per_page: 100 },
     }).catch(() => {
@@ -217,20 +215,22 @@ const AttendanceTodayPage = () => {
           }
         });
 
+      
 
-        return fetch({
-          method: 'get',
-          url: `class/${class_id}`,
-          configs: {
-            timeout: 50000
-          }
-          // params: { ...params, per_page: 100 },
-        }).catch(() => {
-          getStudentList();
-        }).then((res) => {
-          const studentList = res?.data?.data[0].Student;
-          setStudentList(studentList);
-        });
+
+        // return fetch({
+        //   method: 'get',
+        //   url: `class/${class_id}`,
+        //   configs: {
+        //     timeout: 2500
+        //   }
+        //   // params: { ...params, per_page: 100 },
+        // }).catch(() => {
+        //   getStudentList();
+        // }).then((res) => {
+        //   const studentList = res?.data?.data[0].Student;
+        //   setStudentList(studentList);
+        // });
     } catch (err) {
       console.log(err);
     } finally {
@@ -260,7 +260,7 @@ const AttendanceTodayPage = () => {
   useEffect(() => {
     getLetter();
     // delay(100);
-    // getStudentList();
+    getStudentList();
   }, []);  
 
   const CheckBoxVang = ({dataStudentAbsent, record}: {dataStudentAbsent: any[], record: any, setDataStudentAbsent: (data:any) => void}) => {
@@ -290,7 +290,7 @@ const AttendanceTodayPage = () => {
 
   useEffect(() => {
     dispatch(attendanceActions.getAttendanceDetail.fetch({}));
-    dispatch(studentActions.getListStudent.fetch());
+    // dispatch(studentActions.getListStudent.fetch());
   }, []);
 
   const attendanceDetail = attendanceSelectors.getAttendanceDetail();

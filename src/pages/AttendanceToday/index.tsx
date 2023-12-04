@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import {  Checkbox, Select, Space} from 'antd';
+import {  Checkbox, Input, Select, Space} from 'antd';
 import DataTable from '../../component/molecule/DataTable';
 import { useEffect, useMemo, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
@@ -323,6 +323,31 @@ const AttendanceTodayPage = () => {
     );
   };
 
+  const InputCell = ({record}: {dataStudentAbsent: any, record: any, show: boolean}) => {
+
+    const [, setValue] = useState<string>('');
+
+    return  (
+      <Input 
+        style={{
+          width: '100%',
+          border: 'none',
+          outline: 'none',
+        }}
+        disabled={!dataStudentAbsent.find((o: any) => o.maHS === record.maHS)?.vang}
+        value={dataStudentAbsent?.find((o: any) => o.maHS === record.maHS)?.note}
+        onChange={(value) => {
+          const idx = dataStudentAbsent.findIndex((o: any) => o.maHS === record.maHS);
+          if(idx === -1) return;
+          console.log(dataStudentAbsent[idx].coPhep);
+          
+          dataStudentAbsent[idx].note = value.target.value;
+          setValue(value.target.value);
+        }}
+      />
+    );
+  };
+
   const data: DataType[] = attendanceDetail.map(o => ({
     coPhep: o.CoPhep__c,
     maHS: o.MaHocSinh__c,
@@ -377,9 +402,9 @@ const AttendanceTodayPage = () => {
       rowSpan: 4,
       dataIndex: 'note',
       fixed: true,
-      render: (val) => {
+      render: (val, record) => {
         return (
-          <p>{val}</p>
+          <InputCell dataStudentAbsent={dataStudentAbsent} record={record} show={dataStudentAbsent?.find((o: any) => o.maHS === record.maHS)?.vang ?? true} />
         );
       }
     },

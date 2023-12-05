@@ -44,7 +44,8 @@ const ReportDate = () => {
           <div dangerouslySetInnerHTML={{__html: report?.title}}></div>
         </div>
         <div className='content'>
-          {report?.content}
+        <div dangerouslySetInnerHTML={{__html: report?.content}}></div>
+
         </div>
       </div> : <Empty description='Không có báo bài'/>}
 

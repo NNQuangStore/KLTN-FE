@@ -41,7 +41,7 @@ const ReportDate = () => {
 
       {report ? <div className='contain'>
         <div className='header'>
-          {report?.title}
+          <div dangerouslySetInnerHTML={{__html: report?.title}}></div>
         </div>
         <div className='content'>
           {report?.content}

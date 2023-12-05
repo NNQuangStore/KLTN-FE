@@ -20,7 +20,7 @@ const ReportDate = () => {
 
   const report = useMemo(() => {
     return dataReport.find(o => o.date === date);
-  }, [date]);
+  }, [date, dataReport]);
 
   return (
     <ReportDateStyled>
